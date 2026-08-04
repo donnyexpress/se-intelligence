@@ -1,0 +1,11 @@
+name = "tech-scan"
+pages_build_output_dir = "."
+compatibility_date = "2026-08-04"
+
+[[kv_namespaces]]
+id = "576aa003d33b49c1affb3bbbeda491d8"
+binding = "COMMENTS_KV"
+
+[[env.production.kv_namespaces]]
+id = "576aa003d33b49c1affb3bbbeda491d8"
+binding = "COMMENTS_KV"

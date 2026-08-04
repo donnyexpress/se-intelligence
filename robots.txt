@@ -1,0 +1,21 @@
+# robots.txt for tech-scan.pages.dev
+# Allow all crawlers. Point them at the sitemap.
+
+User-agent: *
+Allow: /
+
+# AI crawlers (optional — allow for now, you can block later)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Sitemap location
+Sitemap: https://tech-scan.pages.dev/sitemap.xml

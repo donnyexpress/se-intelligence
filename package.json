@@ -1,0 +1,28 @@
+{
+  "name": "managers-playbook",
+  "version": "11.0.0",
+  "description": "A wiki-style field reference for middle-to-senior managers in engineering and government organizations. 53 entries across 6 topics — frameworks, case studies, and curated reading.",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000",
+    "build:mobile": "node scripts/build-mobile.js",
+    "test": "node scripts/test.js",
+    "test:headed": "node scripts/test.js --headed"
+  },
+  "keywords": [
+    "management",
+    "leadership",
+    "engineering",
+    "government",
+    "frameworks",
+    "wiki",
+    "playbook"
+  ],
+  "author": "Mavis",
+  "license": "MIT",
+  "devDependencies": {
+    "puppeteer": "^23.11.1"
+  }
+}

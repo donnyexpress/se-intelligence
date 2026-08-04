@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Tooling cache
+.cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Test artifacts
+test-results/
+*.log
+/tmp/
+
+# Build outputs (none for this site, but future-proof)
+dist/
+build/
+
+# Local env
+.env
+.env.local

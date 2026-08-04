@@ -1,0 +1,9 @@
+# Cloudflare Pages _headers file
+# Force browser to always revalidate HTML with the server.
+# This is the most reliable way to ensure users see the latest version.
+# See: https://developers.cloudflare.com/pages/configuration/headers/
+
+/*
+  Cache-Control: no-cache, no-store, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

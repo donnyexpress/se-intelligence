@@ -1,0 +1,5 @@
+# Cloudflare Pages _redirects
+# Single-page app: any unknown path falls back to index.html.
+# This lets the history-based router handle /entry/<key>, /latest, /about, /conferences, /admin.
+
+/*    /index.html   200
