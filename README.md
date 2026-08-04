@@ -166,19 +166,34 @@ fallback) `assets/parser.js` `TOPIC_PREFIXES`.
 
 The site is configured for Cloudflare Pages. The `wrangler.toml` is checked in.
 
+**Connecting to Cloudflare Pages via the dashboard (recommended):**
+
+1. **https://dash.cloudflare.com** → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
+2. Pick the `tech-scan` repo
+3. **Project name**: `tech-scan` (gives you `tech-scan.pages.dev`)
+4. **Build settings**:
+   - **Build command**: **leave empty** (the static site needs no build step)
+   - **Build output directory**: leave default (`/` / repo root)
+5. **Save and Deploy**
+
+> ⚠️  **Common gotcha**: if the dashboard auto-fills the build command with
+> `npx wrangler deploy` (the Workers default), the build will fail with
+> `CLOUDFLARE_API_TOKEN required`. **Delete the build command field** — Pages
+> will serve the repo root directly and pick up `functions/api/*.js` automatically.
+
+**KV namespace for comments:** bound in `wrangler.toml` as `COMMENTS_KV`.
+Production ID: `576aa003d33b49c1affb3bbbeda491d8`. If that ID doesn't exist
+in your account, create a new namespace in the dashboard and either bind it
+via Settings → Functions → KV namespace bindings, or update the ID in
+`wrangler.toml` and push.
+
+**One-time CLI deploy (alternative):**
+
 ```sh
-# First deploy (one-time)
 npm install -g wrangler
 wrangler login
-wrangler pages deploy . --project-name tech-scan
-
-# Or: connect the GitHub repo in the Cloudflare dashboard
-# (Workers & Pages → Create → Pages → Connect to Git)
-# Auto-deploys on every push to main.
+wrangler pages deploy . --project-name=tech-scan
 ```
-
-KV namespace for comments: `COMMENTS_KV` (already in `wrangler.toml`).
-Production ID: `576aa003d33b49c1affb3bbbeda491d8`.
 
 ## Standards alignment
 

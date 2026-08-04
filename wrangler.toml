@@ -1,18 +1,23 @@
 name = "tech-scan"
 compatibility_date = "2026-08-04"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "/"
 
 # This is a Cloudflare **Pages** project (static site + Functions).
-# Pages reads pages_build_output_dir from this file. It is the only
-# field Pages cares about in wrangler.toml. Functions in ./functions/
-# are auto-detected. KV bindings below are also auto-applied.
-
-# The default Cloudflare Pages build command works for this project
-# (no build step needed). If the dashboard shows a build command of
-# `npx wrangler deploy`, change it to empty in:
-#   Settings → Build → Build configurations → Build command
-# Or to: `npx wrangler pages deploy . --project-name=tech-scan --commit-dirty=true`
+#
+# CRITICAL: In the Cloudflare Pages dashboard, the **Build command**
+# must be EMPTY. If it contains `npx wrangler deploy` or
+# `npx wrangler pages deploy ...`, the build will fail with
+# "CLOUDFLARE_API_TOKEN required" or similar.
+#
+# With an empty build command, Pages:
+#   - serves the repo root as the static site
+#   - auto-detects Functions in ./functions/api/*.js
+#   - applies KV bindings from this file
+#   - applies any environment variables / secrets you set
+#
+# Do NOT set pages_build_output_dir here — when set, wrangler resolves
+# it relative to the build cwd (e.g. "../../.."), breaking the deploy.
+# Leave it unset; Pages defaults to the repo root.
 
 [[kv_namespaces]]
 binding = "COMMENTS_KV"
