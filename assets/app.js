@@ -574,6 +574,11 @@
     if (state.activeTriage) {
       filtered = filtered.filter(e => e.triage === state.activeTriage);
     }
+    // Apply primary-topic (SEBoK) filter — narrows to entries whose
+    // primary topic matches the active filter.
+    if (state.activePrimaryTopic) {
+      filtered = filtered.filter(e => e.topic === state.activePrimaryTopic);
+    }
     // Apply domain filter
     if (state.activeDomain) {
       filtered = filtered.filter(e => (e.domains || []).includes(state.activeDomain) || e.topic === state.activeDomain);
