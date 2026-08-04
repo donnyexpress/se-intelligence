@@ -8,6 +8,7 @@ maturity: production
 domains: reliab
 source_url: https://sebokwiki.org/wiki/Service_Life_Extension
 source_label: Read on SEBoK →
+published: 2024-06-01
 ---
 
 # When to modernize, when to sustain, when to retire

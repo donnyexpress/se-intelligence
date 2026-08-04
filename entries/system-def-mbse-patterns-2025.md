@@ -8,6 +8,7 @@ maturity: production
 domains: platform
 source_url: https://www.incose.org/groups/mbse
 source_label: Read on INCOSE →
+published: 2025-03-01
 ---
 
 # MBSE patterns — what 5 years of industry adoption tells us

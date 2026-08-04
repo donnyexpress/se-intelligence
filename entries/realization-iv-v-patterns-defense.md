@@ -8,6 +8,7 @@ maturity: production
 domains: mission
 source_url: https://standards.ieee.org/ieee/1012/7232/
 source_label: View IEEE 1012 →
+published: 2016-09-30
 ---
 
 # Integration, Verification & Validation patterns from defense SE

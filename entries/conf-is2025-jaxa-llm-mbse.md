@@ -12,6 +12,7 @@ source_url: https://www.incose.org/wp-content/uploads/legacy/presentation/is2025
 source_label: Read the paper (PDF) →
 authors: "Sugawara, K.; Komatsu, Y.; Wada, A."
 year: 2025
+event_date: 2025-07-29
 ---
 
 # JAXA — Extracting Information from System Model as Graph Structure by LLM in MBSE

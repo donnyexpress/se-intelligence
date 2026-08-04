@@ -8,6 +8,7 @@ maturity: production
 domains: perf, energy
 source_url: https://www.semianalysis.com/
 source_label: Read on SemiAnalysis →
+published: 2026-05-20
 ---
 
 # LLM inference cost curves — where the floor is in 2026

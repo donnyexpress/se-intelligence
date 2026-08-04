@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-04
+last_updated: 2026-08-05
 topic: management
 triage: read
 source_type: paper
@@ -12,6 +12,7 @@ source_url: https://www.incose.org/events-education/previous-international-event
 source_label: View in INCOSE IS 2023 proceedings →
 authors: "Leffingwell, D.; et al."
 year: 2023
+event_date: 2023-07-18
 ---
 
 # Agile SE at scale — IS 2023 (Honolulu)

@@ -8,6 +8,7 @@ maturity: production
 domains: reliab
 source_url: https://jepsen.io/analyses
 source_label: Read on Jepsen →
+published: 2024-09-12
 ---
 
 # Jepsen — anomaly in etcd 3.5 linearizable reads

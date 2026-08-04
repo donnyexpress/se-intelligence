@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-04
+last_updated: 2026-08-05
 topic: system-def
 triage: read
 source_type: paper
@@ -12,6 +12,7 @@ source_url: https://www.incose.org/events-education/previous-international-event
 source_label: View in INCOSE IS 2024 proceedings →
 authors: "Holt, J.; Perry, S.; Brownsword, M."
 year: 2024
+event_date: 2024-07-03
 ---
 
 # MBSE patterns in practice — IS 2024 (Dublin)

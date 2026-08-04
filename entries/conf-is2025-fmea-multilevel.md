@@ -12,6 +12,7 @@ source_url: https://www.incose.org/resource/systematic-risk-analysis-fmea-and-ft
 source_label: Read on INCOSE →
 authors: "Post, K.; Arifin, H. H.; Pepper, B.; Pavalkis, S."
 year: 2025
+event_date: 2025-07-30
 ---
 
 # Post et al. — FMEA and FTA Approach for Multi-Level System Architecture

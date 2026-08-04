@@ -38,7 +38,8 @@ function parseMarkdown(filename, raw) {
 
   // Strip optional YAML frontmatter. We support:
   //   last_updated, date, topic, triage, source_type, signal, maturity,
-  //   source_url, source_label, links, event, track, paper_id, authors, year
+  //   source_url, source_label, links, event, track, paper_id, authors, year,
+  //   published, event_date
   // plus any other future fields (kept in `frontmatter` for renderer use).
   let frontmatter = {};
   if (lines[0] && lines[0].trim() === '---') {
@@ -116,6 +117,12 @@ function parseMarkdown(filename, raw) {
     paperId: frontmatter.paper_id || '',
     authors: frontmatter.authors || '',
     year: parseInt(frontmatter.year, 10) || 0,
+    // Original publication date — when the source material was actually
+    // published, NOT when we last edited the entry. Powers the home
+    // dashboard's recency-weighted scoring. Accepts ISO date (YYYY-MM-DD)
+    // or a free-form date string the Date parser can read. Falls back
+    // through: published → event_date → year-01-01 → last_updated.
+    published: parseDateField(frontmatter.published || frontmatter.event_date || frontmatter.year),
   };
 
   let currentHeading = '';
@@ -181,6 +188,23 @@ function parseMarkdown(filename, raw) {
   }
 
   return entry;
+}
+
+// Parse a date from a frontmatter field. Accepts:
+//   - ISO date (YYYY-MM-DD) or datetime
+//   - a year as integer or string ("2024")
+//   - any string the Date constructor can parse
+// Returns a Date or null.
+function parseDateField(v) {
+  if (v == null || v === '') return null;
+  // Year alone
+  if (typeof v === 'number' || /^\d{4}$/.test(String(v).trim())) {
+    const y = parseInt(v, 10);
+    if (!isNaN(y) && y > 1900 && y < 3000) return new Date(y, 0, 1);
+  }
+  const d = new Date(String(v).trim());
+  if (!isNaN(d.getTime())) return d;
+  return null;
 }
 
 // Infer a primary topic from the filename prefix.

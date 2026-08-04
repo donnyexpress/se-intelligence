@@ -55,6 +55,40 @@
     return html;
   }
 
+  // Score a single entry's contribution to its topic's "hotness".
+  // All kinds weigh equally — the only signal is recency (months since
+  // the original publication date, with linear-ish decay). Entries
+  // without a publication date are excluded (otherwise last_updated
+  // would skew toward recently-edited entries, not recently-published).
+  function entryHotScore(e, cfg) {
+    if (!e.published) return 0;
+    const months = (Date.now() - e.published.getTime()) / (1000 * 60 * 60 * 24 * 30.44);
+    if (months < 0 || months > cfg.windowMonths) return 0;
+    return 1 / (1 + cfg.decayRate * months);
+  }
+
+  // Compute the dashboard: top topics by Σ entryHotScore.
+  // Returns an array of { topic, score, totalCount, confCount, confWindowCount }
+  // sorted by score desc, length <= cfg.topN.
+  function computeHotTopics() {
+    const cfg = (window.CONFIG && window.CONFIG.hotTopics) || { windowMonths: 12, topN: 6, decayRate: 0.05 };
+    const entries = Object.values(state.entries);
+    const byTopic = {};
+    for (const e of entries) {
+      const s = entryHotScore(e, cfg);
+      if (s <= 0) continue;
+      const t = e.topic;
+      if (!byTopic[t]) byTopic[t] = { topic: t, score: 0, totalCount: 0, confCount: 0, confWindowCount: 0 };
+      byTopic[t].score += s;
+      byTopic[t].totalCount += 1;
+      if (e.isConference) byTopic[t].confCount += 1;
+      if (e.isConference && e.published) byTopic[t].confWindowCount += 1;
+    }
+    const ranked = Object.values(byTopic).sort((a, b) => b.score - a.score).slice(0, cfg.topN);
+    const max = ranked[0] ? ranked[0].score : 1;
+    return { ranked, max, cfg };
+  }
+
   // ===== Loaders =====
   async function loadAll() {
     try {
@@ -472,7 +506,50 @@
       return (b.lastUpdated || '').localeCompare(a.lastUpdated || '');
     });
 
-    return renderFeed('Latest developments', view, { isLatest: true });
+    // "Hottest topics" dashboard, computed independently of the feed below.
+    // Placed between the hero and the feed so the visitor sees "what's hot"
+    // before "what's recent".
+    const dashboard = renderHotTopics();
+    const feed = renderFeed('Latest developments', view, { isLatest: true });
+    return dashboard + feed;
+  }
+
+  // Build the "Hottest topics" dashboard panel.
+  // Returns HTML for a horizontal bar chart of the top N topics
+  // ranked by recent publication activity, with a score and a
+  // breakdown of what drove the score.
+  function renderHotTopics() {
+    const { ranked, max, cfg } = computeHotTopics();
+    if (ranked.length === 0) {
+      // No entries with publication dates in the window — skip the panel.
+      return '';
+    }
+    const windowMonths = cfg.windowMonths;
+    const primary = PRIMARY();
+    const domains = DOMAINS();
+    const rows = ranked.map((row, i) => {
+      const meta = primary[row.topic] || domains[row.topic] || { name: row.topic, short: row.topic };
+      const widthPct = max > 0 ? Math.max(6, Math.round((row.score / max) * 100)) : 6;
+      const breakdown = [];
+      if (row.confCount) breakdown.push(`${row.confCount} conf`);
+      const others = row.totalCount - row.confCount;
+      if (others) breakdown.push(`${others} other`);
+      return `<a class="hot-row" href="/?topic=${row.topic}" data-nav="topic" data-topic="${row.topic}">
+        <span class="hot-rank">${i + 1}</span>
+        <span class="hot-name">${escapeHtml(meta.name)} <span class="hot-short">${escapeHtml(meta.short)}</span></span>
+        <span class="hot-bar"><span class="hot-bar-fill" style="width: ${widthPct}%"></span></span>
+        <span class="hot-score">${row.score.toFixed(2)}</span>
+        <span class="hot-meta">${breakdown.join(' · ')}</span>
+      </a>`;
+    }).join('');
+
+    return `<section class="hot-topics" aria-label="Hottest topics in the last ${windowMonths} months">
+      <div class="hot-header">
+        <h2 class="hot-title">Hottest topics <span class="hot-window">last ${windowMonths} months</span></h2>
+        <p class="hot-subtitle">Ranked by recent publication activity. All sources weigh equally; recency is the only signal.</p>
+      </div>
+      <div class="hot-list">${rows}</div>
+    </section>`;
   }
 
   function renderLatest() {

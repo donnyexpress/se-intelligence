@@ -14,6 +14,7 @@ source_label: Read on INCOSE →
 authors: "Unewisse, M.; Cook, S.; Wylie, M."
 year: 2025
 domains: energy
+event_date: 2025-07-31
 ---
 
 # Unewisse et al. — Early-Stage Digital Engineering for Energy Decarbonization

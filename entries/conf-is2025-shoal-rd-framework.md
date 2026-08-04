@@ -12,6 +12,7 @@ source_url: https://www.incose.org/docs/default-source/events-documents/is2025/i
 source_label: Read in IS 2025 abstract book →
 authors: "Karagiannis, P.; Liddy, T.; Wylie, M."
 year: 2025
+event_date: 2025-07-31
 ---
 
 # Karagiannis et al. — A Framework for Structuring Research Campaigns with MBSE

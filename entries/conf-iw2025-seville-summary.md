@@ -13,6 +13,7 @@ source_label: View INCOSE event archive →
 authors: "INCOSE Working Groups"
 year: 2025
 domains: reliab
+event_date: 2025-02-04
 ---
 
 # IW 2025 (Seville) — INCOSE Working Group outcomes

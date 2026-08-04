@@ -8,6 +8,7 @@ maturity: production
 domains: sec, mission
 source_url: https://psas.scripts.mit.edu/home/
 source_label: Read STPA-SafeSec handbook →
+published: 2023-09-15
 ---
 
 # Safety and security co-design in critical systems

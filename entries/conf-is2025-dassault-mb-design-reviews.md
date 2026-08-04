@@ -12,6 +12,7 @@ source_url: https://www.incose.org/docs/default-source/events-documents/is2025/i
 source_label: Read in IS 2025 abstract book →
 authors: "Pavalkis, S.; Drozdzewicz, P."
 year: 2025
+event_date: 2025-07-30
 ---
 
 # Pavalkis & Drozdzewicz — A Transformative Process for Model-Based Design Reviews

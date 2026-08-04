@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-04
+last_updated: 2026-08-05
 topic: realization
 triage: watch
 source_type: paper
@@ -12,6 +12,7 @@ source_url: https://www.incose.org/events-education/previous-international-event
 source_label: View in INCOSE IW 2024 proceedings →
 authors: "Jackson, S.; et al."
 year: 2024
+event_date: 2024-01-29
 ---
 
 # Resilient systems engineering — IW 2024 (Torrance)
