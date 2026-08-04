@@ -6,6 +6,8 @@ source_type: blog
 signal: 0.70
 maturity: production
 domains: reliab
+source_url: https://sebokwiki.org/wiki/Service_Life_Extension
+source_label: Read on SEBoK →
 ---
 
 # When to modernize, when to sustain, when to retire

@@ -6,6 +6,8 @@ source_type: blog
 signal: 0.82
 maturity: production
 domains: platform
+source_url: https://www.incose.org/groups/mbse
+source_label: Read on INCOSE →
 ---
 
 # MBSE patterns — what 5 years of industry adoption tells us

@@ -6,6 +6,8 @@ source_type: rfc
 signal: 0.85
 maturity: production
 domains: management
+source_url: https://www.iso.org/standard/81702.html
+source_label: View on iso.org →
 ---
 
 # ISO/IEC/IEEE 15288:2023 — what changed in the revision

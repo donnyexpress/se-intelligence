@@ -6,6 +6,8 @@ source_type: blog
 signal: 0.85
 maturity: production
 domains: perf, energy
+source_url: https://www.semianalysis.com/
+source_label: Read on SemiAnalysis →
 ---
 
 # LLM inference cost curves — where the floor is in 2026

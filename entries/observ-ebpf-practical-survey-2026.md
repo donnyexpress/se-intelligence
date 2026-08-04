@@ -6,6 +6,8 @@ source_type: blog
 signal: 0.83
 maturity: production
 domains: platform, perf
+source_url: https://www.brendangregg.com/ebpf.html
+source_label: Read Brendan Gregg's eBPF page →
 ---
 
 # eBPF for observability — a practical survey (2026)

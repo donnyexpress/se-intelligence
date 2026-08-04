@@ -6,6 +6,8 @@ source_type: paper
 signal: 0.78
 maturity: production
 domains: management
+source_url: https://ackoffcenter.blogs.com/RussellAckoff/articles/archives/Ackoff_on_systems.pdf
+source_label: Read Ackoff's original paper (PDF) →
 ---
 
 # Ackoff — Systems Thinking for the 21st Century

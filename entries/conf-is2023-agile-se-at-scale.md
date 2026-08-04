@@ -8,6 +8,8 @@ maturity: production
 event: is2023
 track: uncertainty
 paper_id: https://www.incose.org/events-education/previous-international-events/
+source_url: https://www.incose.org/events-education/previous-international-events/
+source_label: View in INCOSE IS 2023 proceedings →
 authors: "Leffingwell, D.; et al."
 year: 2023
 ---

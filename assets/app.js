@@ -403,6 +403,21 @@
         ${e.paperId ? `<div class="conf-row"><span class="label">Paper</span><span><a href="${escapeHtml(e.paperId)}" target="_blank" rel="noopener noreferrer">${escapeHtml(e.paperId.replace(/^https?:\/\//, '').slice(0, 60))}</a></span></div>` : ''}
       </div>` : '';
 
+    // Top-of-entry CTA: "Read the full thing" — points at the canonical
+    // source URL. Uses sourceLabel if set, else a context-aware default.
+    let ctaHtml = '';
+    if (e.sourceUrl) {
+      const label = e.sourceLabel
+        || (e.isConference ? 'Read the paper →'
+           : e.sourceType === 'paper' ? 'Read the paper →'
+           : e.sourceType === 'postmortem' ? 'Read the postmortem →'
+           : e.sourceType === 'talk' ? 'Watch the talk →'
+           : e.sourceType === 'release-note' ? 'Read the release notes →'
+           : e.sourceType === 'rfc' ? 'Read the RFC →'
+           : 'Read the full article →');
+      ctaHtml = `<a class="entry-cta" href="${escapeHtml(e.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+    }
+
     const summaryHtml = e.summary ? window.mdToHtml(e.summary.split('\n\n')[0] || e.summary) : '';
     const sourceMeta = e.sourceType ? escapeHtml(e.sourceType) : '';
     const maturityMeta = e.maturity ? escapeHtml(e.maturity) : '';
@@ -411,6 +426,7 @@
         <div class="entry-kind">${e.kind} · <span class="tag tag-topic">${escapeHtml(topicMeta.name)}</span></div>
         <h1 class="entry-title">${escapeHtml(e.title)}</h1>
         ${e.summary ? `<p class="entry-summary">${escapeHtml((e.summary || '').split('\n')[0] || '')}</p>` : ''}
+        ${ctaHtml}
         <div class="entry-meta">
           <span class="tag tag-triage-${e.triage}">${e.triage}</span>
           <span>${signalBars(e.signal)}</span>
@@ -424,6 +440,7 @@
       ${relatedHtml}
       ${renderCommentsSection(e.key)}
       <div class="entry-actions">
+        ${e.sourceUrl ? `<a class="btn btn-primary" href="${escapeHtml(e.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(e.sourceLabel || 'Read the full article →')}</a>` : ''}
         <button class="btn" onclick="window.print()">Print this entry</button>
         <a class="btn" href="entries/${e.key}.md" download>Download .md</a>
         <a class="btn" href="/">Back to home</a>

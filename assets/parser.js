@@ -38,7 +38,7 @@ function parseMarkdown(filename, raw) {
 
   // Strip optional YAML frontmatter. We support:
   //   last_updated, date, topic, triage, source_type, signal, maturity,
-  //   links, event, track, paper_id, authors, year
+  //   source_url, source_label, links, event, track, paper_id, authors, year
   // plus any other future fields (kept in `frontmatter` for renderer use).
   let frontmatter = {};
   if (lines[0] && lines[0].trim() === '---') {
@@ -95,6 +95,21 @@ function parseMarkdown(filename, raw) {
     related: [],
     notes: '',
     linksList: frontmatter.links_list || [],
+    // Canonical "read the full thing" link. For conf entries, falls back to
+    // paper_id; for regular entries, falls back to the first item in
+    // `links:` if it looks like a URL.
+    sourceUrl: (function() {
+      if (frontmatter.source_url) return frontmatter.source_url;
+      if (isConference && frontmatter.paper_id) return frontmatter.paper_id;
+      const list = frontmatter.links_list || [];
+      for (const l of list) {
+        if (/^https?:\/\//.test(String(l).trim())) return String(l).trim();
+      }
+      return '';
+    })(),
+    // Optional context-aware label for the source CTA, e.g. "View on Jepsen"
+    // or "Read on Amazon". Defaults to a sensible fallback at render time.
+    sourceLabel: frontmatter.source_label || '',
     // Conference-specific
     event: frontmatter.event || (isConference ? key.split('-')[1] : ''),
     track: frontmatter.track || '',

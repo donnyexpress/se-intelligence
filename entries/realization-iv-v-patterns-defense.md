@@ -6,6 +6,8 @@ source_type: paper
 signal: 0.75
 maturity: production
 domains: mission
+source_url: https://standards.ieee.org/ieee/1012/7232/
+source_label: View IEEE 1012 →
 ---
 
 # Integration, Verification & Validation patterns from defense SE

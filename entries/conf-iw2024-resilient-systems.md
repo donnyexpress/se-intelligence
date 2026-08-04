@@ -8,6 +8,8 @@ maturity: production
 event: iw2024
 track: uncertainty
 paper_id: https://www.incose.org/events-education/previous-international-events/
+source_url: https://www.incose.org/events-education/previous-international-events/
+source_label: View in INCOSE IW 2024 proceedings →
 authors: "Jackson, S.; et al."
 year: 2024
 ---

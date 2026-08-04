@@ -104,6 +104,8 @@ source_type: blog                # paper | blog | talk | release-note | rfc | ne
 signal: 0.75                     # 0.0–1.0, curator's quality/importance
 maturity: production             # research | production | preview | deprecated
 domains: reliab, platform        # optional, comma-separated
+source_url: https://example.com/full-article   # the canonical "read the full thing" link
+source_label: Read the full article →           # optional, context-aware CTA label
 ---
 
 # Your entry title
@@ -127,6 +129,24 @@ Your honest reaction. What to do with this, who to ignore, what to skip.
 
 2. Add `'your-key'` to the array in `assets/entries-index.js`.
 3. Refresh the page. Live.
+
+## "Read the full article" button
+
+Every entry with a `source_url` shows a prominent CTA at the top of the page
+(plus a matching button in the bottom action row). Behavior:
+
+- If `source_label` is set, that's used verbatim (e.g. `Read on Jepsen →`,
+  `View on iso.org →`).
+- Otherwise, the label is inferred from `source_type`:
+  - `paper`        → "Read the paper →"
+  - `postmortem`   → "Read the postmortem →"
+  - `talk`         → "Watch the talk →"
+  - `release-note` → "Read the release notes →"
+  - `rfc`          → "Read the RFC →"
+  - anything else  → "Read the full article →"
+- For conference entries, `source_url` falls back to `paper_id` automatically.
+- For regular entries with no `source_url`, the parser uses the first `http(s)://`
+  link in the `links:` list. If there are no URLs, no button is shown.
 
 ## Conference entries
 

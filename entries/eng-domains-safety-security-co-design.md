@@ -6,6 +6,8 @@ source_type: paper
 signal: 0.80
 maturity: production
 domains: sec, mission
+source_url: https://psas.scripts.mit.edu/home/
+source_label: Read STPA-SafeSec handbook →
 ---
 
 # Safety and security co-design in critical systems

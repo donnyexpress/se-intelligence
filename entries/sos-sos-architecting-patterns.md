@@ -6,6 +6,8 @@ source_type: paper
 signal: 0.78
 maturity: production
 domains: mission
+source_url: https://mitpress.mit.edu/9780262534714/
+source_label: Read on MIT Press →
 ---
 
 # Systems of Systems architecting patterns

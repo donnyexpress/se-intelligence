@@ -5,6 +5,8 @@ triage: read
 source_type: blog
 signal: 0.72
 maturity: production
+source_url: https://www.incose.org/group/decision-analysis-working-group/
+source_label: Read on INCOSE →
 ---
 
 # Multi-criteria decision analysis in SE — when it actually helps

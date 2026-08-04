@@ -407,6 +407,29 @@ h1 {
   margin: 0 0 16px;
   line-height: 1.5;
 }
+.entry-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 16px;
+  padding: 9px 18px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #0f0c29;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 999px;
+  border: none;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 12px rgba(167, 139, 250, 0.30);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.entry-cta:hover {
+  color: #0f0c29;
+  border: none;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(167, 139, 250, 0.45);
+}
 .entry-meta {
   display: flex; flex-wrap: wrap; gap: 8px;
   font-size: 12px;

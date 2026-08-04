@@ -6,6 +6,8 @@ source_type: paper
 signal: 0.92
 maturity: production
 domains: reliab
+source_url: https://jepsen.io/analyses
+source_label: Read on Jepsen →
 ---
 
 # Jepsen — anomaly in etcd 3.5 linearizable reads
