@@ -109,10 +109,11 @@ const CONFIG = {
   // Add new events here. The proceedings URL is what /conferences links to.
   events: {
     'is2026': { name: 'IS 2026 (Yokohama)',  year: 2026, location: 'Yokohama, JP',  url: 'https://www.incose.org/symp2026' },
-    'iw2025': { name: 'IW 2025',             year: 2025, location: 'Torrance, US',   url: 'https://www.incose.org/events-education/international-workshop' },
-    'is2024': { name: 'IS 2024 (Dublin)',    year: 2024, location: 'Dublin, IE',     url: 'https://www.incose.org/events-education/previous-international-events/' },
-    'iw2024': { name: 'IW 2024',             year: 2024, location: 'Torrance, CA',   url: 'https://www.incose.org/events-education/previous-international-events/' },
-    'is2023': { name: 'IS 2023 (Honolulu)',  year: 2023, location: 'Honolulu, US',   url: 'https://www.incose.org/events-education/previous-international-events/' },
+    'iw2025': { name: 'IW 2025 (Seville)',   year: 2025, location: 'Seville, ES',   url: 'https://www.incose.org/events-education/previous-international-events/' },
+    'is2025': { name: 'IS 2025 (Ottawa)',    year: 2025, location: 'Ottawa, CA',    url: 'https://www.incose.org/symp2025' },
+    'iw2024': { name: 'IW 2024',             year: 2024, location: 'Torrance, CA',  url: 'https://www.incose.org/events-education/previous-international-events/' },
+    'is2024': { name: 'IS 2024 (Dublin)',    year: 2024, location: 'Dublin, IE',    url: 'https://www.incose.org/events-education/previous-international-events/' },
+    'is2023': { name: 'IS 2023 (Honolulu)',  year: 2023, location: 'Honolulu, US',  url: 'https://www.incose.org/events-education/previous-international-events/' },
   },
 
   // ---- "Latest developments" filter ----

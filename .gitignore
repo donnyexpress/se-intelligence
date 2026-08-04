@@ -16,6 +16,7 @@ Thumbs.db
 test-results/
 *.log
 /tmp/
+docs/preview/
 
 # Build outputs (none for this site, but future-proof)
 dist/
