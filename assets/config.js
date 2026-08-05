@@ -1,4 +1,4 @@
-// assets/config.js — Single source of truth for Tech Scan.
+// assets/config.js — Single source of truth for SE Intelligence.
 // Change anything here and the whole site reflects it. No code changes needed.
 //
 // To customize, edit this file. To add features, edit the corresponding
@@ -7,11 +7,11 @@
 const CONFIG = {
   // ---- Site identity ----
   site: {
-    name: 'Tech Scan',                     // shown in tab, sidebar, hero
-    tagline: 'A scanning log for systems engineers — what to read, watch, and try.',  // home page lede
-    description: 'A scanning log for systems engineers. INCOSE-aligned topics, conference proceedings, and curated reading on the discipline of SE.',  // <meta description>
-    url: 'https://tech-scan.pages.dev',     // canonical site URL
-    organization: 'Tech Scan',
+    name: 'SE Intelligence',                // shown in tab, sidebar, hero
+    tagline: 'A body of knowledge for systems engineers — basics, applications, best practices, and research frontiers, with every claim cited to a real source.',  // home page lede
+    description: 'SE Intelligence: a synthesized knowledge base for systems engineering. INCOSE-aligned topics, each built from cited sources covering basics through research frontiers.',  // <meta description>
+    url: 'https://se-intelligence.pages.dev',  // canonical site URL
+    organization: 'SE Intelligence',
   },
 
   // ---- Theme: Option 4 — Glass Gradient ----

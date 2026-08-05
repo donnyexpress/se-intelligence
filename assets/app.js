@@ -1,15 +1,18 @@
-// assets/app.js — Tech Scan engine
+// assets/app.js — SE Intelligence engine
 //
 // Single-page static site. All customization comes from CONFIG (see config.js).
-// Routes: /, /latest, /entry/<key>, /about, /conferences, /admin, /quotes.
+// Routes: /, /latest, /topic/<key>, /source/<key>, /about, /conferences, /admin, /quotes.
+// Topics are synthesized knowledge articles; sources are the cited references.
 
 (function() {
   'use strict';
 
   // ===== Engine state =====
   const state = {
-    entries: {},
+    entries: {},       // sources (formerly called "entries")
     keys: [],
+    topics: {},        // synthesized knowledge articles
+    topicKeys: [],
     loaded: false,
     activePrimaryTopic: null,
     activeDomain: null,
@@ -18,7 +21,7 @@
 
   // ===== Feature detectors =====
   const F = () => (window.CONFIG && window.CONFIG.features) || {};
-  const SITE = () => (window.CONFIG && window.CONFIG.site) || { name: 'Tech Scan', url: '', description: '' };
+  const SITE = () => (window.CONFIG && window.CONFIG.site) || { name: 'SE Intelligence', url: '', description: '' };
   const T = () => (window.CONFIG && window.CONFIG.theme) || {};
   const PRIMARY = () => (window.CONFIG && window.CONFIG.primaryTopics) || {};
   const DOMAINS = () => (window.CONFIG && window.CONFIG.applicationDomains) || {};
@@ -35,6 +38,11 @@
   }
   function formatDate(iso) {
     if (!iso) return '';
+    // Date object — convert to ISO and continue
+    if (iso instanceof Date) {
+      if (isNaN(iso.getTime())) return '';
+      iso = iso.toISOString();
+    }
     const m = String(iso).match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);
     if (!m) return String(iso);
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -127,6 +135,48 @@
       }));
       state.entries = entries;
       state.keys = keys;
+
+      // Also load topic pages (synthesized knowledge articles).
+      // Best-effort — if topics-index.js doesn't exist (pre-v1.1) we just skip.
+      const topics = {};
+      let topicKeys = [];
+      try {
+        const tres = await fetch('assets/topics-index.js');
+        if (tres.ok) {
+          const ttxt = await tres.text();
+          // topics-index.js exports a window.TOPIC_KEYS = [...] array
+          const arrMatch = ttxt.match(/window\.TOPIC_KEYS\s*=\s*\[([^\]]*)\]/);
+          if (arrMatch) {
+            const arrText = arrMatch[1]
+              .replace(/\/\/[^\n]*/g, '')   // strip // line comments
+              .replace(/'/g, '"')            // single → double quotes
+              .replace(/,\s*$/, '');         // strip trailing comma
+            try {
+              const parsed = JSON.parse('[' + arrText + ']');
+              topicKeys = parsed.filter(k => typeof k === 'string' && k.length > 0 && /^[a-z0-9][a-z0-9-]*$/.test(k));
+            } catch (_) {
+              // Last-resort fallback: split on commas
+              topicKeys = arrText.split(',')
+                .map(s => s.trim().replace(/['"]/g, ''))
+                .filter(k => k && /^[a-z0-9][a-z0-9-]*$/.test(k));
+            }
+          }
+          await Promise.all(topicKeys.map(async (k) => {
+            try {
+              const r = await fetch('topics/' + k + '.md');
+              if (r.ok) {
+                const raw = await r.text();
+                topics[k] = window.parseTopicPage(k + '.md', raw);
+              }
+            } catch (_) {}
+          }));
+        }
+      } catch (_) {
+        // topics-index.js missing — v1.0 behaviour
+      }
+      state.topics = topics;
+      state.topicKeys = topicKeys;
+
       state.loaded = true;
       window.__getState = () => state;
     } catch (e) {
@@ -137,12 +187,21 @@
 
   // ===== Search index =====
   function getSearchIndex() {
-    return Object.values(state.entries).map(e => ({
-      key: e.key, title: e.title, kind: e.kind, triage: e.triage,
-      topic: e.topic, signal: e.signal, isConference: e.isConference,
+    // Sources: search body + summary + title
+    const srcHits = Object.values(state.entries).map(e => ({
+      key: e.key, title: e.title, kind: 'Source', triage: e.triage,
+      topic: e.topic, signal: e.signal, isTopic: false, isConference: e.isConference,
       event: e.event, summary: (e.summary || '').slice(0, 200),
       haystack: (e.title + ' ' + (e.summary || '') + ' ' + (e.raw || '')).toLowerCase(),
     }));
+    // Topics: search the synthesized article body, summary, and title
+    const topicHits = Object.values(state.topics).map(t => ({
+      key: t.key, title: t.title, kind: 'Topic', triage: null,
+      topic: t.topicKey, signal: 1.0, isTopic: true, isConference: false,
+      event: null, summary: (t.summary || '').slice(0, 200),
+      haystack: (t.title + ' ' + (t.summary || '') + ' ' + (t.raw || '')).toLowerCase(),
+    }));
+    return [...topicHits, ...srcHits];
   }
 
   // ===== Mobile search modal =====
@@ -177,9 +236,11 @@
         } else {
           searchResults.innerHTML = hits.map(h => {
             const confTag = h.isConference ? `<span class="tag tag-conf">${escapeHtml((EVENTS()[h.event] || {name:h.event}).name)}</span>` : '';
-            return `<a class="result" href="/entry/${h.key}" data-key="${h.key}">
+            const kindTag = h.isTopic ? `<span class="tag tag-topic">Topic</span>` : (h.triage ? `<span class="tag tag-triage-${h.triage}">${h.triage}</span>` : '');
+            const href = h.isTopic ? `/topic/${h.key}` : `/source/${h.key}`;
+            return `<a class="result" href="${href}" data-key="${h.key}">
+              ${kindTag}
               ${confTag}
-              <span class="tag tag-triage-${h.triage}">${h.triage}</span>
               <div class="title">${escapeHtml(h.title)}</div>
             </a>`;
           }).join('');
@@ -190,7 +251,9 @@
         if (!a) return;
         e.preventDefault();
         const key = a.dataset.key;
-        history.pushState(null, '', '/entry/' + key);
+        // Detect topic vs source from the search-result badge
+        const isTopic = a.querySelector('.tag-topic') != null;
+        history.pushState(null, '', (isTopic ? '/topic/' : '/source/') + key);
         searchModal.classList.remove('open');
         searchInput.value = '';
         searchResults.innerHTML = '';
@@ -210,6 +273,7 @@
     const domainCounts = countByFieldDomains();
     const confCount = Object.values(state.entries).filter(e => e.isConference).length;
     const latestCount = countLatest().length;
+    const topicCount = state.topicKeys.length;
 
     // Compute conference count by event for the conferences list preview
     const confByEvent = {};
@@ -218,19 +282,32 @@
       confByEvent[e.event] = (confByEvent[e.event] || 0) + 1;
     }
 
-    const primaryList = Object.entries(primary)
+    // Topics list — the primary rail. Each topic can either have a curated
+    // article (state.topics[k]) or not. Show the count of cited sources
+    // when an article exists, otherwise link directly to a filtered feed.
+    const topicList = Object.entries(primary)
       .sort((a, b) => (a[1].order || 99) - (b[1].order || 99))
       .map(([k, v]) => {
-        const n = counts[k] || 0;
-        const active = state.activePrimaryTopic === k ? ' class="active"' : '';
-        return `<li><a href="/?topic=${k}"${active} data-nav="topic" data-topic="${k}">${escapeHtml(v.name)} <span class="count-badge">${n}</span></a></li>`;
+        const hasArticle = !!state.topics[k];
+        const nCited = hasArticle ? state.topics[k].citations.length : 0;
+        const href = hasArticle ? `/topic/${k}` : `/?topic=${k}`;
+        const active = (state.activePrimaryTopic === k) || (location.pathname === '/topic/' + k) ? ' class="active"' : '';
+        const badge = hasArticle
+          ? `<span class="count-badge" title="Synthesized article with ${nCited} cited sources">${nCited}</span>`
+          : `<span class="count-badge" title="Sources in this topic">${counts[k] || 0}</span>`;
+        return `<li><a href="${href}"${active} data-nav="${hasArticle ? 'topic' : 'filter'}" data-topic="${k}">${escapeHtml(v.name)} ${badge}</a></li>`;
       }).join('');
     const domainList = Object.entries(domains)
       .sort((a, b) => (a[1].order || 99) - (b[1].order || 99))
       .map(([k, v]) => {
-        const n = domainCounts[k] || 0;
-        const active = state.activeDomain === k ? ' class="active"' : '';
-        return `<li><a href="/?domain=${k}"${active} data-nav="domain" data-domain="${k}">${escapeHtml(v.name)} <span class="count-badge">${n}</span></a></li>`;
+        const hasArticle = !!state.topics[k];
+        const nCited = hasArticle ? state.topics[k].citations.length : 0;
+        const href = hasArticle ? `/topic/${k}` : `/?domain=${k}`;
+        const active = (state.activeDomain === k) || (location.pathname === '/topic/' + k) ? ' class="active"' : '';
+        const badge = hasArticle
+          ? `<span class="count-badge" title="Synthesized article with ${nCited} cited sources">${nCited}</span>`
+          : `<span class="count-badge" title="Sources in this domain">${domainCounts[k] || 0}</span>`;
+        return `<li><a href="${href}"${active} data-nav="${hasArticle ? 'topic' : 'filter'}" data-domain="${k}">${escapeHtml(v.name)} ${badge}</a></li>`;
       }).join('');
 
     const confEventPreview = Object.entries(events)
@@ -243,18 +320,19 @@
 
     sidebar.innerHTML = `
       <div class="brand"><a href="/" data-nav="home">${escapeHtml(SITE().name)}</a></div>
-      <div class="brand-sub">${escapeHtml(SITE().tagline || 'A scanning log for systems engineers')}</div>
+      <div class="brand-sub">${escapeHtml(SITE().tagline || 'A body of knowledge for systems engineers')}</div>
 
-      <h3>Browse</h3>
+      <h3>Knowledge base</h3>
       <ul class="flat-entries">
+        <li><a href="/topics" data-nav="topics">All topics <span class="count-badge">${topicCount}</span></a></li>
+        <li><a href="/sources" data-nav="sources">All sources <span class="count-badge">${state.keys.length}</span></a></li>
         <li><a href="/latest" data-nav="latest">Latest (30d) <span class="count-badge">${latestCount}</span></a></li>
-        <li><a href="/" data-nav="home">All entries <span class="count-badge">${state.keys.length}</span></a></li>
         <li><a href="/conferences" data-nav="conferences">Conferences <span class="count-badge">${confCount}</span></a></li>
         <li><a href="/about" data-nav="about">About</a></li>
       </ul>
 
       <h3>SEBoK Topics</h3>
-      <ul class="flat-entries">${primaryList}</ul>
+      <ul class="flat-entries">${topicList}</ul>
 
       <h3>Application Domains</h3>
       <ul class="domain-entries">${domainList}</ul>
@@ -293,12 +371,13 @@
   }
 
   // ===== Comments =====
-  async function loadComments(key) {
+  async function loadComments(key, ns) {
     if (!F().comments) return;
-    const thread = document.getElementById('comments-thread-' + key);
+    const nsKey = ns || 'source';
+    const thread = document.getElementById('comments-thread-' + nsKey + '-' + key);
     if (!thread) return;
     try {
-      const res = await fetch('/api/comments?entry=' + encodeURIComponent(key), { cache: 'no-store' });
+      const res = await fetch('/api/comments?entry=' + encodeURIComponent(key) + '&ns=' + nsKey, { cache: 'no-store' });
       if (!res.ok) { thread.innerHTML = '<div class="comments-empty">Could not load comments.</div>'; return; }
       const data = await res.json();
       const comments = data.comments || [];
@@ -327,15 +406,20 @@
       ${replies ? `<div>${replies}</div>` : ''}
     </div>`;
   }
-  function renderCommentsSection(key) {
+  function renderCommentsSection(key, ns) {
     if (!F().comments) return '';
-    return `<div class="comments-section" id="comments-${key}">
+    const nsKey = ns || 'source';
+    const id = nsKey + '-' + key;
+    const blurb = nsKey === 'topic'
+      ? 'See something missing or wrong in this topic article? Suggest a fix or add a related source.'
+      : 'Have a thought, a fix, or a related link? Leave a note.';
+    return `<div class="comments-section" id="comments-${id}">
       <div class="label">Comments</div>
-      <p class="comments-blurb">Have a thought, a fix, or a related link? Leave a note.</p>
-      <div class="comments-thread" id="comments-thread-${key}">
+      <p class="comments-blurb">${blurb}</p>
+      <div class="comments-thread" id="comments-thread-${id}">
         <div class="comments-loading">Loading comments&hellip;</div>
       </div>
-      <form class="comment-form" data-entry="${key}">
+      <form class="comment-form" data-entry="${key}" data-ns="${nsKey}">
         <div class="comment-row">
           <label><span>Your name (optional)</span><input type="text" name="name" placeholder="Anonymous" maxlength="60" /></label>
           <label><span>Type</span>
@@ -355,9 +439,10 @@
       </form>
     </div>`;
   }
-  function wireCommentForm(key) {
+  function wireCommentForm(key, ns) {
     if (!F().comments) return;
-    const form = document.querySelector('.comment-form[data-entry="' + key + '"]');
+    const nsKey = ns || 'source';
+    const form = document.querySelector('.comment-form[data-entry="' + key + '"][data-ns="' + nsKey + '"]');
     if (!form || form.dataset.wired) return;
     form.dataset.wired = '1';
     form.addEventListener('submit', async (e) => {
@@ -365,7 +450,7 @@
       const status = form.querySelector('[data-status]');
       const submitBtn = form.querySelector('button[type=submit]');
       const fd = new FormData(form);
-      const body = { entry: key, type: fd.get('type') || 'note', name: fd.get('name') || '', message: fd.get('message') || '' };
+      const body = { entry: key, ns: nsKey, type: fd.get('type') || 'note', name: fd.get('name') || '', message: fd.get('message') || '' };
       if (!body.message.trim()) { status.textContent = 'Please enter a note.'; return; }
       submitBtn.disabled = true;
       status.textContent = 'Submitting...';
@@ -375,7 +460,7 @@
         form.reset();
         status.textContent = 'Posted. Thanks!';
         setTimeout(() => { status.textContent = ''; }, 3000);
-        loadComments(key);
+        loadComments(key, nsKey);
       } catch (err) {
         status.textContent = 'Network error. Try again.';
       } finally {
@@ -386,6 +471,9 @@
 
   // ===== Entry view =====
   function renderEntry(key) {
+    return renderSource(key);
+  }
+  function renderSource(key) {
     const e = state.entries[key];
     if (!e) {
       return `<div class="entry-header">
@@ -414,8 +502,18 @@
           ${e.related.map(r => {
             const re = state.entries[r];
             const title = re ? re.title : r;
-            return `<div><a href="/entry/${escapeHtml(r)}">${escapeHtml(title)}</a></div>`;
+            return `<div><a href="/source/${escapeHtml(r)}">${escapeHtml(title)}</a></div>`;
           }).join('')}
+        </div>` : '';
+
+    // "Cited in" section — every topic page that cites this source
+    const citedIn = Object.values(state.topics).filter(t =>
+      t.citationByKey && t.citationByKey[key] != null
+    );
+    const citedInHtml = citedIn.length
+      ? `<div class="cited-in-section">
+          <div class="section-title">Cited in</div>
+          ${citedIn.map(t => `<div><a href="/topic/${escapeHtml(t.key)}">${escapeHtml(t.title)}</a> <span class="cite-num">[${t.citationByKey[key]}]</span></div>`).join('')}
         </div>` : '';
 
     const linksHtml = (e.linksList && e.linksList.length)
@@ -472,13 +570,133 @@
       ${confCard}
       <div class="entry-body">${summaryHtml}${sectionHtml}${linksHtml}</div>
       ${relatedHtml}
-      ${renderCommentsSection(e.key)}
+      ${citedInHtml}
+      ${renderCommentsSection(e.key, 'source')}
       <div class="entry-actions">
         ${e.sourceUrl ? `<a class="btn btn-primary" href="${escapeHtml(e.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(e.sourceLabel || 'Read the full article →')}</a>` : ''}
         <button class="btn" onclick="window.print()">Print this entry</button>
         <a class="btn" href="entries/${e.key}.md" download>Download .md</a>
         <a class="btn" href="/">Back to home</a>
       </div>`;
+  }
+
+  // ===== Topic view (synthesized knowledge article) =====
+  function renderTopic(key) {
+    const t = state.topics[key];
+    if (!t) {
+      return `<div class="entry-header">
+        <div class="entry-kind">Not Found</div>
+        <h1 class="entry-title">Topic not found</h1>
+        <p class="entry-summary">No topic with key "${key}". <a href="/topics">See all topics</a>.</p>
+      </div>`;
+    }
+    const primary = PRIMARY();
+    const domains = DOMAINS();
+    const topicMeta = primary[t.topicKey] || domains[t.topicKey] || { name: t.topicKey, short: t.topicKey };
+
+    // Render each section as HTML using the citation-aware renderer
+    const sectionsHtml = (t.sections || []).map(s =>
+      `<h2>${escapeHtml(s.heading)}</h2>${window.topicBodyToHtml(s.content, t.citationByKey)}`
+    ).join('');
+
+    // TL;DR
+    const summaryHtml = t.summary
+      ? window.topicBodyToHtml(t.summary.split('\n\n')[0] || t.summary, t.citationByKey)
+      : '';
+
+    // References list — each cited source with its number
+    const refsHtml = t.citations.length
+      ? `<section class="topic-references">
+          <h2>References</h2>
+          <ol class="topic-refs">
+            ${t.citations.map(c => {
+              const src = state.entries[c.key];
+              const title = src ? src.title : c.key;
+              return `<li id="ref-${c.key}"><a href="/source/${c.key}">${escapeHtml(title)}</a></li>`;
+            }).join('')}
+          </ol>
+        </section>` : '';
+
+    return `<article class="topic-article">
+      <header class="topic-header">
+        <div class="topic-kind">Topic · <span class="tag tag-topic">${escapeHtml(topicMeta.name)}</span></div>
+        <h1 class="topic-title">${escapeHtml(t.title)}</h1>
+        ${t.lastCurated ? `<p class="topic-curated">Last curated <time datetime="${t.lastCurated}">${formatDate(t.lastCurated)}</time></p>` : ''}
+        ${t.maturity ? `<p class="topic-maturity">Maturity: <span class="tag tag-maturity-${escapeHtml(t.maturity)}">${escapeHtml(t.maturity)}</span></p>` : ''}
+      </header>
+      <div class="topic-body">
+        ${summaryHtml}
+        ${sectionsHtml}
+        ${refsHtml}
+      </div>
+      ${renderCommentsSection(t.key, 'topic')}
+      <div class="entry-actions">
+        <a class="btn" href="/topics">Back to topics</a>
+        <a class="btn" href="topics/${t.key}.md" download>Download .md</a>
+      </div>
+    </article>`;
+  }
+
+  // ===== Topics index =====
+  function renderTopicsIndex() {
+    const primary = PRIMARY();
+    const domains = DOMAINS();
+    const all = Object.values(state.topics);
+    if (all.length === 0) {
+      return `<div class="entry-header"><h1>Topics</h1><p class="entry-summary">No topic pages yet. They are being curated.</p></div>`;
+    }
+    // Group by primary topics first, then app domains
+    const buckets = {};
+    for (const t of all) {
+      const k = t.topicKey || 'other';
+      if (!buckets[k]) buckets[k] = [];
+      buckets[k].push(t);
+    }
+    const sortedKeys = Object.keys(buckets).sort((a, b) => {
+      const oa = primary[a] ? 0 : (domains[a] ? 1 : 2);
+      const ob = primary[b] ? 0 : (domains[b] ? 1 : 2);
+      if (oa !== ob) return oa - ob;
+      return a.localeCompare(b);
+    });
+    const sections = sortedKeys.map(k => {
+      const meta = primary[k] || domains[k] || { name: k };
+      const items = buckets[k].map(t =>
+        `<li><a href="/topic/${t.key}">${escapeHtml(t.title)}</a> <span class="topic-meta">· ${escapeHtml(t.maturity || '')}</span></li>`
+      ).join('');
+      return `<section class="topics-bucket">
+        <h2>${escapeHtml(meta.name)}</h2>
+        <ul>${items}</ul>
+      </section>`;
+    }).join('');
+    return `<div class="entry-header"><h1>Topics</h1><p class="entry-summary">Synthesized knowledge articles for each topic — basic concepts, applications, best practices, and active research frontiers, with every claim cited to a real source.</p></div>
+      <div class="topics-grid">${sections}</div>`;
+  }
+
+  // ===== Sources index =====
+  function renderSourcesIndex() {
+    const all = Object.values(state.entries);
+    if (all.length === 0) {
+      return `<div class="entry-header"><h1>Sources</h1><p class="entry-summary">No sources yet.</p></div>`;
+    }
+    // Group by source type, sort by recency (handle non-string dates safely)
+    const byType = {};
+    for (const e of all) {
+      const t = e.sourceType || e.kind || 'other';
+      if (!byType[t]) byType[t] = [];
+      byType[t].push(e);
+    }
+    for (const t of Object.keys(byType)) {
+      byType[t].sort((a, b) => String(b.published || '').localeCompare(String(a.published || '')));
+    }
+    const sections = Object.keys(byType).sort().map(t => {
+      const items = byType[t].map(e => {
+        const date = e.published ? formatDate(e.published) : (e.year || '');
+        return `<li><a href="/source/${e.key}">${escapeHtml(e.title)}</a> ${date ? `<span class="topic-meta">· ${escapeHtml(date)}</span>` : ''}</li>`;
+      }).join('');
+      return `<section class="topics-bucket"><h2>${escapeHtml(t)}</h2><ul>${items}</ul></section>`;
+    }).join('');
+    return `<div class="entry-header"><h1>Sources</h1><p class="entry-summary">Every cited source, indexed. Click any to read the original and see which topic pages cite it.</p></div>
+      <div class="topics-grid">${sections}</div>`;
   }
 
   // ===== Home =====
@@ -503,15 +721,53 @@
     });
     view.sort((a, b) => {
       if (b.signal !== a.signal) return b.signal - a.signal;
-      return (b.lastUpdated || '').localeCompare(a.lastUpdated || '');
+      return String(b.lastUpdated || '').localeCompare(String(a.lastUpdated || ''));
     });
 
+    // Topics section: synthesized knowledge articles, the primary read
+    const topicsSection = renderTopicsSection();
     // "Hottest topics" dashboard, computed independently of the feed below.
-    // Placed between the hero and the feed so the visitor sees "what's hot"
-    // before "what's recent".
+    // Placed between the topics section and the feed so the visitor sees
+    // "what's hot" before "what's recent".
     const dashboard = renderHotTopics();
     const feed = renderFeed('Latest developments', view, { isLatest: true });
-    return dashboard + feed;
+    return topicsSection + dashboard + feed;
+  }
+
+  // Featured topic pages — shown above the hot-topics dashboard.
+  // If no topics exist, the section is omitted.
+  function renderTopicsSection() {
+    const topics = Object.values(state.topics);
+    if (topics.length === 0) return '';
+    const primary = PRIMARY();
+    const domains = DOMAINS();
+    // Sort by last_curated desc, take up to 6
+    const recent = topics
+      .filter(t => t.lastCurated)
+      .sort((a, b) => String(b.lastCurated || '').localeCompare(String(a.lastCurated || '')))
+      .slice(0, 6);
+    const featured = recent.length ? recent : topics.slice(0, 6);
+    const cards = featured.map(t => {
+      const meta = primary[t.topicKey] || domains[t.topicKey] || { name: t.topicKey, short: t.topicKey };
+      const summary = (t.summary || '').split('\n')[0] || '';
+      return `<a class="topic-card" href="/topic/${t.key}">
+        <div class="topic-card-kind">Topic · ${escapeHtml(meta.name)}</div>
+        <div class="topic-card-title">${escapeHtml(t.title)}</div>
+        <div class="topic-card-summary">${escapeHtml(summary.slice(0, 200))}</div>
+        <div class="topic-card-meta">
+          ${t.citations.length ? `<span>${t.citations.length} ${t.citations.length === 1 ? 'source' : 'sources'}</span>` : ''}
+          ${t.lastCurated ? `<span>· ${formatDate(t.lastCurated)}</span>` : ''}
+        </div>
+      </a>`;
+    }).join('');
+    return `<section class="topics-featured" aria-label="Synthesized topic pages">
+      <div class="hot-header">
+        <h2 class="hot-title">Knowledge base</h2>
+        <p class="hot-subtitle">Synthesized articles for each topic — basics, applications, best practices, and research frontiers, with every claim cited to a real source.</p>
+      </div>
+      <div class="topic-cards">${cards}</div>
+      <div class="hot-footer"><a href="/topics" data-nav="topics">See all topics →</a></div>
+    </section>`;
   }
 
   // Build the "Hottest topics" dashboard panel.
@@ -621,7 +877,7 @@
     const domainTags = (e.domains || []).slice(0, 2).map(d =>
       `<span class="tag tag-domain">${escapeHtml((domains[d] || {name:d}).name)}</span>`
     ).join('');
-    return `<a class="feed-card" href="/entry/${e.key}">
+    return `<a class="feed-card" href="/source/${e.key}">
       <div>
         <div class="feed-title">${escapeHtml(e.title)}</div>
         <div class="feed-summary">${escapeHtml(summary.slice(0, 240))}</div>
@@ -676,7 +932,7 @@
             ${papers.map(p => {
               const track = TRACKS()[p.track] || { name: p.track };
               return `<li>
-                <a href="/entry/${p.key}">${escapeHtml(p.title)}</a>
+                <a href="/source/${p.key}">${escapeHtml(p.title)}</a>
                 <span class="conf-paper-meta">
                   ${p.authors ? `· ${escapeHtml(p.authors)}` : ''}
                   · <span class="tag tag-topic">${escapeHtml(track.name)}</span>
@@ -735,14 +991,18 @@
       const data = await res.json();
       const comments = data.comments || [];
       if (comments.length === 0) { thread.innerHTML = '<div class="comments-empty">No comments yet.</div>'; return; }
-      thread.innerHTML = comments.map(c => `${renderComment(c)}
-        <div class="admin-actions" data-id="${c.id}" data-entry="${escapeHtml(c.entry || '')}">
+      thread.innerHTML = comments.map(c => {
+        const nsBadge = c.ns === 'topic' ? '<span class="tag tag-topic">topic</span>' : '<span class="tag">source</span>';
+        return `${renderComment(c)}
+        <div class="admin-actions" data-id="${c.id}" data-entry="${escapeHtml(c.entry || '')}" data-ns="${escapeHtml(c.ns || 'source')}">
+          <span class="ns-badge">${nsBadge}</span>
           <button class="admin-btn" data-action="ack">👀 Ack</button>
           <button class="admin-btn" data-action="acted">✅ Acted</button>
           <button class="admin-btn" data-action="reply">💬 Reply</button>
           <button class="admin-btn" data-action="new">○ New</button>
           <button class="admin-btn danger" data-action="delete">🗑</button>
-        </div>`).join('');
+        </div>`;
+      }).join('');
       wireAdminActions();
     } catch (err) {
       thread.innerHTML = '<div class="comments-empty">Could not load comments (network error).</div>';
@@ -750,7 +1010,7 @@
   }
   function wireAdminActions() {
     document.querySelectorAll('.admin-actions').forEach(bar => {
-      const id = bar.dataset.id, entry = bar.dataset.entry;
+      const id = bar.dataset.id, entry = bar.dataset.entry, ns = bar.dataset.ns || 'source';
       bar.addEventListener('click', async (e) => {
         const btn = e.target.closest('button[data-action]');
         if (!btn) return;
@@ -759,21 +1019,21 @@
         try {
           if (action === 'delete') {
             if (!confirm('Delete this comment?')) { btn.disabled = false; return; }
-            const res = await fetch(`/api/comments?id=${encodeURIComponent(id)}&key=${encodeURIComponent(entry)}`, { method: 'DELETE' });
+            const res = await fetch(`/api/comments?id=${encodeURIComponent(id)}&key=${encodeURIComponent(entry)}&ns=${encodeURIComponent(ns)}`, { method: 'DELETE' });
             if (!res.ok) { alert('Delete failed: ' + res.status); btn.disabled = false; return; }
             loadAllComments(); return;
           }
           if (action === 'reply') {
             const msg = prompt('System reply (visitors will see this):', '👀');
             if (!msg) { btn.disabled = false; return; }
-            const res = await fetch(`/api/comments?id=${encodeURIComponent(id)}&key=${encodeURIComponent(entry)}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ system_reply: { kind: 'reply', message: msg } }) });
+            const res = await fetch(`/api/comments?id=${encodeURIComponent(id)}&key=${encodeURIComponent(entry)}&ns=${encodeURIComponent(ns)}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ system_reply: { kind: 'reply', message: msg } }) });
             if (!res.ok) { alert('Reply failed: ' + res.status); btn.disabled = false; return; }
             loadAllComments(); return;
           }
           const replyMsg = action === 'ack' ? '👀 Looking into it' : (action === 'acted' ? '✅ Done' : null);
           const body = { status: action };
           if (replyMsg) body.system_reply = { kind: action, message: replyMsg };
-          const res = await fetch(`/api/comments?id=${encodeURIComponent(id)}&key=${encodeURIComponent(entry)}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+          const res = await fetch(`/api/comments?id=${encodeURIComponent(id)}&key=${encodeURIComponent(entry)}&ns=${encodeURIComponent(ns)}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
           if (!res.ok) { alert('Update failed: ' + res.status); btn.disabled = false; return; }
           loadAllComments();
         } catch (err) { alert('Network error: ' + err.message); btn.disabled = false; }
@@ -790,8 +1050,18 @@
     if (path === '/conferences') return { route: 'conferences' };
     if (path === '/admin') return { route: 'admin' };
     if (path === '/quotes') return { route: 'quotes' };
-    const m = path.match(/^\/entry\/([\w-]+)$/);
-    if (m) return { route: 'entry', key: m[1] };
+    if (path === '/topics') return { route: 'topics' };
+    if (path === '/sources') return { route: 'sources' };
+    const tm = path.match(/^\/topic\/([\w-]+)$/);
+    if (tm) return { route: 'topic', key: tm[1] };
+    const em = path.match(/^\/source\/([\w-]+)$/);
+    if (em) return { route: 'source', key: em[1] };
+    // legacy /entry/<key> — redirect to /source/<key>
+    const em2 = path.match(/^\/entry\/([\w-]+)$/);
+    if (em2) {
+      history.replaceState(null, '', '/source/' + em2[1]);
+      return { route: 'source', key: em2[1] };
+    }
     return { route: 'home' };
   }
   function getQuery() {
@@ -854,12 +1124,26 @@
     const main = document.getElementById('main');
     const site = SITE();
 
-    if (route === 'entry' && key) {
+    if (route === 'source' && key) {
       const entry = state.entries[key];
-      main.innerHTML = renderEntry(key);
+      main.innerHTML = renderSource(key);
       renderSidebar(key);
-      if (F().comments) { loadComments(key); wireCommentForm(key); }
-      setMeta(entry ? { title: entry.title, description: (entry.summary || '').split('\n')[0] || entry.title, url: '/entry/' + key, type: 'article', lastUpdated: entry.lastUpdated } : { title: 'Not Found', description: '', url: '/entry/' + key });
+      if (F().comments) { loadComments(key, 'source'); wireCommentForm(key, 'source'); }
+      setMeta(entry ? { title: entry.title, description: (entry.summary || '').split('\n')[0] || entry.title, url: '/source/' + key, type: 'article', lastUpdated: entry.lastUpdated } : { title: 'Not Found', description: '', url: '/source/' + key });
+    } else if (route === 'topic' && key) {
+      const topic = state.topics[key];
+      main.innerHTML = renderTopic(key);
+      renderSidebar(key);
+      if (F().comments) { loadComments(key, 'topic'); wireCommentForm(key, 'topic'); }
+      setMeta(topic ? { title: topic.title, description: (topic.summary || '').split('\n')[0] || topic.title, url: '/topic/' + key, type: 'article', lastUpdated: topic.lastCurated } : { title: 'Not Found', description: '', url: '/topic/' + key });
+    } else if (route === 'topics') {
+      main.innerHTML = renderTopicsIndex();
+      renderSidebar(null);
+      setMeta({ title: 'Topics', description: 'Synthesized knowledge articles for each systems engineering topic.', url: '/topics' });
+    } else if (route === 'sources') {
+      main.innerHTML = renderSourcesIndex();
+      renderSidebar(null);
+      setMeta({ title: 'Sources', description: 'Every cited source, indexed.', url: '/sources' });
     } else if (route === 'latest') {
       main.innerHTML = renderLatest();
       renderSidebar(null);
@@ -872,14 +1156,14 @@
     } else if (route === 'about') {
       main.innerHTML = renderAbout();
       renderSidebar(null);
-      setMeta({ title: 'About', description: 'About Tech Scan.', url: '/about' });
+      setMeta({ title: 'About', description: 'About SE Intelligence.', url: '/about' });
     } else if (route === 'admin') {
       main.innerHTML = F().admin ? renderAdmin() : '<p>Admin disabled.</p>';
       renderSidebar(null);
       setMeta({ title: 'Admin', description: 'Maintainer view.', url: '/admin' });
       if (F().admin) loadAllComments();
     } else if (route === 'quotes') {
-      main.innerHTML = '<h1>Quotes</h1><p>Quotes are disabled in Tech Scan.</p>';
+      main.innerHTML = '<h1>Quotes</h1><p>Quotes are disabled in SE Intelligence.</p>';
       renderSidebar(null);
     } else {
       // home
@@ -916,7 +1200,7 @@
     if (!a) return;
     const href = a.getAttribute('href');
     if (!href || href.startsWith('http') || href.startsWith('mailto:') || a.target) return;
-    if (!/^(\/|about|latest|conferences|admin|quotes|entry\/|index\.html|\?)/.test(href)) return;
+    if (!/^(\/|about|latest|conferences|admin|quotes|topics|sources|topic\/|source\/|entry\/|index\.html|\?)/.test(href)) return;
     e.preventDefault();
     let path = href;
     // Separate query string if any

@@ -1,4 +1,4 @@
-// Markdown parser tailored for Tech Scan — an INCOSE-aligned SE scanning log.
+// Markdown parser tailored for SE Intelligence — an INCOSE-aligned knowledge base.
 //
 // Reads a markdown file and returns a structured entry. The taxonomy and
 // schema live in config.js; this file just does the mechanical work of
@@ -154,7 +154,8 @@ function parseMarkdown(filename, raw) {
       if (curHeading !== null) {
         parts.push({ heading: curHeading, content: curContent.join('\n').trim() });
       } else if (curContent.length) {
-        parts.push({ heading: '__summary__', content: curContent.join('\n').trim() });
+        const joined = curContent.join('\n').trim();
+        if (joined) parts.push({ heading: '__summary__', content: joined });
       }
       curHeading = line.slice(3).trim();
       curContent = [];
@@ -165,7 +166,8 @@ function parseMarkdown(filename, raw) {
   if (curHeading !== null) {
     parts.push({ heading: curHeading, content: curContent.join('\n').trim() });
   } else if (curContent.length) {
-    parts.push({ heading: '__summary__', content: curContent.join('\n').trim() });
+    const joined = curContent.join('\n').trim();
+    if (joined) parts.push({ heading: '__summary__', content: joined });
   }
 
   // Second pass: classify each part.
@@ -304,11 +306,230 @@ function mdToHtml(md) {
   return out.join('\n');
 }
 
+// ---- Topic page parsing (synthesized knowledge articles) ----
+//
+// Topic pages are markdown files in `topics/<key>.md` with their own
+// frontmatter schema (title, topic_key, level, last_curated, maturity)
+// and body content that uses inline citations in the form:
+//
+//   The MagicGrid framework [system-def-mbse-patterns-2025] is ...
+//
+// On first appearance, each [key] gets a sequential number [1], [2], ...
+// and is added to the references list. Subsequent uses of the same key
+// reuse the same number. The renderer auto-appends a "References"
+// section at the bottom with one entry per cited key.
+
+function parseTopicPage(filename, raw) {
+  let lines = raw.split('\n');
+  let frontmatter = {};
+  if (lines[0] && lines[0].trim() === '---') {
+    const end = lines.findIndex((l, i) => i > 0 && l.trim() === '---');
+    if (end > 0) {
+      const fm = lines.slice(1, end).join('\n');
+      for (const line of fm.split('\n')) {
+        const mm = line.match(/^([a-z_]+):\s*(.*?)\s*$/i);
+        if (mm) frontmatter[mm[1].toLowerCase()] = mm[2];
+      }
+      lines = lines.slice(end + 1);
+    }
+  }
+  const key = filename.replace('.md', '');
+  const isConference = key.startsWith('conf-');  // not used for topics, but flag anyway
+
+  const entry = {
+    filename,
+    key,
+    kind: 'Topic',
+    isTopic: true,
+    isConference: false,
+    topic: frontmatter.topic_key || key,
+    topicKey: frontmatter.topic_key || key,
+    level: parseInt(frontmatter.level, 10) || 0,
+    lastCurated: frontmatter.last_curated || frontmatter.date || '',
+    maturity: frontmatter.maturity || 'established',
+    title: '',
+    lastUpdated: frontmatter.last_curated || frontmatter.date || '',
+    sections: [],
+    raw: raw,
+    summary: '',
+    // Populated by extractInlineCitations
+    citations: [],         // ordered list of { key, number, label }
+    citationByKey: {},     // key → number
+  };
+
+  // First pass: extract title, split into sections
+  let curHeading = null;
+  let curContent = [];
+  const parts = [];
+  for (const line of lines) {
+    if (line.startsWith('# ') && !entry.title) {
+      entry.title = line.slice(2).trim();
+      continue;
+    }
+    if (line.startsWith('## ')) {
+      if (curHeading !== null) {
+        parts.push({ heading: curHeading, content: curContent.join('\n').trim() });
+      } else if (curContent.length) {
+        const joined = curContent.join('\n').trim();
+        if (joined) parts.push({ heading: '__summary__', content: joined });
+      }
+      curHeading = line.slice(3).trim();
+      curContent = [];
+      continue;
+    }
+    curContent.push(line);
+  }
+  if (curHeading !== null) {
+    parts.push({ heading: curHeading, content: curContent.join('\n').trim() });
+  } else if (curContent.length) {
+    const joined = curContent.join('\n').trim();
+    if (joined) parts.push({ heading: '__summary__', content: joined });
+  }
+
+  // Classify
+  for (const p of parts) {
+    if (/^__summary__$|^summary$|^tl;dr$/i.test(p.heading)) {
+      entry.summary = p.content;
+    } else if (/^references?$/i.test(p.heading)) {
+      // Auto-generated references replace this — drop it
+      continue;
+    } else {
+      entry.sections.push({ heading: p.heading, content: p.content });
+    }
+  }
+
+  // Extract inline citations across the summary + all section bodies.
+  // We mutate section.content in place to replace [<key>] with [n] so
+  // topicBodyToHtml can render them as clickable superscript links.
+  const allText = [
+    entry.summary,
+    ...entry.sections.map(s => s.content),
+  ].filter(Boolean).join('\n\n');
+  const cit = extractInlineCitations(allText);
+  entry.citations = cit.citations;
+  entry.citationByKey = cit.citationByKey;
+  // The replaced text was joined across sections; re-apply per-section.
+  // Simpler approach: re-run the citation regex on each section's body
+  // and the summary, with the same number assignment order. This is
+  // deterministic because the join order matches the order we built
+  // the parts in above.
+  let cursor = 0;
+  function replaceInText(text) {
+    if (!text) return '';
+    return text.replace(/\[([a-z0-9][a-z0-9-]*)\]/g, (m, key) => {
+      if (entry.citationByKey[key] != null) {
+        return '[' + entry.citationByKey[key] + ']';
+      }
+      return m;
+    });
+  }
+  if (entry.summary) {
+    entry.summary = replaceInText(entry.summary);
+  }
+  for (const s of entry.sections) {
+    s.content = replaceInText(s.content);
+  }
+
+  return entry;
+}
+
+// Walk a body of text, find inline citations in the form [<key>],
+// assign each a sequential number on first appearance, return the
+// ordered list of references and a key→number lookup.
+function extractInlineCitations(text) {
+  const citations = [];
+  const citationByKey = {};
+  // Re-number the [key] tokens in place
+  const replaced = text.replace(/\[([a-z0-9][a-z0-9-]*)\]/g, (m, key) => {
+    if (citationByKey[key] == null) {
+      const num = citations.length + 1;
+      citationByKey[key] = num;
+      citations.push({ key, number: num, label: key });
+    }
+    return '[' + citationByKey[key] + ']';
+  });
+  return { citations, citationByKey, text: replaced };
+}
+
+// Render a topic page body to HTML. Like mdToHtml but:
+//   - doesn't escape the [n] numbers (we render them as sup links)
+//   - collects citations so the renderer can show a "References" list
+//   - assumes the body has already had its [key] replaced with [n]
+function topicBodyToHtml(text, citationByKey) {
+  if (!text) return '';
+  const lines = text.split('\n');
+  const out = [];
+  let inList = false;
+  let inOrdered = false;
+  let paraBuf = [];
+
+  function flushPara() {
+    if (paraBuf.length) {
+      const t = paraBuf.join(' ').trim();
+      if (t) out.push(`<p>${inlineTopic(t, citationByKey)}</p>`);
+      paraBuf = [];
+    }
+  }
+  function closeList() {
+    if (inList) { out.push('</ul>'); inList = false; }
+    if (inOrdered) { out.push('</ol>'); inOrdered = false; }
+  }
+  function inlineTopic(s, citByKey) {
+    s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // External links [text](url)
+    s = s.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    // Inline citation [n] — link to the cited source's /source/<key> page
+    s = s.replace(/\[(\d+)\]/g, (m, n) => {
+      const key = Object.keys(citByKey || {}).find(k => citByKey[k] === parseInt(n, 10));
+      if (!key) return m;
+      return `<sup class="cite"><a href="/source/${key}">[${n}]</a></sup>`;
+    });
+    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/(^|\s)\*([^*\n]+)\*/g, '$1<em>$2</em>');
+    s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+    return s;
+  }
+  for (const raw of lines) {
+    const line = raw;
+    if (!line.trim()) { flushPara(); closeList(); continue; }
+    if (line.startsWith('### ')) {
+      flushPara(); closeList();
+      out.push(`<h3>${inlineTopic(line.slice(4).trim(), citationByKey)}</h3>`);
+      continue;
+    }
+    if (line.startsWith('## ')) {
+      flushPara(); closeList();
+      out.push(`<h2>${inlineTopic(line.slice(3).trim(), citationByKey)}</h2>`);
+      continue;
+    }
+    if (line.startsWith('> ')) {
+      flushPara(); closeList();
+      out.push(`<blockquote>${inlineTopic(line.slice(2).trim(), citationByKey)}</blockquote>`);
+      continue;
+    }
+    if (/^[-*]\s+/.test(line)) {
+      flushPara();
+      if (!inList) { out.push('<ul>'); inList = true; }
+      out.push(`<li>${inlineTopic(line.replace(/^[-*]\s+/, '').trim(), citationByKey)}</li>`);
+      continue;
+    } else {
+      if (inList) { out.push('</ul>'); inList = false; }
+    }
+    paraBuf.push(line);
+  }
+  flushPara();
+  closeList();
+  return out.join('\n');
+}
+
 // Export for tests / node usage
 if (typeof module !== 'undefined') {
   module.exports = {
     parseMarkdown,
+    parseTopicPage,
     mdToHtml,
+    topicBodyToHtml,
+    extractInlineCitations,
     inferTopicFromKey,
     parseDomainsField,
     PRIMARY_TOPIC_KEYS,
@@ -319,5 +540,8 @@ if (typeof module !== 'undefined') {
 }
 if (typeof window !== 'undefined') {
   window.parseMarkdown = parseMarkdown;
+  window.parseTopicPage = parseTopicPage;
   window.mdToHtml = mdToHtml;
+  window.topicBodyToHtml = topicBodyToHtml;
+  window.extractInlineCitations = extractInlineCitations;
 }

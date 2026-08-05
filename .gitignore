@@ -4,6 +4,7 @@ package-lock.json
 
 # Tooling cache
 .cache/
+.wrangler/
 
 # OS / editor
 .DS_Store
@@ -17,6 +18,7 @@ test-results/
 *.log
 /tmp/
 docs/preview/
+docs/preview-v2/
 
 # Build outputs (none for this site, but future-proof)
 dist/
