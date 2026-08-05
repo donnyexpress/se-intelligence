@@ -128,7 +128,7 @@ node scripts/test-perf.js          # T-07: 5 assertions
 node scripts/test.js http://localhost:8788  # T-08: 31 assertions
 ```
 
-**Total**: ~410 assertions across 7 test scripts + 1 e2e suite. All
+**Total**: ~600+ assertions across 7 test scripts + 1 e2e suite. All
 should pass before commit.
 
 ## Adding a source
@@ -331,7 +331,7 @@ wrangler pages deploy . --project-name=se-intelligence
 - Full-text search ranking (current `includes` is fine for v1.1)
 - i18n
 - Dark/light toggle (Option 4 is dark-only)
-- The other 18 topic pages (currently 3 of 21: system-def, reliab, dist-sys)
+- The other 18 topic pages (all 21 now shipped in v1.2: 9 SEBoK primary + 12 application domains)
 - The 7 proposed 2025 source entries (separate commit)
 
 ## License

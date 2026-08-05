@@ -22,6 +22,14 @@ const ENTRY_KEYS = [
   'dist-sys-jepsen-etcd-3-5',
   'observ-ebpf-practical-survey-2026',
   'ml-sys-inference-cost-curves-2026',
+  // INCOSE chapter papers — 2024-2025
+  'se-esrd-framework-hodges-2024',
+  'mission-engineering-uaf-gagliardi-2024',
+  'safeguarding-genai-prompt-engineering-giang-2025',
+  'se-maturity-genai-madachy-2025',
+  'federated-learning-villanueva-2025',
+  'dieselgate-smoke-and-mirrors-aftel-2025',
+  'human-factors-rapid-prototyping-zeman-wood-2025',
   // Conference proceedings — IS 2025 (Ottawa) papers
   'conf-is2025-jaxa-llm-mbse',
   'conf-is2025-pavalkis-mbde-robotic-arm',

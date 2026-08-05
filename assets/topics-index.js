@@ -9,7 +9,26 @@
 
 window.TOPIC_KEYS = [
   // SEBoK primary topics
+  'sys-fund',
+  'lifecycle',
+  'concept-def',
   'system-def',
+  'realization',
+  'deploy-use',
+  'eng-domains',
+  'management',
+  'sos',
+  // Application domains
   'reliab',
   'dist-sys',
+  'observ',
+  'platform',
+  'incid',
+  'ml-sys',
+  'sec',
+  'perf',
+  'mission',
+  'energy',
+  'health',
+  'auto',
 ];
