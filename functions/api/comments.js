@@ -129,12 +129,37 @@ export async function onRequest(context) {
     if (entry) {
       // Get comments for one item in a namespace
       const listRaw = await env.COMMENTS_KV.get(`list:${ns}:${entry}`);
-      if (!listRaw) return json({ entry, ns, comments: [] });
-      const ids = JSON.parse(listRaw);
-      const results = await Promise.all(
-        ids.map(id => env.COMMENTS_KV.get(`comment:${ns}:${entry}:${id}`))
-      );
-      const comments = results.filter(Boolean).map(r => JSON.parse(r));
+      let ids = listRaw ? JSON.parse(listRaw) : [];
+
+      // Back-compat: pre-v1.1 comments were stored under
+      // `list:<entry>` and `comment:<entry>:<id>` (no namespace prefix).
+      // If we find any, treat them as 'source' namespace and migrate on read.
+      if (ns === 'source') {
+        const legacyList = await env.COMMENTS_KV.get(`list:${entry}`);
+        if (legacyList) {
+          const legacyIds = JSON.parse(legacyList);
+          // Read each legacy comment; if it has no `ns` field, tag it as 'source'
+          const legacyComments = await Promise.all(
+            legacyIds.map(id => env.COMMENTS_KV.get(`comment:${entry}:${id}`))
+          );
+          for (const c of legacyComments) {
+            if (!c) continue;
+            const parsed = JSON.parse(c);
+            if (!parsed.ns) parsed.ns = 'source';
+            ids.push({ _legacy: true, comment: parsed });
+          }
+        }
+      }
+
+      if (ids.length === 0) return json({ entry, ns, comments: [] });
+
+      // Materialize all comments (both new and legacy)
+      const materialized = await Promise.all(ids.map(async (idInfo) => {
+        if (typeof idInfo === 'object' && idInfo._legacy) return idInfo.comment;
+        const raw = await env.COMMENTS_KV.get(`comment:${ns}:${entry}:${idInfo}`);
+        return raw ? JSON.parse(raw) : null;
+      }));
+      const comments = materialized.filter(Boolean);
       return json({ entry, ns, comments });
     }
 
@@ -143,7 +168,12 @@ export async function onRequest(context) {
     const comments = [];
     for (const key of all.keys) {
       const raw = await env.COMMENTS_KV.get(key.name);
-      if (raw) comments.push(JSON.parse(raw));
+      if (!raw) continue;
+      const parsed = JSON.parse(raw);
+      // Back-compat: legacy comment keys are `comment:<entry>:<id>` (no ns).
+      // The `ns` field on the value is also missing. Default both to 'source'.
+      if (!parsed.ns) parsed.ns = 'source';
+      comments.push(parsed);
     }
     comments.sort((a, b) => b.timestamp - a.timestamp);
     return json({ comments, count: comments.length });
@@ -158,10 +188,17 @@ export async function onRequest(context) {
     const entry = url.searchParams.get('key');
     const ns = resolveNs(url.searchParams.get('ns'));
     if (!id || !entry) return bad('id and key required');
-    const commentKey = `comment:${ns}:${entry}:${id}`;
-    const raw = await env.COMMENTS_KV.get(commentKey);
+    // Try the new (namespaced) key first, then fall back to the legacy key
+    let commentKey = `comment:${ns}:${entry}:${id}`;
+    let raw = await env.COMMENTS_KV.get(commentKey);
+    if (!raw) {
+      const legacyKey = `comment:${entry}:${id}`;
+      raw = await env.COMMENTS_KV.get(legacyKey);
+      if (raw) commentKey = legacyKey;
+    }
     if (!raw) return bad('comment not found', 404);
     const comment = JSON.parse(raw);
+    if (!comment.ns) comment.ns = 'source';
     let body = {};
     try { body = await request.json(); } catch (e) { body = {}; }
 
@@ -195,12 +232,26 @@ export async function onRequest(context) {
     const entry = url.searchParams.get('key');
     const ns = resolveNs(url.searchParams.get('ns'));
     if (!id || !entry) return bad('id and key required');
-    await env.COMMENTS_KV.delete(`comment:${ns}:${entry}:${id}`);
+    // Try the new (namespaced) key first, then the legacy key
+    let listKey = `list:${ns}:${entry}`;
+    let commentKey = `comment:${ns}:${entry}:${id}`;
+    let exists = await env.COMMENTS_KV.get(commentKey);
+    if (!exists) {
+      const legacyCommentKey = `comment:${entry}:${id}`;
+      const legacyListKey = `list:${entry}`;
+      exists = await env.COMMENTS_KV.get(legacyCommentKey);
+      if (exists) {
+        commentKey = legacyCommentKey;
+        listKey = legacyListKey;
+      }
+    }
+    if (!exists) return bad('comment not found', 404);
+    await env.COMMENTS_KV.delete(commentKey);
     // Remove from list
-    const listRaw = await env.COMMENTS_KV.get(`list:${ns}:${entry}`);
+    const listRaw = await env.COMMENTS_KV.get(listKey);
     if (listRaw) {
       const list = JSON.parse(listRaw).filter(x => x !== id);
-      await env.COMMENTS_KV.put(`list:${ns}:${entry}`, JSON.stringify(list));
+      await env.COMMENTS_KV.put(listKey, JSON.stringify(list));
     }
     return json({ ok: true, deleted: id });
   }
