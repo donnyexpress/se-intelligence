@@ -262,8 +262,9 @@ function mdToHtml(md) {
       const cleanKey = k.split('/').pop().replace('.md', '').trim();
       return `<a href="#entry/${cleanKey}">${cleanKey.replace(/^(fw|case|conf)-/, '').replace(/-/g, ' ')}</a>`;
     });
-    // External links [text](url)
+    // Links [text](url) — external (https?://) and site-relative (/path/...).
     s = s.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    s = s.replace(/\[([^\]]+)\]\((\/[^)]+)\)/g, '<a href="$2" data-nav="topic">$1</a>');
     s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     s = s.replace(/(^|\s)\*([^*\n]+)\*/g, '$1<em>$2</em>');
     s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -482,8 +483,10 @@ function topicBodyToHtml(text, citationByKey) {
   }
   function inlineTopic(s, citByKey) {
     s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    // External links [text](url)
+    // Links [text](url) — external (https?://) and site-relative (/path/...).
+    // Site-relative links stay in-tab; external links open in a new tab.
     s = s.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    s = s.replace(/\[([^\]]+)\]\((\/[^)]+)\)/g, '<a href="$2" data-nav="topic">$1</a>');
     // Inline citation [n] — link to the cited source's /source/<key> page
     s = s.replace(/\[(\d+)\]/g, (m, n) => {
       const key = Object.keys(citByKey || {}).find(k => citByKey[k] === parseInt(n, 10));

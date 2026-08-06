@@ -151,6 +151,35 @@ check('renders [2] as <sup> link to /source/bar',
 check('renders <p> wrapper',
   html.includes('<p>') && html.includes('</p>'));
 
+console.log('\n--- topicBodyToHtml: link rendering ---\n');
+
+// Site-relative links [text](/path/...) must be rendered as anchors.
+// This regressed when the regex only matched https?://, dropping every
+// site-relative link silently.
+const relLinkMd = '- [System Safety](/topic/specialty-safety) — hazard analysis\n- [Reliability](/topic/specialty-reliability) — MTBF';
+const relLinkHtml = topicBodyToHtml(relLinkMd, {});
+check('renders site-relative [text](/path/...) as <a> with same href',
+  relLinkHtml.includes('<a href="/topic/specialty-safety" data-nav="topic">System Safety</a>'));
+check('renders multiple relative links in a list',
+  relLinkHtml.includes('Reliability</a>') && relLinkHtml.includes('<li>'));
+check('preserves the trailing em-dash text after the link',
+  relLinkHtml.includes('hazard analysis') && relLinkHtml.includes('MTBF'));
+
+// External https links still open in a new tab.
+const extLinkMd = 'See [MIT site](https://mit.edu).';
+const extLinkHtml = topicBodyToHtml(extLinkMd, {});
+check('external [text](https://...) still gets target="_blank"',
+  extLinkHtml.includes('<a href="https://mit.edu" target="_blank"') &&
+  extLinkHtml.includes('MIT site</a>'));
+
+// Bare bracket reference to a citation must still render as <sup>.
+const citeLinkMd = 'See source [1] and [2] for details.';
+const citeLinkHtml = topicBodyToHtml(citeLinkMd, {'foo': 1, 'bar': 2});
+check('citation [1] inside prose still becomes <sup> (not a regular link)',
+  citeLinkHtml.includes('<sup class="cite"><a href="/source/foo">[1]</a></sup>'));
+check('citation [2] inside prose still becomes <sup>',
+  citeLinkHtml.includes('<sup class="cite"><a href="/source/bar">[2]</a></sup>'));
+
 console.log('\n--- extractInlineCitations: standalone ---\n');
 
 const c1 = extractInlineCitations('See [a] and [b] and [a] again.');
