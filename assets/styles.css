@@ -571,8 +571,8 @@ h1 {
   margin: 24px 0 8px;
 }
 .entry-body p { margin: 0 0 14px; }
-.entry-body ul, .entry-body ol { padding-left: 22px; }
-.entry-body li { margin: 4px 0; }
+.entry-body ul, .entry-body ol { margin: 0 0 16px; padding-left: 24px; }
+.entry-body li { margin: 8px 0; line-height: 1.55; }
 .entry-body code {
   background: var(--glass-bold);
   padding: 1px 6px;
@@ -891,20 +891,20 @@ h1 {
 .topic-body h2 { font-size: 22px; margin: 32px 0 12px; color: var(--ink); }
 .topic-body h3 { font-size: 17px; margin: 20px 0 8px; color: var(--ink); }
 .topic-body p { margin: 0 0 14px; }
-.topic-body ul, .topic-body ol { margin: 0 0 14px 20px; }
-.topic-body li { margin: 4px 0; }
+.topic-body ul, .topic-body ol { margin: 0 0 16px 20px; padding-left: 24px; }
+.topic-body li { margin: 8px 0; line-height: 1.55; }
 .topic-body blockquote { border-left: 3px solid var(--accent); padding: 6px 16px; margin: 14px 0; color: var(--ink-soft); background: var(--accent-bg); border-radius: 0 8px 8px 0; }
 
 sup.cite { display: inline-block; margin-left: 1px; }
-sup.cite a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 11px; vertical-align: super; }
-sup.cite a:hover { text-decoration: underline; }
+sup.cite a { color: var(--accent-2); text-decoration: none; font-weight: 600; font-size: 11px; vertical-align: super; padding: 0 2px; }
+sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
 
 .topic-references { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--glass-border); }
 .topic-references h2 { font-size: 20px; margin-bottom: 12px; }
-.topic-references ol { padding-left: 24px; }
-.topic-references li { margin: 4px 0; font-size: 14px; }
-.topic-references a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--accent); }
-.topic-references a:hover { color: var(--accent); }
+.topic-references ol { padding-left: 28px; }
+.topic-references li { margin: 10px 0; font-size: 14px; line-height: 1.5; }
+.topic-references a { color: var(--link); text-decoration: none; border-bottom: 1px solid rgba(196, 181, 253, 0.4); }
+.topic-references a:hover { color: var(--link-hover); border-bottom-color: var(--link-hover); }
 
 .tag-maturity-established { background: rgba(74,222,128,0.12); color: var(--triage-watch); border-color: rgba(74,222,128,0.35); }
 .tag-maturity-maturing     { background: rgba(96,165,250,0.12); color: var(--triage-read); border-color: rgba(96,165,250,0.35); }
