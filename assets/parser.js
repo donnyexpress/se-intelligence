@@ -518,11 +518,21 @@ function topicBodyToHtml(text, citationByKey) {
     }
     if (/^[-*]\s+/.test(line)) {
       flushPara();
+      if (inOrdered) { out.push('</ol>'); inOrdered = false; }
       if (!inList) { out.push('<ul>'); inList = true; }
       out.push(`<li>${inlineTopic(line.replace(/^[-*]\s+/, '').trim(), citationByKey)}</li>`);
       continue;
     } else {
       if (inList) { out.push('</ul>'); inList = false; }
+    }
+    if (/^\d+\.\s+/.test(line)) {
+      flushPara();
+      if (inList) { out.push('</ul>'); inList = false; }
+      if (!inOrdered) { out.push('<ol>'); inOrdered = true; }
+      out.push(`<li>${inlineTopic(line.replace(/^\d+\.\s+/, '').trim(), citationByKey)}</li>`);
+      continue;
+    } else {
+      if (inOrdered) { out.push('</ol>'); inOrdered = false; }
     }
     paraBuf.push(line);
   }

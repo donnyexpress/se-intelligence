@@ -180,6 +180,32 @@ check('citation [1] inside prose still becomes <sup> (not a regular link)',
 check('citation [2] inside prose still becomes <sup>',
   citeLinkHtml.includes('<sup class="cite"><a href="/source/bar">[2]</a></sup>'));
 
+console.log('\n--- topicBodyToHtml: ordered (numbered) list ---\n');
+
+// Numbered lists in topic bodies were being collapsed into a single <p>
+// because topicBodyToHtml() had no <ol> branch. This regressed as far back
+// as v1.0 — every "Patterns that work" / "Best practices" section in the
+// corpus was rendering as a wall of text on mobile.
+const olMd = 'Five steps:\n\n1. **First.** Do this first.\n2. **Second.** Do this second.\n3. **Third.** Do this third.';
+const olHtml = topicBodyToHtml(olMd, {});
+check('numbered list renders as <ol>, not <p>',
+  olHtml.includes('<ol>') && olHtml.includes('</ol>') &&
+  !olHtml.includes('<p>1.'));
+check('numbered list has 3 <li> items',
+  (olHtml.match(/<li>/g) || []).length === 3);
+check('numbered list preserves bold text in items',
+  olHtml.includes('<li><strong>First.</strong>'));
+
+// Mix of bullet and numbered lists.
+const mixedMd = '- A bullet\n- Another bullet\n\n1. A number\n2. Another number';
+const mixedHtml = topicBodyToHtml(mixedMd, {});
+check('mixed bullet + numbered lists produce both <ul> and <ol>',
+  mixedHtml.includes('<ul>') && mixedHtml.includes('<ol>') &&
+  mixedHtml.indexOf('<ul>') < mixedHtml.indexOf('<ol>'));
+check('mixed: numbered list closes before any following paragraph',
+  // After </ol>, the next non-empty content should not be raw text "1." or "2."
+  !mixedHtml.includes('</ol>\n<p>1.') && !mixedHtml.includes('</ol>1.'));
+
 console.log('\n--- extractInlineCitations: standalone ---\n');
 
 const c1 = extractInlineCitations('See [a] and [b] and [a] again.');
