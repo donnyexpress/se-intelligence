@@ -45,3 +45,4 @@
 - `scripts/smoke.js` — `topicKey in primary or domain` check now also accepts specialty
 - `topics/eng-domains.md` — added "The six specialties in detail" cross-link block
 - `sitemap.xml` — 6 new /topic/ routes for specialty pages, 3 new /source/ routes
+# Subdomain migration: new project ID d38067c5
