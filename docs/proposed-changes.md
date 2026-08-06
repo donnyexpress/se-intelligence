@@ -1,8 +1,17 @@
 # Proposed changes — historical log
 
 > **All items in this file have been shipped.** This document is kept for
-> audit purposes. For the current state, see the v1.1 and v1.2 analysis
-> docs.
+> audit purposes. For the current state, see the v1.1, v1.2, and v1.3
+> analysis docs.
+
+**Migration note (2026-08-06)**: The CF Pages project rename from `tech-scan`
+to `se-intelligence` produced a renamed project (`se-intel`) that was stuck
+on the old `tech-scan.pages.dev` subdomain with no way to re-issue the
+auto-subdomain. Resolution: created a brand-new project named
+`se-intelligence` (CF reserved the bare `se-intelligence.pages.dev`, so
+the actual URL is **`https://se-intelligence-9y2.pages.dev`**). The old
+`se-intel` project is gone. Same GitHub repo, same KV namespace, same
+comments — just a new project ID.
 
 **v1.1 (shipped 2026-08-05)**: 7 new INCOSE 2025 source entries:
 1. `se-esrd-framework-hodges-2024.md` — Framework for SE in Early-Stage R&D (Hodges, INCOSE LA)
