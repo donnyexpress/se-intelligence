@@ -4,7 +4,7 @@ A body of knowledge for systems engineers — basics, applications, best
 practices, and active research frontiers, with every claim cited to a real
 source.
 
-**Live:** https://se-intelligence.pages.dev
+**Live:** https://se-intelligence-9y2.pages.dev
 
 ## What this is
 
@@ -290,7 +290,7 @@ The site is configured for Cloudflare Pages. The `wrangler.toml` is checked in.
 
 1. **https://dash.cloudflare.com** → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
 2. Pick the `se-intelligence` repo
-3. **Project name**: `se-intelligence` (gives you `se-intelligence.pages.dev`)
+3. **Project name**: `se-intelligence` (gives you `se-intelligence-9y2.pages.dev` — CF reserved the bare name)
 4. **Build settings**:
    - **Build command**: **leave empty** (the static site needs no build step)
    - **Build output directory**: leave default (`/` / repo root)

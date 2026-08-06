@@ -10,7 +10,7 @@ const CONFIG = {
     name: 'SE Intelligence',                // shown in tab, sidebar, hero
     tagline: 'A body of knowledge for systems engineers — basics, applications, best practices, and research frontiers, with every claim cited to a real source.',  // home page lede
     description: 'SE Intelligence: a synthesized knowledge base for systems engineering. INCOSE-aligned topics, each built from cited sources covering basics through research frontiers.',  // <meta description>
-    url: 'https://se-intelligence.pages.dev',  // canonical site URL
+    url: 'https://se-intelligence-9y2.pages.dev',  // canonical site URL (CF reserved the bare se-intelligence.pages.dev)
     organization: 'SE Intelligence',
   },
 
