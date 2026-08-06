@@ -37,6 +37,42 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://se-intelligence.pages.dev/topic/specialty-safety</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://se-intelligence.pages.dev/topic/specialty-reliability</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://se-intelligence.pages.dev/topic/specialty-security</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://se-intelligence.pages.dev/topic/specialty-hfe</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://se-intelligence.pages.dev/topic/specialty-maintainability</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://se-intelligence.pages.dev/topic/specialty-software</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://se-intelligence.pages.dev/topic/sys-fund</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
@@ -310,6 +346,21 @@
   <url>
     <loc>https://se-intelligence.pages.dev/source/conf-iw2024-resilient-systems</loc>
     <lastmod>2026-08-05</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://se-intelligence.pages.dev/source/specialty-safety-stpa-leveson-2011</loc>
+    <lastmod>2026-08-06</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://se-intelligence.pages.dev/source/specialty-reliability-fmea-rbd-milhdbk-217</loc>
+    <lastmod>2026-08-06</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://se-intelligence.pages.dev/source/specialty-software-dora-accelerate-2018</loc>
+    <lastmod>2026-08-06</lastmod>
     <priority>0.7</priority>
   </url>
 </urlset>

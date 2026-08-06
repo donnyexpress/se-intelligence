@@ -44,4 +44,8 @@ const ENTRY_KEYS = [
   'conf-is2024-mbse-patterns-practice',
   'conf-is2023-agile-se-at-scale',
   'conf-iw2024-resilient-systems',
+  // Specialty engineering references
+  'specialty-safety-stpa-leveson-2011',
+  'specialty-reliability-fmea-rbd-milhdbk-217',
+  'specialty-software-dora-accelerate-2018',
 ];

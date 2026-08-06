@@ -5,9 +5,19 @@
 // Citations in topic bodies use the form [entry-key], where entry-key
 // is a key from assets/entries-index.js.
 //
-// New topic pages: add the key here and write topics/<key>.md.
+// Order: specialty topics first (the disciplines a practitioner cares
+// about), then SEBoK primary (the structural backbone), then application
+// domains (vertical industries). The order here doesn't affect rendering
+// order — that's driven by the `order` field in assets/config.js.
 
 window.TOPIC_KEYS = [
+  // Engineering specialty — the disciplines
+  'specialty-safety',
+  'specialty-reliability',
+  'specialty-security',
+  'specialty-hfe',
+  'specialty-maintainability',
+  'specialty-software',
   // SEBoK primary topics
   'sys-fund',
   'lifecycle',

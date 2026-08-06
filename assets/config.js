@@ -53,6 +53,26 @@ const CONFIG = {
 
   // ---- Primary topic rail: SEBoK general knowledge areas (9) ----
   // Authoritative reference: SEBoK v2.11 (Nov 2024) and INCOSE SE Handbook v5.0.
+  //
+  // Three-level taxonomy:
+  //   1. specialtyTopics — engineering disciplines (the "what" of SE practice)
+  //   2. primaryTopics   — SEBoK Parts 1–9 (the structural backbone)
+  //   3. applicationDomains — vertical industries (where SE is applied)
+  //
+  // specialtyTopics comes first because practitioners consulting the
+  // knowledge base usually have a specialty concern (safety, security,
+  // reliability) before they have a structural one (which SEBoK Part).
+
+  // ---- Top-level rail: Engineering Specialty (the "what" disciplines) ----
+  specialtyTopics: {
+    'specialty-safety':         { name: 'System Safety',          short: 'safety',     order: 1, desc: 'Hazard analysis, functional safety, SIL/ASIL, safety case, safety lifecycle (IEC 61508, ISO 26262, IEC 62304).' },
+    'specialty-reliability':    { name: 'Reliability Engineering', short: 'reliability', order: 2, desc: 'MTBF/MTTR prediction, FMECA, reliability block diagrams, availability, Weibull analysis (MIL-HDBK-217, Telcordia SR-332).' },
+    'specialty-security':       { name: 'Security Engineering',   short: 'security',   order: 3, desc: 'Threat modeling (STRIDE/PASTA), secure design, supply chain, AppSec, zero trust (NIST 800-53, ISO 27001).' },
+    'specialty-hfe':            { name: 'Human Factors',          short: 'hfe',        order: 4, desc: 'Physical and cognitive ergonomics, accessibility, training, documentation for human operators and users (MIL-STD-1472, ISO 9241).' },
+    'specialty-maintainability':{ name: 'Maintainability',         short: 'maintain',   order: 5, desc: 'Designing for corrective, adaptive, perfective, preventive maintenance; service life, modernization, observability (MIL-HDBK-470, IEEE 1219).' },
+    'specialty-software':       { name: 'Software Engineering',   short: 'software',   order: 6, desc: 'Modern software-intensive systems engineering: DevOps, SRE, MLOps, DORA metrics, code-as-system (IEEE/ACM, ISO/IEC 25010).' },
+  },
+
   primaryTopics: {
     'sys-fund':    { name: 'Systems Fundamentals',   short: 'sys-fund',    order: 1, desc: 'Systems thinking, systems science, foundations, representing systems with models.', ref: 'SEBoK Part 1' },
     'lifecycle':   { name: 'Life Cycle Models',       short: 'lifecycle',   order: 2, desc: 'Concept, development, production, utilization, support, retirement; ISO/IEC/IEEE 15288.', ref: 'SEBoK Part 2' },

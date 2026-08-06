@@ -1,7 +1,7 @@
 ---
 topic_key: eng-domains
 level: 7
-last_curated: 2026-08-05
+last_curated: 2026-08-06
 maturity: established
 ---
 
@@ -29,6 +29,17 @@ The engineering specialties are independent disciplines with their own standards
 The INCOSE SE Handbook v5 covers each in dedicated chapters [lifecycle-iso-iec-15288-2023]. The SEBoK Part 7 articles cover the integration.
 
 The fundamental challenge of engineering specialty is *co-design*. Each specialty has its own design process, its own verification process, and its own vocabulary. The systems engineering role is to ensure that the specialties are not designed in isolation, that conflicts are resolved at design time, and that the integrated system satisfies all the specialty requirements.
+
+## The six specialties in detail
+
+Each of the six engineering specialties has its own dedicated article in this knowledge base. Click through for the full depth on each:
+
+- [System Safety](/topic/specialty-safety) — hazard analysis, functional safety standards, safety case, STPA
+- [Reliability Engineering](/topic/specialty-reliability) — MTBF/MTTR prediction, FMECA, reliability block diagrams, Weibull analysis
+- [Security Engineering](/topic/specialty-security) — threat modeling, zero trust, supply chain security, SOTIF
+- [Human Factors](/topic/specialty-hfe) — physical and cognitive ergonomics, accessibility, training, usability testing
+- [Maintainability](/topic/specialty-maintainability) — MTTR, modular architecture, built-in test, service life planning
+- [Software Engineering](/topic/specialty-software) — DORA metrics, continuous delivery, software architecture, MBSE for software-intensive systems
 
 ## Patterns that work
 

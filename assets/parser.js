@@ -7,6 +7,12 @@
 
 // Primary SEBoK topic keys (mirrors CONFIG.primaryTopics). Kept here as a
 // fallback for tests / node usage where CONFIG may not be available.
+// Specialty topic keys (engineering disciplines — the "what" of SE).
+const SPECIALTY_TOPIC_KEYS = [
+  'specialty-safety', 'specialty-reliability', 'specialty-security',
+  'specialty-hfe', 'specialty-maintainability', 'specialty-software',
+];
+
 const PRIMARY_TOPIC_KEYS = [
   'sys-fund', 'lifecycle', 'concept-def', 'system-def',
   'realization', 'deploy-use', 'eng-domains', 'management', 'sos',
@@ -19,7 +25,7 @@ const APP_DOMAIN_KEYS = [
 ];
 
 // All known topic-style prefixes for filename-suffix inference.
-const TOPIC_PREFIXES = [...PRIMARY_TOPIC_KEYS, ...APP_DOMAIN_KEYS];
+const TOPIC_PREFIXES = [...SPECIALTY_TOPIC_KEYS, ...PRIMARY_TOPIC_KEYS, ...APP_DOMAIN_KEYS];
 
 // Reserved headings the renderer detects and renders into the standard
 // layout, instead of as a body h2.
@@ -532,6 +538,7 @@ if (typeof module !== 'undefined') {
     extractInlineCitations,
     inferTopicFromKey,
     parseDomainsField,
+    SPECIALTY_TOPIC_KEYS,
     PRIMARY_TOPIC_KEYS,
     APP_DOMAIN_KEYS,
     TOPIC_PREFIXES,

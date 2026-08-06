@@ -23,6 +23,7 @@
   const F = () => (window.CONFIG && window.CONFIG.features) || {};
   const SITE = () => (window.CONFIG && window.CONFIG.site) || { name: 'SE Intelligence', url: '', description: '' };
   const T = () => (window.CONFIG && window.CONFIG.theme) || {};
+  const SPECIALTY = () => (window.CONFIG && window.CONFIG.specialtyTopics) || {};
   const PRIMARY = () => (window.CONFIG && window.CONFIG.primaryTopics) || {};
   const DOMAINS = () => (window.CONFIG && window.CONFIG.applicationDomains) || {};
   const TRACKS = () => (window.CONFIG && window.CONFIG.tracks) || {};
@@ -266,6 +267,7 @@
   // ===== Sidebar =====
   function renderSidebar(activeKey) {
     const sidebar = document.getElementById('sidebar');
+    const specialty = SPECIALTY();
     const primary = PRIMARY();
     const domains = DOMAINS();
     const events = EVENTS();
@@ -281,6 +283,20 @@
       if (!e.isConference) continue;
       confByEvent[e.event] = (confByEvent[e.event] || 0) + 1;
     }
+
+    // Specialty list — the front door. Each discipline has its own article.
+    const specialtyList = Object.entries(specialty)
+      .sort((a, b) => (a[1].order || 99) - (b[1].order || 99))
+      .map(([k, v]) => {
+        const hasArticle = !!state.topics[k];
+        const nCited = hasArticle ? state.topics[k].citations.length : 0;
+        const href = hasArticle ? `/topic/${k}` : `/?topic=${k}`;
+        const active = (state.activePrimaryTopic === k) || (location.pathname === '/topic/' + k) ? ' class="active"' : '';
+        const badge = hasArticle
+          ? `<span class="count-badge" title="Synthesized article with ${nCited} cited sources">${nCited}</span>`
+          : `<span class="count-badge" title="Sources in this topic">${counts[k] || 0}</span>`;
+        return `<li><a href="${href}"${active} data-nav="${hasArticle ? 'topic' : 'filter'}" data-topic="${k}">${escapeHtml(v.name)} ${badge}</a></li>`;
+      }).join('');
 
     // Topics list — the primary rail. Each topic can either have a curated
     // article (state.topics[k]) or not. Show the count of cited sources
@@ -330,6 +346,9 @@
         <li><a href="/conferences" data-nav="conferences">Conferences <span class="count-badge">${confCount}</span></a></li>
         <li><a href="/about" data-nav="about">About</a></li>
       </ul>
+
+      <h3>Specialty Engineering</h3>
+      <ul class="flat-entries">${specialtyList}</ul>
 
       <h3>SEBoK Topics</h3>
       <ul class="flat-entries">${topicList}</ul>
@@ -639,6 +658,7 @@
 
   // ===== Topics index =====
   function renderTopicsIndex() {
+    const specialty = SPECIALTY();
     const primary = PRIMARY();
     const domains = DOMAINS();
     const all = Object.values(state.topics);
@@ -652,14 +672,18 @@
       if (!buckets[k]) buckets[k] = [];
       buckets[k].push(t);
     }
+    // Sort by taxonomy tier (specialty → primary → domain), then by config order, then by key.
+    const tier = (k) => specialty[k] ? 0 : (primary[k] ? 1 : (domains[k] ? 2 : 3));
+    const orderOf = (k) => (specialty[k] && specialty[k].order) || (primary[k] && primary[k].order) || (domains[k] && domains[k].order) || 99;
     const sortedKeys = Object.keys(buckets).sort((a, b) => {
-      const oa = primary[a] ? 0 : (domains[a] ? 1 : 2);
-      const ob = primary[b] ? 0 : (domains[b] ? 1 : 2);
+      const ta = tier(a), tb = tier(b);
+      if (ta !== tb) return ta - tb;
+      const oa = orderOf(a), ob = orderOf(b);
       if (oa !== ob) return oa - ob;
       return a.localeCompare(b);
     });
     const sections = sortedKeys.map(k => {
-      const meta = primary[k] || domains[k] || { name: k };
+      const meta = specialty[k] || primary[k] || domains[k] || { name: k };
       const items = buckets[k].map(t =>
         `<li><a href="/topic/${t.key}">${escapeHtml(t.title)}</a> <span class="topic-meta">· ${escapeHtml(t.maturity || '')}</span></li>`
       ).join('');
@@ -739,6 +763,7 @@
   function renderTopicsSection() {
     const topics = Object.values(state.topics);
     if (topics.length === 0) return '';
+    const specialty = SPECIALTY();
     const primary = PRIMARY();
     const domains = DOMAINS();
     // Sort by last_curated desc, take up to 6
@@ -748,7 +773,7 @@
       .slice(0, 6);
     const featured = recent.length ? recent : topics.slice(0, 6);
     const cards = featured.map(t => {
-      const meta = primary[t.topicKey] || domains[t.topicKey] || { name: t.topicKey, short: t.topicKey };
+      const meta = specialty[t.topicKey] || primary[t.topicKey] || domains[t.topicKey] || { name: t.topicKey, short: t.topicKey };
       const summary = (t.summary || '').split('\n')[0] || '';
       return `<a class="topic-card" href="/topic/${t.key}">
         <div class="topic-card-kind">Topic · ${escapeHtml(meta.name)}</div>

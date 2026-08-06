@@ -119,7 +119,7 @@ if (topicKeys.length > 0) {
   for (const [k, t] of Object.entries(topics)) {
     check(`  ${k}: has title`, !!t.title);
     check(`  ${k}: has lastCurated`, !!t.lastCurated);
-    check(`  ${k}: topicKey in primary or domain`, !!(CONFIG.primaryTopics[t.topicKey] || CONFIG.applicationDomains[t.topicKey]), `topicKey: ${t.topicKey}`);
+    check(`  ${k}: topicKey in primary or domain`, !!(CONFIG.specialtyTopics[t.topicKey] || CONFIG.primaryTopics[t.topicKey] || CONFIG.applicationDomains[t.topicKey]), `topicKey: ${t.topicKey}`);
     check(`  ${k}: has ≥1 section`, (t.sections || []).length >= 1, `sections: ${(t.sections || []).length}`);
 
     // Citation validation: every cited key must be a real source
