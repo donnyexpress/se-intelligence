@@ -2,6 +2,11 @@ name = "se-intelligence"
 compatibility_date = "2026-08-04"
 compatibility_flags = ["nodejs_compat"]
 
+# New CF Pages project created 2026-08-06 to replace the renamed
+# 'se-intel' project (subdomain was stuck on tech-scan.pages.dev).
+# Project ID: d38067c5-07af-4c52-af9e-4b30a50c52d3
+# Subdomain: se-intelligence-9y2.pages.dev (CF reserved the bare name)
+
 # This is a Cloudflare **Pages** project (static site + Functions).
 #
 # CRITICAL: In the Cloudflare Pages dashboard, the **Build command**
