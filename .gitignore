@@ -18,6 +18,10 @@ test-results/
 *.log
 /tmp/
 docs/preview/
+
+# Dev screenshots (created during local Puppeteer runs, never committed)
+scripts/_screenshots/
+scripts/_temp-*.js
 docs/preview-v2/
 
 # Build outputs (none for this site, but future-proof)
