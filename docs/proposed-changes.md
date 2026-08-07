@@ -1,7 +1,7 @@
 # Proposed changes — historical log
 
 > **All items in this file have been shipped.** This document is kept for
-> audit purposes. For the current state, see the v1.1, v1.2, and v1.3
+> audit purposes. For the current state, see the v1.1, v1.2, v1.3, and v1.4
 > analysis docs.
 
 **Migration note (2026-08-06)**: The CF Pages project rename from `tech-scan`

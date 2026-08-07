@@ -185,10 +185,53 @@ function check(name, ok, detail) {
   await visit('/');
   check('Home: 3-line hero with ticker', !!(await page.$('.hero-strip-v14')));
   check('Home: ticker is present', !!(await page.$('.ticker')));
+  check('Home: ticker has prev button', !!(await page.$('.ticker-nav.prev')));
+  check('Home: ticker has next button', !!(await page.$('.ticker-nav.next')));
+  check('Home: ticker has viewport (scroll area)', !!(await page.$('.ticker-viewport')));
+  check('Home: ticker has 12 items (6 unique × 2 for loop)', await page.$$eval('.ticker-item', els => els.length) === 12);
   check('Home: 3 doors are present', (await page.$$('.door')).length === 3);
   check('Home: trending dashboard is present', !!(await page.$('.trending')));
   check('Home: disruptive panel is present', !!(await page.$('.disrupt')));
   check('Home: footer strip is present', !!(await page.$('.footer-strip')));
+
+  console.log('\n--- v1.4 ticker interaction ---\n');
+  // Test the prev/next buttons actually move the track.
+  // 1. Capture initial transform
+  const initialTransform = await page.evaluate(() => {
+    const track = document.querySelector('.ticker-track');
+    return window.getComputedStyle(track).transform;
+  });
+  // 2. Click "next" twice — should translate to the left
+  await page.click('.ticker-nav.next');
+  await new Promise(r => setTimeout(r, 200));
+  await page.click('.ticker-nav.next');
+  await new Promise(r => setTimeout(r, 400));
+  const afterNextTransform = await page.evaluate(() => {
+    const track = document.querySelector('.ticker-track');
+    return { transform: window.getComputedStyle(track).transform, paused: track.style.animationPlayState };
+  });
+  check('Ticker: clicking next twice changes transform',
+    afterNextTransform.transform !== initialTransform);
+  check('Ticker: animation pauses on user interaction',
+    afterNextTransform.paused === 'paused' || afterNextTransform.paused === '');
+  // 3. Click "prev" once — should reduce the offset
+  await page.click('.ticker-nav.prev');
+  await new Promise(r => setTimeout(r, 400));
+  const afterPrevTransform = await page.evaluate(() => {
+    const track = document.querySelector('.ticker-track');
+    return window.getComputedStyle(track).transform;
+  });
+  check('Ticker: clicking prev changes transform back',
+    afterPrevTransform.transform !== afterNextTransform.transform);
+  // 4. After 11s of inactivity, animation should resume
+  console.log('  (waiting 11s for auto-resume...)');
+  await new Promise(r => setTimeout(r, 11000));
+  const afterResume = await page.evaluate(() => {
+    const track = document.querySelector('.ticker-track');
+    return track.style.animationPlayState;
+  });
+  check('Ticker: animation auto-resumes after 10s of inactivity',
+    afterResume === 'running' || afterResume === '');
 
   console.log('\n--- 404s ---\n');
   await visit('/topic/does-not-exist');

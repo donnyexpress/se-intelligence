@@ -797,10 +797,115 @@
       </a>`).join('');
     // Duplicate for seamless loop
     const allItems = itemHtml + itemHtml;
-    return `<div class="ticker" aria-label="Recent additions">
-      <div class="label"><span class="pulse"></span>${escapeHtml(cfg.labelText || 'live')}</div>
-      <div class="ticker-track">${allItems}</div>
+    return `<div class="ticker" aria-label="Recent additions" tabindex="0">
+      <button class="ticker-nav prev" type="button" aria-label="Previous item">‹</button>
+      <div class="ticker-viewport">
+        <div class="ticker-track">${allItems}</div>
+        <div class="label"><span class="pulse"></span>${escapeHtml(cfg.labelText || 'live')}</div>
+      </div>
+      <button class="ticker-nav next" type="button" aria-label="Next item">›</button>
     </div>`;
+  }
+
+  // Wire up ticker nav buttons after the home page renders.
+  // The ticker is a single instance on the home page, so we attach
+  // event handlers once per render. Behavior:
+  //   - Click prev/next: shift the track by ~one item width
+  //   - Pause auto-scroll for 10s (so the user can read what they navigated to)
+  //   - On reduced-motion: start paused; buttons still work
+  //   - On focus or hover: pause
+  //   - Keyboard: ArrowLeft/ArrowRight on the ticker also work
+  function wireTicker() {
+    const ticker = document.querySelector('.ticker');
+    if (!ticker) return;
+    const track = ticker.querySelector('.ticker-track');
+    const prev = ticker.querySelector('.ticker-nav.prev');
+    const next = ticker.querySelector('.ticker-nav.next');
+    if (!track || !prev || !next) return;
+
+    // Skip if already wired (defensive — in case render runs twice)
+    if (ticker.dataset.wired === '1') return;
+    ticker.dataset.wired = '1';
+
+    // Compute item width once; the track has N items × 2 (duplicated) so
+    // we measure the first item's width as the natural "step" distance.
+    const firstItem = track.querySelector('.ticker-item');
+    if (!firstItem) return;
+    const itemWidth = firstItem.getBoundingClientRect().width;
+
+    // Detect reduced-motion at runtime (not just via CSS media query).
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Each "next" press advances the track by one item width to the LEFT.
+    // We track a manual offset; when 0, the track is at its animated position
+    // (which keeps moving via the CSS animation unless paused).
+    let manualOffset = 0;
+    let resumeTimer = null;
+    const RESUME_MS = 10000;
+
+    function pause(reason) {
+      ticker.classList.add('is-paused');
+      track.style.animationPlayState = 'paused';
+      if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null; }
+    }
+    function scheduleResume() {
+      if (reducedMotion) return;  // never auto-resume for reduced-motion
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        ticker.classList.remove('is-paused');
+        track.style.animationPlayState = 'running';
+        manualOffset = 0;
+        track.style.transform = '';  // let animation take over
+        resumeTimer = null;
+      }, RESUME_MS);
+    }
+
+    function advance(direction) {
+      // direction: -1 (prev) or +1 (next)
+      manualOffset += direction * itemWidth;
+      track.style.transform = `translateX(${manualOffset}px)`;
+      pause('user');
+      scheduleResume();
+    }
+
+    prev.addEventListener('click', () => advance(-1));
+    next.addEventListener('click', () => advance(+1));
+
+    // Hover-to-pause (desktop nicety, no-op on touch)
+    ticker.addEventListener('mouseenter', () => { pause('hover'); });
+    ticker.addEventListener('mouseleave', () => { scheduleResume(); });
+
+    // Focus-within pause (keyboard / screen reader users)
+    ticker.addEventListener('focusin', () => { pause('focus'); });
+    ticker.addEventListener('focusout', () => { scheduleResume(); });
+
+    // Keyboard arrows when ticker is focused
+    ticker.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); advance(-1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); advance(+1); }
+    });
+
+    // Touch swipe on the viewport — 50px threshold
+    const viewport = ticker.querySelector('.ticker-viewport');
+    if (viewport) {
+      let startX = null;
+      viewport.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+      viewport.addEventListener('touchend', (e) => {
+        if (startX == null) return;
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 50) advance(dx > 0 ? -1 : +1);
+        startX = null;
+      }, { passive: true });
+    }
+
+    // For reduced-motion users, the animation is already disabled via CSS.
+    // Mark the ticker as paused from the start so the layout is stable
+    // and the first interaction is "I want to read X, how do I get there?"
+    if (reducedMotion) {
+      pause('reduced-motion');
+    }
   }
 
   // ---- Three doors: the audience entry points ----
@@ -1583,6 +1688,7 @@
       // home
       main.innerHTML = renderHome();
       renderSidebar(null);
+      wireTicker();
       setMeta({ title: site.name, description: site.description, url: '/' });
       wireFilterChips();
     }
