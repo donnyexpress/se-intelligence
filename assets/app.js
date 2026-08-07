@@ -1186,8 +1186,27 @@
     </section>`;
   }
 
+  // /latest — the v1.3 "Latest developments" view, now a deep page
+  // (it's no longer on the home page — the news ticker replaced it).
+  // Shows entries with triage ∈ {watch,read,try} from the last 30 days,
+  // sorted by signal desc, then last_updated desc. Includes the
+  // triage filter chips from the original /latest page.
   function renderLatest() {
-    return renderHome();
+    const entries = Object.values(state.entries);
+    if (entries.length === 0) {
+      return `<div class="entry-header"><h1>Latest (30d)</h1><p class="entry-summary">No entries yet.</p></div>`;
+    }
+    const cfg = LATEST();
+    const cutoffDays = cfg.windowDays || 30;
+    let view = entries.filter(e => {
+      if (!(cfg.defaultTriage || ['watch','read','try']).includes(e.triage)) return false;
+      return daysAgo(e.lastUpdated) <= cutoffDays;
+    });
+    view.sort((a, b) => {
+      if (b.signal !== a.signal) return b.signal - a.signal;
+      return String(b.lastUpdated || '').localeCompare(String(a.lastUpdated || ''));
+    });
+    return renderFeed('Latest developments', view, { isLatest: true });
   }
 
   function renderFeed(title, entries, opts) {
