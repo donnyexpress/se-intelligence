@@ -14,6 +14,67 @@ const CONFIG = {
     organization: 'SE Intelligence',
   },
 
+  // ---- v1.4: Three Doors (audience entry points on home page) ----
+  // Each door is a first-person headline + audience label + lede + 3
+  // sub-routes. Clicking goes to /for-<role> which renders an audience-
+  // specific page. The doors block is the front door of the home page
+  // (after the news ticker, before the trending dashboard).
+  doors: {
+    practitioner: {
+      role: 'practitioner',
+      title: 'I have a problem.',
+      audience: 'For the working SE',
+      icon: '🛠',
+      lede: 'Find the specialty, domain, or pattern that solves it. Built for the engineer in the middle of a program who needs an answer, not a textbook.',
+      routes: ['By specialty', 'By domain', 'By pattern'],
+      href: '/for-practitioners',
+    },
+    learner: {
+      role: 'learner',
+      title: 'I want to understand SE.',
+      audience: 'For the newcomer',
+      icon: '📘',
+      lede: 'Walk the SEBoK structure top-down, parts 1 through 9. Each article builds on the last, with cited sources at every step.',
+      routes: ['Start: Part 1', '…', 'Finish: Part 9'],
+      href: '/for-learners',
+    },
+    researcher: {
+      role: 'researcher',
+      title: "Show me what's new.",
+      audience: 'For the trend-watcher',
+      icon: '📈',
+      lede: "The freshest sources, the hottest topics, and the disruptive papers that changed the conversation this season.",
+      routes: ['This week', 'INCOSE 2025', 'Disruptive papers'],
+      href: '/for-researchers',
+    },
+  },
+
+  // ---- v1.4: News ticker (the sliding hero strip) ----
+  // Auto-populated from state.entries sorted by lastUpdated desc.
+  // Duration: seconds for one full cycle of the marquee.
+  ticker: {
+    maxItems: 6,
+    durationSec: 50,
+    labelText: 'live',
+    featureWindowDays: 7,  // an entry within this window gets the "new" badge
+  },
+
+  // ---- v1.4: Disruptive papers (manually curated callout on home) ----
+  // Each entry is { title, href, why } — shown in the trending dashboard's
+  // sidebar. These are the "this changed the conversation" picks.
+  disruptivePapers: [
+    {
+      title: 'STPA — Systems-Theoretic Process Analysis (Leveson)',
+      href: '/source/specialty-safety-stpa-leveson-2011',
+      why: 'Why: reframes accidents as control failures, not component failures. Adopted in defense, automotive, medical.',
+    },
+    {
+      title: 'Accelerate — DORA metrics (Forsgren, Humble, Kim)',
+      href: '/source/specialty-software-dora-accelerate-2018',
+      why: 'Why: gives software engineering the empirical measurement framework that other SE disciplines have had for decades.',
+    },
+  ],
+
   // ---- Theme: Option 4 — Glass Gradient ----
   theme: {
     bg:         'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',

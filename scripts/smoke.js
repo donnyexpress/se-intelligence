@@ -152,6 +152,38 @@ if (topicKeys.length > 0) {
   }
 }
 
+// ===== v1.4 home page — structural checks (no render) =====
+console.log('\n--- v1.4 home page structure ---');
+
+const cfgRaw = fs.readFileSync('assets/config.js', 'utf8');
+const appRaw = fs.readFileSync('assets/app.js', 'utf8');
+const cssRaw = fs.readFileSync('assets/styles.css', 'utf8');
+
+check('config has doors block', /doors:\s*\{/.test(cfgRaw));
+check('config doors has practitioner/learner/researcher',
+  /practitioner:/.test(cfgRaw) && /learner:/.test(cfgRaw) && /researcher:/.test(cfgRaw));
+check('config doors uses active-voice titles ("I have a problem" etc.)',
+  /I have a problem/.test(cfgRaw) && /I want to understand SE/.test(cfgRaw) && /what's new/i.test(cfgRaw));
+check('config has ticker block', /ticker:\s*\{/.test(cfgRaw));
+check('config has disruptivePapers block', /disruptivePapers:/.test(cfgRaw));
+check('CSS has .ticker class', /\.ticker\s*\{/.test(cssRaw));
+check('CSS has .ticker-scroll keyframe', /@keyframes\s+ticker-scroll/.test(cssRaw));
+check('CSS has .doors grid', /\.doors\s*\{/.test(cssRaw));
+check('CSS has .trending section', /\.trending\s*\{/.test(cssRaw));
+check('CSS has .disrupt panel', /\.disrupt\s*\{/.test(cssRaw));
+check('CSS has .audience-page styles', /\.audience-page\s*\{/.test(cssRaw));
+check('app.js has renderHeroStrip', /function renderHeroStrip/.test(appRaw));
+check('app.js has renderTicker', /function renderTicker/.test(appRaw));
+check('app.js has renderDoors', /function renderDoors/.test(appRaw));
+check('app.js has renderTrendingDashboard', /function renderTrendingDashboard/.test(appRaw));
+check('app.js has renderForAudience', /function renderForAudience/.test(appRaw));
+check('app.js routes /for-practitioners', /\/for-practitioners/.test(appRaw));
+check('app.js routes /for-learners', /\/for-learners/.test(appRaw));
+check('app.js routes /for-researchers', /\/for-researchers/.test(appRaw));
+check('app.js has audience case in router', /route === 'audience'/.test(appRaw));
+check('app.js click-handler accepts /for- links', /for-/.test(appRaw));
+check('CSS respects prefers-reduced-motion', /prefers-reduced-motion/.test(cssRaw));
+
 console.log(`\n==================================================`);
 console.log(`  ${pass} passed, ${fail} failed`);
 console.log(`==================================================\n`);

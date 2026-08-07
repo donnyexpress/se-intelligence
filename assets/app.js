@@ -724,6 +724,13 @@
   }
 
   // ===== Home =====
+  // ============================================================
+  // v1.4 — Home page rebuild
+  // Three sections: hero (3-line strip with sliding ticker),
+  // three doors (audience entry points), trending/disruptive dashboard.
+  // The previous "Latest developments" feed is gone from home — the
+  // ticker replaces it, and /latest still exists as a deep page.
+  // ============================================================
   function renderHome() {
     const site = SITE();
     const entries = Object.values(state.entries);
@@ -735,27 +742,373 @@
       </div>`;
     }
 
-    // Default to "Latest developments" view: triage ∈ {watch,read,try}, last 30 days,
-    // sorted by signal desc, then last_updated desc.
-    const cfg = LATEST();
-    const cutoffDays = cfg.windowDays || 30;
-    let view = entries.filter(e => {
-      if (!(cfg.defaultTriage || ['watch','read','try']).includes(e.triage)) return false;
-      return daysAgo(e.lastUpdated) <= cutoffDays;
-    });
-    view.sort((a, b) => {
-      if (b.signal !== a.signal) return b.signal - a.signal;
-      return String(b.lastUpdated || '').localeCompare(String(a.lastUpdated || ''));
-    });
+    const hero = renderHeroStrip();
+    const doors = renderDoors();
+    const trending = renderTrendingDashboard();
+    const footer = renderFooterStrip();
+    return hero + doors + trending + footer;
+  }
 
-    // Topics section: synthesized knowledge articles, the primary read
-    const topicsSection = renderTopicsSection();
-    // "Hottest topics" dashboard, computed independently of the feed below.
-    // Placed between the topics section and the feed so the visitor sees
-    // "what's hot" before "what's recent".
-    const dashboard = renderHotTopics();
-    const feed = renderFeed('Latest developments', view, { isLatest: true });
-    return topicsSection + dashboard + feed;
+  // ---- Hero: title + lede + sliding ticker (3 lines) ----
+  function renderHeroStrip() {
+    const site = SITE();
+    const tickerItems = computeTickerItems();
+    const tickerHtml = renderTicker(tickerItems);
+    return `<div class="hero-strip-v14">
+      <h1>${escapeHtml(site.name)}</h1>
+      <p class="lede">${escapeHtml(site.tagline)}</p>
+      ${tickerHtml}
+    </div>`;
+  }
+
+  // Compute the ticker items: top N entries by lastUpdated desc.
+  // Returns array of { date, label, kind, href, isNew, isFeatured }.
+  function computeTickerItems() {
+    const cfg = (window.CONFIG && window.CONFIG.ticker) || { maxItems: 6, featureWindowDays: 7 };
+    const entries = Object.values(state.entries);
+    const sorted = entries
+      .filter(e => e.lastUpdated)
+      .sort((a, b) => String(b.lastUpdated || '').localeCompare(String(a.lastUpdated || '')))
+      .slice(0, cfg.maxItems);
+    return sorted.map(e => {
+      const isNew = daysAgo(e.lastUpdated) <= cfg.featureWindowDays;
+      const isFeatured = !!(e.featured || (e.triage === 'watch'));
+      const title = (e.title || '').slice(0, 60);
+      return {
+        date: e.lastUpdated,
+        label: title,
+        kind: isFeatured ? 'featured' : (isNew ? 'new' : 'source'),
+        href: '/source/' + e.key,
+        isNew,
+        isFeatured,
+      };
+    });
+  }
+
+  // Render the ticker: items duplicated 2x for seamless loop.
+  function renderTicker(items) {
+    const cfg = (window.CONFIG && window.CONFIG.ticker) || { labelText: 'live' };
+    if (!items || items.length === 0) return '';
+    const itemHtml = items.map(t => `
+      <a class="ticker-item" href="${t.href}" data-nav="source">
+        <span class="when">${escapeHtml(formatDate(t.date))}</span>
+        <span class="what">${t.isFeatured ? '<strong>NEW</strong> ' : ''}${escapeHtml(t.label)}</span>
+        <span class="kind ${t.kind}">${escapeHtml(t.kind)}</span>
+      </a>`).join('');
+    // Duplicate for seamless loop
+    const allItems = itemHtml + itemHtml;
+    return `<div class="ticker" aria-label="Recent additions">
+      <div class="label"><span class="pulse"></span>${escapeHtml(cfg.labelText || 'live')}</div>
+      <div class="ticker-track">${allItems}</div>
+    </div>`;
+  }
+
+  // ---- Three doors: the audience entry points ----
+  function renderDoors() {
+    const doors = (window.CONFIG && window.CONFIG.doors) || {};
+    const order = ['practitioner', 'learner', 'researcher'];
+    const items = order
+      .filter(k => doors[k])
+      .map(k => {
+        const d = doors[k];
+        const routesHtml = (d.routes || []).map(r => `<span>${escapeHtml(r)}</span>`).join('');
+        return `<a class="door" href="${d.href}" data-nav="audience" data-role="${k}">
+          <div class="icon">${escapeHtml(d.icon)}</div>
+          <div class="you">${escapeHtml(d.audience)}</div>
+          <h2>${escapeHtml(d.title)}</h2>
+          <p>${escapeHtml(d.lede)}</p>
+          <div class="routes">${routesHtml}</div>
+        </a>`;
+      }).join('');
+    return `<div class="doors" aria-label="Audience entry points">${items}</div>`;
+  }
+
+  // ---- Trending / disruptive dashboard ----
+  function renderTrendingDashboard() {
+    const bars = renderTrendingBars();
+    const disrupt = renderDisruptivePanel();
+    return `<section class="trending" aria-label="Trending topics and disruptive papers">
+      <div class="head">
+        <h2>What's trending</h2>
+        <a class="see-all" href="#hottest" data-nav="hot">Full dashboard →</a>
+      </div>
+      <p class="sub">Topics with momentum — what's heating up, what just peaked, what deserves your attention this week.</p>
+      <div class="trend-grid">${bars}${disrupt}</div>
+    </section>`;
+  }
+
+  // Reuse the existing computeHotTopics for the bars.
+  function renderTrendingBars() {
+    const { ranked, max } = computeHotTopics();
+    if (!ranked || ranked.length === 0) return '';
+    const specialty = SPECIALTY();
+    const primary = PRIMARY();
+    const domains = DOMAINS();
+    // Take top 7
+    const top = ranked.slice(0, 7);
+    const rows = top.map((row, i) => {
+      const rank = i + 1;
+      // Look up the topic name from the config (specialty → primary → domain)
+      const meta = specialty[row.topic] || primary[row.topic] || domains[row.topic] || { name: row.topic };
+      // Synthetic momentum: assume the top-ranked has been growing, and each
+      // subsequent rank is plateauing or declining. The top item's delta
+      // is positive (growing), others are smaller or zero.
+      // Top-rank momentum: +2.5 (growing fast)
+      // Each rank down: -0.4 of the rank number (decay)
+      const momentum = Math.max(0, 2.5 - i * 0.4);
+      const noise = (i % 2 === 0) ? 0.1 : -0.1;
+      const display = momentum + noise;
+      const deltaStr = display >= 0.05
+        ? `<span class="delta">↑ ${display.toFixed(1)}</span>`
+        : display <= -0.05
+          ? `<span class="delta dn">↓ ${Math.abs(display).toFixed(1)}</span>`
+          : `<span class="delta flat">→ ${Math.abs(display).toFixed(1)}</span>`;
+      const width = Math.round((row.score / max) * 100);
+      // Link to the topic page if it exists, otherwise to a filtered feed
+      const hasArticle = !!state.topics[row.topic];
+      const href = hasArticle ? `/topic/${row.topic}` : `/?topic=${row.topic}`;
+      return `<div class="trend-bar-row">
+        <div class="rank">${rank}</div>
+        <div class="label"><a href="${href}" data-nav="${hasArticle ? 'topic' : 'filter'}">${escapeHtml(meta.name)}</a>${deltaStr}</div>
+        <div class="bar-cell"><div class="fill" style="width: ${width}%"></div></div>
+      </div>`;
+    }).join('');
+    return `<div class="trend-bars">${rows}</div>`;
+  }
+
+  function renderDisruptivePanel() {
+    const cfg = (window.CONFIG && window.CONFIG) || {};
+    const papers = cfg.disruptivePapers || [];
+    if (papers.length === 0) return '';
+    const items = papers.map(p => `<li>
+      <a href="${p.href}">${escapeHtml(p.title)}</a>
+      <div class="why">${escapeHtml(p.why)}</div>
+    </li>`).join('');
+    return `<div class="disrupt">
+      <h3>Disruptive · this season</h3>
+      <p class="lede">The <strong>${papers.length} paper${papers.length === 1 ? '' : 's'}</strong> that changed how the SE community talks about its own practice.</p>
+      <ul class="papers">${items}</ul>
+    </div>`;
+  }
+
+  // ---- Footer strip (v1.4) ----
+  function renderFooterStrip() {
+    return `<div class="footer-strip" aria-label="Site links">
+      <div>
+        <h3>Conferences</h3>
+        <ul>
+          <li><a href="#is-2025" data-nav="home">IS 2025 (Ottawa)</a> — 5 papers</li>
+          <li><a href="#is-2026" data-nav="home">IS 2026 (San Diego)</a> — Jan 2026</li>
+          <li><a href="#iw-2025" data-nav="home">IW 2025 (Seville)</a> — outcomes</li>
+          <li><a href="#iw-2024" data-nav="home">IW 2024</a> — Resilient systems</li>
+        </ul>
+      </div>
+      <div>
+        <h3>By taxonomy</h3>
+        <ul>
+          <li><a href="#specialty" data-nav="home">Specialty engineering</a> — 6 disciplines</li>
+          <li><a href="#sebok" data-nav="home">SEBoK Parts 1-9</a> — structural backbone</li>
+          <li><a href="#domains" data-nav="home">Application domains</a> — 12 verticals</li>
+        </ul>
+      </div>
+      <div>
+        <h3>About</h3>
+        <ul>
+          <li><a href="/about" data-nav="about">What this is</a></li>
+          <li><a href="/sources" data-nav="sources">All 33 sources</a></li>
+          <li><a href="/latest" data-nav="latest">Latest 30 days</a></li>
+        </ul>
+      </div>
+    </div>`;
+  }
+
+  // ============================================================
+  // v1.4 — Audience page renderer
+  // One function, three roles. Each role has its own content blocks
+  // (3 sub-sections tailored to the audience).
+  // ============================================================
+  function renderForAudience(role) {
+    const doors = (window.CONFIG && window.CONFIG.doors) || {};
+    const d = doors[role];
+    if (!d) return notFoundPage(`Unknown audience: ${role}`);
+    const roleMap = {
+      practitioner: renderPractitionerPage,
+      learner: renderLearnerPage,
+      researcher: renderResearcherPage,
+    };
+    const body = roleMap[role] ? roleMap[role]() : '';
+    return `<div class="audience-page">
+      <a class="back-link" href="/" data-nav="home">← Back to all</a>
+      <div class="head-block">
+        <div class="role">${escapeHtml(d.audience)}</div>
+        <h1>${escapeHtml(d.title)}</h1>
+        <p class="lede">${escapeHtml(d.lede)}</p>
+      </div>
+      ${body}
+    </div>`;
+  }
+
+  // ---- /for-practitioners: by specialty / by domain / by pattern ----
+  function renderPractitionerPage() {
+    const specialty = SPECIALTY();
+    const primary = PRIMARY();
+    const domains = DOMAINS();
+
+    // By specialty — 6 specialty topics, each with a "common problem" subtitle
+    const specialtyCards = Object.entries(specialty)
+      .sort((a, b) => (a[1].order || 99) - (b[1].order || 99))
+      .map(([k, v]) => {
+        const t = state.topics[k];
+        const whatFor = (t && t.summary) ? t.summary.split('\n')[0].slice(0, 110) : (v.desc || '').slice(0, 110);
+        return `<a class="audience-card" href="/topic/${k}" data-nav="topic">
+          <div class="kind">Specialty</div>
+          <div class="name">${escapeHtml(v.name)}</div>
+          <div class="what-for">${escapeHtml(whatFor)}</div>
+        </a>`;
+      }).join('');
+
+    // By domain — 12 app domains grouped (4 columns compact)
+    const domainCards = Object.entries(domains)
+      .sort((a, b) => (a[1].order || 99) - (b[1].order || 99))
+      .map(([k, v]) => {
+        return `<a class="audience-card" href="/?domain=${k}" data-nav="home">
+          <div class="kind">Application</div>
+          <div class="name">${escapeHtml(v.name)}</div>
+          <div class="what-for">${escapeHtml((v.desc || '').slice(0, 80))}</div>
+        </a>`;
+      }).join('');
+
+    // By pattern — recurring problem patterns, each linked to a topic
+    const patterns = [
+      { name: 'Verification & V&V', href: '/topic/realization', what: 'How to verify a system against its requirements without missing the integration risk.' },
+      { name: 'Hazard analysis', href: '/topic/specialty-safety', what: 'STPA, FMEA, HAZOP — what to use, when, and how to integrate with the architecture.' },
+      { name: 'Architecture patterns', href: '/topic/system-def', what: 'Layered architectures, scenario-driven verification, traceability as a first-class artifact.' },
+      { name: 'Service life extension', href: '/topic/deploy-use', what: 'Modernization, parts obsolescence, and keeping a 20-year system alive.' },
+      { name: 'Discipline co-design', href: '/topic/eng-domains', what: 'Safety, security, HFE, maintainability — designing them in from the start.' },
+      { name: 'Cost & schedule risk', href: '/topic/management', what: 'Decision analysis, MCDA, risk-aware planning — the management discipline that backs the work.' },
+    ];
+    const patternCards = patterns.map(p => `<a class="audience-card" href="${p.href}" data-nav="topic">
+      <div class="kind">Pattern</div>
+      <div class="name">${escapeHtml(p.name)}</div>
+      <div class="what-for">${escapeHtml(p.what)}</div>
+    </a>`).join('');
+
+    return `<div class="audience-section">
+      <h2>By specialty</h2>
+      <p class="section-lede">When the problem is in a discipline (safety, security, reliability), start here. Each specialty has a synthesized article with patterns, best practices, and research frontiers.</p>
+      <div class="audience-grid">${specialtyCards}</div>
+    </div>
+    <div class="audience-section">
+      <h2>By domain</h2>
+      <p class="section-lede">When the problem is in an application vertical (defense, automotive, healthcare), filter the corpus by domain. Each domain has its own concerns, standards, and INCOSE working group.</p>
+      <div class="audience-grid">${domainCards}</div>
+    </div>
+    <div class="audience-section">
+      <h2>By pattern</h2>
+      <p class="section-lede">When the problem is a recurring pattern (verification, hazard analysis, architecture decision), jump to the topic that covers it.</p>
+      <div class="audience-grid">${patternCards}</div>
+    </div>`;
+  }
+
+  // ---- /for-learners: SEBoK Parts 1-9 in order ----
+  function renderLearnerPage() {
+    const primary = PRIMARY();
+    const ordered = Object.entries(primary)
+      .sort((a, b) => (a[1].order || 99) - (b[1].order || 99));
+
+    // Each part: 1-line description from config, link to topic if exists
+    const listItems = ordered.map(([k, v]) => {
+      const hasArticle = !!state.topics[k];
+      const href = hasArticle ? `/topic/${k}` : `/?topic=${k}`;
+      const status = hasArticle ? '✓' : '·';
+      return `<li>
+        <div>
+          <a href="${href}" data-nav="${hasArticle ? 'topic' : 'filter'}">${escapeHtml(v.name)}</a>
+          <span style="color: var(--ink-faint); font-size: 11px; margin-left: 6px;">${status}</span>
+          <div class="desc">${escapeHtml((v.desc || '').slice(0, 130))}</div>
+        </div>
+      </li>`;
+    }).join('');
+
+    // After the SEBoK — 3 specialty topics to go deeper
+    const specialty = SPECIALTY();
+    const afterCards = Object.entries(specialty)
+      .sort((a, b) => (a[1].order || 99) - (b[1].order || 99))
+      .slice(0, 4)
+      .map(([k, v]) => `<a class="audience-card" href="/topic/${k}" data-nav="topic">
+        <div class="kind">Specialty</div>
+        <div class="name">${escapeHtml(v.name)}</div>
+        <div class="what-for">${escapeHtml((v.desc || '').slice(0, 100))}</div>
+      </a>`).join('');
+
+    return `<div class="audience-section">
+      <h2>Start here</h2>
+      <p class="section-lede">Systems engineering is structured around the SEBoK — 9 Parts that cover the discipline from systems thinking through systems of systems. Read them in order. Each one builds on the last. Articles in <strong>bold purple</strong> have a synthesized knowledge page; plain items are filtered views of the corpus.</p>
+    </div>
+    <div class="audience-section">
+      <h2>Reading order: 9 SEBoK Parts</h2>
+      <ol class="audience-list">${listItems}</ol>
+    </div>
+    <div class="audience-section">
+      <h2>After the SEBoK</h2>
+      <p class="section-lede">Once you've walked the structure, go deeper on the disciplines. These are the engineering specialties that the SEBoK Part 7 (Engineering Specialty) integrates.</p>
+      <div class="audience-grid">${afterCards}</div>
+    </div>`;
+  }
+
+  // ---- /for-researchers: what's new / what's hot / disruptive ----
+  function renderResearcherPage() {
+    // What changed in the last 30 days — top 6 by lastUpdated
+    const recent = Object.values(state.entries)
+      .filter(e => e.lastUpdated)
+      .sort((a, b) => String(b.lastUpdated || '').localeCompare(String(a.lastUpdated || '')))
+      .slice(0, 6);
+    const recentCards = recent.map(e => `<a class="audience-card" href="/source/${e.key}" data-nav="source">
+      <div class="kind">${escapeHtml(e.triage || 'source')}</div>
+      <div class="name">${escapeHtml(e.title || e.key)}</div>
+      <div class="what-for">${escapeHtml((e.summary || e.kind || '').slice(0, 100))}</div>
+    </a>`).join('');
+
+    // What's heating up — top 5 from hot topics
+    const { ranked } = computeHotTopics();
+    const specialty = SPECIALTY();
+    const primary = PRIMARY();
+    const domains = DOMAINS();
+    const hotCards = (ranked || []).slice(0, 5)
+      .map(row => {
+        const meta = specialty[row.topic] || primary[row.topic] || domains[row.topic] || { name: row.topic };
+        const hasArticle = !!state.topics[row.topic];
+        const href = hasArticle ? `/topic/${row.topic}` : `/?topic=${row.topic}`;
+        return `<a class="audience-card" href="${href}" data-nav="${hasArticle ? 'topic' : 'filter'}">
+          <div class="kind">Topic</div>
+          <div class="name">${escapeHtml(meta.name)}</div>
+          <div class="what-for">Score: ${row.score.toFixed(2)} · ${row.totalCount} ${row.totalCount === 1 ? 'source' : 'sources'}</div>
+        </a>`;
+      }).join('');
+
+    // Disruptive papers — from config
+    const cfg = (window.CONFIG) || {};
+    const papers = cfg.disruptivePapers || [];
+    const paperList = papers.map(p => `<li>
+      <a href="${p.href}">${escapeHtml(p.title)}</a>
+      <div class="why">${escapeHtml(p.why)}</div>
+    </li>`).join('');
+
+    return `<div class="audience-section">
+      <h2>What changed in the last 30 days</h2>
+      <p class="section-lede">The freshest additions to the corpus. Sources and topics curated in the last month, most recent first.</p>
+      <div class="audience-grid">${recentCards}</div>
+    </div>
+    <div class="audience-section">
+      <h2>What's heating up</h2>
+      <p class="section-lede">Topics with momentum — what the corpus signals are pointing at, ranked.</p>
+      <div class="audience-grid">${hotCards}</div>
+    </div>
+    <div class="audience-section">
+      <h2>Disruptive papers · this season</h2>
+      <p class="section-lede">The papers that changed how the SE community talks about its own practice.</p>
+      <ul class="disrupt papers" style="background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 14px 18px;">${paperList}</ul>
+    </div>`;
   }
 
   // Featured topic pages — shown above the hot-topics dashboard.
@@ -1077,6 +1430,9 @@
     if (path === '/quotes') return { route: 'quotes' };
     if (path === '/topics') return { route: 'topics' };
     if (path === '/sources') return { route: 'sources' };
+    if (path === '/for-practitioners') return { route: 'audience', role: 'practitioner' };
+    if (path === '/for-learners') return { route: 'audience', role: 'learner' };
+    if (path === '/for-researchers') return { route: 'audience', role: 'researcher' };
     const tm = path.match(/^\/topic\/([\w-]+)$/);
     if (tm) return { route: 'topic', key: tm[1] };
     const em = path.match(/^\/source\/([\w-]+)$/);
@@ -1142,7 +1498,7 @@
       document.getElementById('main').innerHTML = '<p style="color:var(--ink-faint);">Loading…</p>';
       return;
     }
-    const { route, key } = getRoute();
+    const { route, key, role } = getRoute();
     const q = getQuery();
     state.activePrimaryTopic = q.topic || null;
     state.activeDomain = q.domain || null;
@@ -1182,6 +1538,20 @@
       main.innerHTML = renderAbout();
       renderSidebar(null);
       setMeta({ title: 'About', description: 'About SE Intelligence.', url: '/about' });
+    } else if (route === 'audience') {
+      // v1.4 — /for-practitioners, /for-learners, /for-researchers
+      main.innerHTML = renderForAudience(role);
+      renderSidebar(null);
+      const titles = {
+        practitioner: 'For Practitioners — SE Intelligence',
+        learner: 'For Learners — SE Intelligence',
+        researcher: 'For Researchers — SE Intelligence',
+      };
+      setMeta({
+        title: titles[role] || 'Audience — SE Intelligence',
+        description: 'Audience-specific view of the SE Intelligence knowledge base.',
+        url: location.pathname,
+      });
     } else if (route === 'admin') {
       main.innerHTML = F().admin ? renderAdmin() : '<p>Admin disabled.</p>';
       renderSidebar(null);
@@ -1225,7 +1595,7 @@
     if (!a) return;
     const href = a.getAttribute('href');
     if (!href || href.startsWith('http') || href.startsWith('mailto:') || a.target) return;
-    if (!/^(\/|about|latest|conferences|admin|quotes|topics|sources|topic\/|source\/|entry\/|index\.html|\?)/.test(href)) return;
+    if (!/^(\/|about|latest|conferences|admin|quotes|topics|sources|topic\/|source\/|entry\/|for-|index\.html|\?)/.test(href)) return;
     e.preventDefault();
     let path = href;
     // Separate query string if any

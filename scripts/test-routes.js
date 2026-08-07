@@ -3,12 +3,13 @@
  * scripts/test-routes.js — T-03: routing & view tests via Puppeteer.
  *
  * Asserts:
- *   - Home page renders the Knowledge base section + dashboard + hero
+ *   - Home page renders the v1.4 hero + ticker + 3 doors + trending dashboard
  *   - /topics index lists topic pages grouped by topic
  *   - /sources index lists sources grouped by type
  *   - /topic/<key> renders with citations as [n] links + auto references list
  *   - /source/<key> renders with the "Cited in" section
  *   - /entry/<key> legacy URL redirects to /source/<key>
+ *   - /for-practitioners, /for-learners, /for-researchers (v1.4 audience pages)
  *   - 404s show the correct "not found" message
  *   - Clicking a citation in a topic body navigates to the cited source
  *
@@ -46,8 +47,13 @@ function check(name, ok, detail) {
 
   console.log('--- Home page ---\n');
   await visit('/');
-  check('Home: Knowledge base section visible', !!(await page.$('.topics-featured')));
-  check('Home: Hottest topics dashboard visible', !!(await page.$('.hot-topics')));
+  // v1.4 home: 3-line hero + ticker + 3 doors + trending dashboard
+  check('Home: v1.4 hero strip visible', !!(await page.$('.hero-strip-v14')));
+  check('Home: news ticker visible', !!(await page.$('.ticker')));
+  check('Home: 3 doors visible', (await page.$$('.door')).length === 3);
+  check('Home: trending dashboard visible', !!(await page.$('.trending')));
+  check('Home: disruptive panel visible', !!(await page.$('.disrupt')));
+  check('Home: footer strip visible', !!(await page.$('.footer-strip')));
   // Hero lives in the feed component: <span class="kicker"><h1>SE Intelligence</h1>
   check('Home: Hero h1 visible',
     await page.evaluate(() => {
@@ -145,6 +151,44 @@ function check(name, ok, detail) {
   const finalPath = await page.evaluate(() => location.pathname);
   check('Legacy /entry/ redirects to /source/', finalPath === '/source/system-def-mbse-patterns-2025',
     `landed at: ${finalPath}`);
+
+  console.log('\n--- v1.4 audience pages ---\n');
+  // /for-practitioners
+  await visit('/for-practitioners');
+  check('/for-practitioners: audience-page renders',
+    !!(await page.$('.audience-page')));
+  check('/for-practitioners: h1 is "I have a problem."',
+    await page.$eval('.audience-page h1', el => el.textContent.trim()) === 'I have a problem.');
+  check('/for-practitioners: 3 sub-sections',
+    (await page.$$('.audience-section')).length === 3);
+  check('/for-practitioners: by-specialty / by-domain / by-pattern',
+    (await page.$$eval('.audience-section h2', els => els.map(e => e.textContent.trim())))
+      .every(t => /By (specialty|domain|pattern)/.test(t)));
+  // /for-learners
+  await visit('/for-learners');
+  check('/for-learners: audience-page renders',
+    !!(await page.$('.audience-page')));
+  check('/for-learners: h1 is "I want to understand SE."',
+    await page.$eval('.audience-page h1', el => el.textContent.trim()) === 'I want to understand SE.');
+  check('/for-learners: 9 SEBoK Parts in numbered list',
+    (await page.$$('.audience-list li')).length === 9);
+  // /for-researchers
+  await visit('/for-researchers');
+  check('/for-researchers: audience-page renders',
+    !!(await page.$('.audience-page')));
+  check('/for-researchers: h1 is "Show me what\'s new."',
+    await page.$eval('.audience-page h1', el => el.textContent.trim()) === "Show me what's new.");
+  check('/for-researchers: 3 sub-sections',
+    (await page.$$('.audience-section')).length === 3);
+
+  console.log('\n--- v1.4 home page ---\n');
+  await visit('/');
+  check('Home: 3-line hero with ticker', !!(await page.$('.hero-strip-v14')));
+  check('Home: ticker is present', !!(await page.$('.ticker')));
+  check('Home: 3 doors are present', (await page.$$('.door')).length === 3);
+  check('Home: trending dashboard is present', !!(await page.$('.trending')));
+  check('Home: disruptive panel is present', !!(await page.$('.disrupt')));
+  check('Home: footer strip is present', !!(await page.$('.footer-strip')));
 
   console.log('\n--- 404s ---\n');
   await visit('/topic/does-not-exist');
