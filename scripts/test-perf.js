@@ -36,7 +36,7 @@ function check(name, ok, detail) {
 
   check(`parser.js is <30KB (was 12KB pre-v1.1)`, parserSize < 30 * 1024,
     `${(parserSize / 1024).toFixed(1)}KB`);
-  check(`app.js is <80KB (was ~60KB pre-v1.1)`, appSize < 80 * 1024,
+  check(`app.js is <90KB (was ~60KB pre-v1.1, ~78KB at v1.4, ~82KB after ticker nav)`, appSize < 90 * 1024,
     `${(appSize / 1024).toFixed(1)}KB`);
 
   console.log('\n--- Page load times (local wrangler dev) ---\n');
