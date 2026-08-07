@@ -1116,7 +1116,7 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
     grid-template-columns: 40px 1fr 40px;
   }
   .ticker-track {
-    padding-left: 80px;
+    padding-left: 90px;
     height: 100%;
     gap: 24px;  /* gap so the previous item's kind badge isn't on top of the next item's when */
   }
@@ -1139,18 +1139,21 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
      the previous item scrolls to the visible area. The date + title
      is enough info; the kind is shown on the article page itself. */
   .ticker-item .kind { display: none; }
-  /* Compact LIVE label on mobile: dot + small text, no wrap */
+  /* Compact LIVE label on mobile: dot + small text, no wrap.
+     Solid background so previous-item text doesn't bleed through. */
   .ticker .label {
     padding: 0 10px;
     font-size: 9px;
     letter-spacing: 0.05em;
     white-space: nowrap;
+    background: var(--accent-bg);
+    border-right: 1px solid var(--glass-border);
   }
   .ticker .label .pulse { margin-right: 4px; }
   /* Strong left fade hides any peeked text from the previous item */
   .ticker-viewport {
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 24px), transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 24px), transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 70px, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 70px, #000 calc(100% - 24px), transparent 100%);
   }
 }
 
