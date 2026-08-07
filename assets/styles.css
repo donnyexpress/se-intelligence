@@ -1116,7 +1116,7 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
     grid-template-columns: 40px 1fr 40px;
   }
   .ticker-track {
-    padding-left: 76px;
+    padding-left: 110px;
     height: 100%;
   }
   .ticker-item {
@@ -1127,7 +1127,7 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   .ticker-item .what {
     white-space: normal;
     line-height: 1.25;
-    max-width: 220px;
+    max-width: 180px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -1135,6 +1135,11 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   }
   .ticker-item .when { font-size: 10px; }
   .ticker .label { padding: 0 10px; font-size: 10px; }
+  /* Stronger left fade so any peeked badge doesn't read as text */
+  .ticker-viewport {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 100px, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 100px, #000 calc(100% - 24px), transparent 100%);
+  }
 }
 
 /* ----- Three doors ----- */
