@@ -1140,13 +1140,14 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
      is enough info; the kind is shown on the article page itself. */
   .ticker-item .kind { display: none; }
   /* Compact LIVE label on mobile: dot + small text, no wrap.
-     Solid background so previous-item text doesn't bleed through. */
+     Use a high-opacity solid background so previous-item text
+     doesn't bleed through (--accent-bg is only 12% opaque). */
   .ticker .label {
     padding: 0 10px;
     font-size: 9px;
     letter-spacing: 0.05em;
     white-space: nowrap;
-    background: var(--accent-bg);
+    background: rgba(35, 33, 70, 0.95);
     border-right: 1px solid var(--glass-border);
   }
   .ticker .label .pulse { margin-right: 4px; }
