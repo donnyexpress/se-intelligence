@@ -837,15 +837,22 @@
     const uniqueCount = allItems.length / 2;
     const lastIndex = uniqueCount - 1;
 
-    // Compute item width once; we measure the first item's width as the
-    // natural "step" distance. May be re-measured on resize.
-    function getItemWidth() {
-      return allItems[0].getBoundingClientRect().width;
+    // Compute the "step" distance between items. This is the item's width
+    // plus the flex gap (if any) on the track. Each "next" press should
+    // shift the track by exactly this distance.
+    function getStep() {
+      const w = allItems[0].getBoundingClientRect().width;
+      // The track may have a CSS gap. Measure the offset between two items
+      // rather than just the item width, so the math is robust to gap.
+      if (allItems.length < 2) return w;
+      const a = allItems[0].getBoundingClientRect();
+      const b = allItems[1].getBoundingClientRect();
+      return b.left - a.left;
     }
-    let itemWidth = getItemWidth();
+    let step = getStep();
     window.addEventListener('resize', () => {
       // Re-measure; also re-apply the current offset at the new scale.
-      itemWidth = getItemWidth();
+      step = getStep();
       applyOffset();
     });
 
@@ -881,7 +888,7 @@
     }
 
     function applyOffset() {
-      const offset = -position * itemWidth;
+      const offset = -position * step;
       track.style.transform = `translateX(${offset}px)`;
       // Update disabled state (clamp position defensively)
       const clamped = Math.max(0, Math.min(position, lastIndex));
