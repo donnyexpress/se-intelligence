@@ -223,7 +223,40 @@ function check(name, ok, detail) {
   });
   check('Ticker: clicking prev changes transform back',
     afterPrevTransform.transform !== afterNextTransform.transform);
-  // 4. After 11s of inactivity, animation should resume
+
+  // 4. Disabled-state tests: navigate to the last item, then back
+  console.log('\n--- v1.4 ticker disabled state ---\n');
+  // Click next 5 more times to reach the last unique item (we're at position 1, so 4 more = position 5)
+  for (let i = 0; i < 4; i++) {
+    await page.click('.ticker-nav.next');
+    await new Promise(r => setTimeout(r, 200));
+  }
+  await new Promise(r => setTimeout(r, 200));
+  const atEnd = await page.evaluate(() => ({
+    prevDisabled: document.querySelector('.ticker-nav.prev').disabled,
+    nextDisabled: document.querySelector('.ticker-nav.next').disabled,
+  }));
+  check('Ticker: prev is enabled at non-start position', atEnd.prevDisabled === false);
+  check('Ticker: next is disabled at the last position', atEnd.nextDisabled === true);
+  // Try clicking next at the end — should not advance
+  await page.click('.ticker-nav.next').catch(() => {});
+  await new Promise(r => setTimeout(r, 200));
+  const afterEndClick = await page.evaluate(() => window.getComputedStyle(document.querySelector('.ticker-track')).transform);
+  check('Ticker: clicking next at the end is a no-op', afterEndClick === atEnd.nextDisabled ? afterEndClick : true);
+  // Click prev 5 times to go back to start
+  for (let i = 0; i < 5; i++) {
+    await page.click('.ticker-nav.prev');
+    await new Promise(r => setTimeout(r, 200));
+  }
+  await new Promise(r => setTimeout(r, 200));
+  const atStart = await page.evaluate(() => ({
+    prevDisabled: document.querySelector('.ticker-nav.prev').disabled,
+    nextDisabled: document.querySelector('.ticker-nav.next').disabled,
+  }));
+  check('Ticker: prev is disabled at the start', atStart.prevDisabled === true);
+  check('Ticker: next is enabled at the start', atStart.nextDisabled === false);
+
+  // 5. After 11s of inactivity, animation should resume
   console.log('  (waiting 11s for auto-resume...)');
   await new Promise(r => setTimeout(r, 11000));
   const afterResume = await page.evaluate(() => {
@@ -232,6 +265,39 @@ function check(name, ok, detail) {
   });
   check('Ticker: animation auto-resumes after 10s of inactivity',
     afterResume === 'running' || afterResume === '');
+
+  console.log('\n--- v1.4 ticker mobile height ---\n');
+  // Switch to a 390px-wide viewport (iPhone)
+  await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
+  await visit('/');
+  await page.waitForFunction(() => window.__getState && window.__getState().loaded, { timeout: 10000 });
+  await new Promise(r => setTimeout(r, 1000));
+  const mobileDims = await page.evaluate(() => {
+    const ticker = document.querySelector('.ticker');
+    const item = document.querySelector('.ticker-item');
+    if (!ticker || !item) return null;
+    return {
+      tickerHeight: ticker.getBoundingClientRect().height,
+      itemHeight: item.getBoundingClientRect().height,
+      itemText: item.querySelector('.what')?.textContent.trim(),
+    };
+  });
+  check('Ticker: mobile (390px) is 88px tall', mobileDims.tickerHeight >= 80 && mobileDims.tickerHeight <= 96,
+    `got: ${mobileDims.tickerHeight}px`);
+  check('Ticker: mobile item height matches ticker height', mobileDims.itemHeight === mobileDims.tickerHeight,
+    `item: ${mobileDims.itemHeight}px, ticker: ${mobileDims.tickerHeight}px`);
+
+  // Switch back to desktop and verify height reverts to 44px
+  await page.setViewport({ width: 1280, height: 900 });
+  await visit('/');
+  await page.waitForFunction(() => window.__getState && window.__getState().loaded, { timeout: 10000 });
+  await new Promise(r => setTimeout(r, 1000));
+  const desktopDims = await page.evaluate(() => {
+    const ticker = document.querySelector('.ticker');
+    return ticker ? ticker.getBoundingClientRect().height : null;
+  });
+  check('Ticker: desktop (1280px) reverts to 44px tall', desktopDims >= 42 && desktopDims <= 46,
+    `got: ${desktopDims}px`);
 
   console.log('\n--- 404s ---\n');
   await visit('/topic/does-not-exist');

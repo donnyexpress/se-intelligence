@@ -811,7 +811,10 @@
   // The ticker is a single instance on the home page, so we attach
   // event handlers once per render. Behavior:
   //   - Click prev/next: shift the track by ~one item width
+  //   - At the first article, the prev button is disabled
+  //   - At the last article, the next button is disabled
   //   - Pause auto-scroll for 10s (so the user can read what they navigated to)
+  //   - On auto-resume, reset to the first article
   //   - On reduced-motion: start paused; buttons still work
   //   - On focus or hover: pause
   //   - Keyboard: ArrowLeft/ArrowRight on the ticker also work
@@ -827,19 +830,31 @@
     if (ticker.dataset.wired === '1') return;
     ticker.dataset.wired = '1';
 
-    // Compute item width once; the track has N items × 2 (duplicated) so
-    // we measure the first item's width as the natural "step" distance.
-    const firstItem = track.querySelector('.ticker-item');
-    if (!firstItem) return;
-    const itemWidth = firstItem.getBoundingClientRect().width;
+    // The track contains N unique items × 2 (duplicated for seamless loop).
+    // We measure the half-count: the maximum usable index is N-1.
+    const allItems = track.querySelectorAll('.ticker-item');
+    if (allItems.length < 2) return;
+    const uniqueCount = allItems.length / 2;
+    const lastIndex = uniqueCount - 1;
+
+    // Compute item width once; we measure the first item's width as the
+    // natural "step" distance. May be re-measured on resize.
+    function getItemWidth() {
+      return allItems[0].getBoundingClientRect().width;
+    }
+    let itemWidth = getItemWidth();
+    window.addEventListener('resize', () => {
+      // Re-measure; also re-apply the current offset at the new scale.
+      itemWidth = getItemWidth();
+      applyOffset();
+    });
 
     // Detect reduced-motion at runtime (not just via CSS media query).
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Each "next" press advances the track by one item width to the LEFT.
-    // We track a manual offset; when 0, the track is at its animated position
-    // (which keeps moving via the CSS animation unless paused).
-    let manualOffset = 0;
+    // We track a logical position (0..lastIndex) instead of a pixel offset.
+    // The pixel offset is derived: offset = -position * itemWidth.
+    let position = 0;
     let resumeTimer = null;
     const RESUME_MS = 10000;
 
@@ -852,21 +867,40 @@
       if (reducedMotion) return;  // never auto-resume for reduced-motion
       if (resumeTimer) clearTimeout(resumeTimer);
       resumeTimer = setTimeout(() => {
+        position = 0;
+        // Clear the inline transform so the animation can take over.
+        // The animation starts at translateX(0), so this snaps cleanly.
+        track.style.transform = '';
+        // Re-enable prev (next stays enabled).
+        prev.disabled = false;
+        next.disabled = (lastIndex <= 0);
         ticker.classList.remove('is-paused');
         track.style.animationPlayState = 'running';
-        manualOffset = 0;
-        track.style.transform = '';  // let animation take over
         resumeTimer = null;
       }, RESUME_MS);
     }
 
+    function applyOffset() {
+      const offset = -position * itemWidth;
+      track.style.transform = `translateX(${offset}px)`;
+      // Update disabled state (clamp position defensively)
+      const clamped = Math.max(0, Math.min(position, lastIndex));
+      prev.disabled = (clamped <= 0);
+      next.disabled = (clamped >= lastIndex);
+    }
+
     function advance(direction) {
       // direction: -1 (prev) or +1 (next)
-      manualOffset += direction * itemWidth;
-      track.style.transform = `translateX(${manualOffset}px)`;
+      const newPos = position + direction;
+      if (newPos < 0 || newPos > lastIndex) return;  // bound check
+      position = newPos;
+      applyOffset();
       pause('user');
       scheduleResume();
     }
+
+    // Initialize disabled state
+    applyOffset();
 
     prev.addEventListener('click', () => advance(-1));
     next.addEventListener('click', () => advance(+1));

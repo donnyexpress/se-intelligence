@@ -197,6 +197,15 @@ check('app.js wireTicker handles ArrowLeft/ArrowRight keys', /ArrowLeft/.test(ap
 check('app.js wireTicker detects prefers-reduced-motion', /prefers-reduced-motion: reduce/.test(appRaw));
 check('app.js ticker has aria-label', /aria-label="Recent additions"/.test(appRaw));
 check('app.js wireTicker is called from home render path', /wireTicker\(\)/.test(appRaw));
+check('CSS has mobile breakpoint for ticker height', /@media\s*\(max-width:\s*600px\)\s*\{[^}]*\.ticker\s*\{[^}]*height:\s*88px/m.test(cssRaw));
+check('CSS ticker-item .what allows text wrap on mobile', /\.ticker-item\s+\.what\s*\{[^}]*white-space:\s*normal/m.test(cssRaw));
+check('app.js wireTicker tracks logical position (not just pixel offset)', /let\s+position\s*=\s*0/.test(appRaw));
+check('app.js wireTicker sets prev.disabled when at start', /prev\.disabled\s*=\s*\(/.test(appRaw));
+check('app.js wireTicker sets next.disabled when at end', /next\.disabled\s*=\s*\(/.test(appRaw));
+check('app.js wireTicker clamps position to lastIndex', /lastIndex/.test(appRaw));
+check('CSS .ticker-nav[disabled] has cursor:not-allowed', /\.ticker-nav\[disabled\][^}]*not-allowed/m.test(cssRaw));
+check('CSS .ticker-nav[disabled] has pointer-events:none', /\.ticker-nav\[disabled\][^}]*pointer-events:\s*none/m.test(cssRaw));
+check('CSS .ticker-nav[disabled] has reduced opacity', /\.ticker-nav\[disabled\][^}]*opacity/m.test(cssRaw));
 
 console.log(`\n==================================================`);
 console.log(`  ${pass} passed, ${fail} failed`);

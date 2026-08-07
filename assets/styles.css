@@ -986,6 +986,7 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   grid-template-columns: 44px 1fr 44px;
   align-items: stretch;
   overflow: hidden;
+  min-height: 44px;
 }
 .ticker-viewport {
   position: relative;
@@ -1019,7 +1020,12 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
 .ticker-nav:active { background: var(--accent-bg); }
 .ticker-nav.prev { border-right: 1px solid var(--rule); }
 .ticker-nav.next { border-left: 1px solid var(--rule); }
-.ticker-nav[disabled] { color: var(--glass-bold); cursor: default; }
+.ticker-nav[disabled] {
+  color: var(--glass-bold);
+  cursor: not-allowed;
+  opacity: 0.4;
+  pointer-events: none;
+}
 .ticker .label {
   position: absolute;
   left: 0; top: 0; bottom: 0;
@@ -1080,7 +1086,9 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   text-decoration: none;
   border-right: 1px solid var(--rule);
   height: 44px;
+  flex: 0 0 auto;
 }
+.ticker-item .what { white-space: nowrap; }
 .ticker-item:hover { color: var(--link); background: var(--glass-bold); }
 .ticker-item .when {
   font-size: 11px;
@@ -1100,6 +1108,34 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
 }
 .ticker-item .kind.new { color: var(--triage-watch); border-color: rgba(74,222,128,0.3); }
 .ticker-item .kind.featured { color: var(--accent); border-color: rgba(167,139,250,0.3); }
+
+/* Ticker on mobile: taller, allow article text to wrap to 2 lines */
+@media (max-width: 600px) {
+  .ticker {
+    height: 88px;
+    grid-template-columns: 40px 1fr 40px;
+  }
+  .ticker-track {
+    padding-left: 76px;
+    height: 100%;
+  }
+  .ticker-item {
+    height: 88px;
+    padding: 8px 16px;
+    align-items: center;
+  }
+  .ticker-item .what {
+    white-space: normal;
+    line-height: 1.25;
+    max-width: 220px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .ticker-item .when { font-size: 10px; }
+  .ticker .label { padding: 0 10px; font-size: 10px; }
+}
 
 /* ----- Three doors ----- */
 .doors {
