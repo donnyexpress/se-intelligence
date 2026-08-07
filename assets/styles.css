@@ -1068,7 +1068,7 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
 }
 .ticker:hover .ticker-track { animation-play-state: paused; }
 .ticker.is-paused .ticker-track {
-  animation-play-state: paused;
+  animation: none;
   /* When paused by user, the transform is set inline via JS. */
   transition: transform 0.25s ease-out;
 }
