@@ -1425,21 +1425,28 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
     gap: 0;  /* items take full width — no gap needed */
   }
   .ticker-item {
-    /* Each item fills the available width (track has padding-left 90px
-       for the LIVE label; item width = track_width - 90 = viewport
-       - 40*2 - 90 = viewport - 170px). cap at 500 so it doesn't get
-       unwieldy. */
-    width: calc(100% - 90px);
+    /* Item takes the full width of the track (1fr). The track is the
+       1fr middle column of the ticker grid (40px | 1fr | 40px). With
+       padding-left 90 for the LIVE label, the visible area inside
+       the item is item_width - 90 - padding. The .what flexes to
+       fill the remaining space after the .when. */
+    width: 100%;
     max-width: 500px;
     height: 88px;
     padding: 8px 0;
     align-items: center;
     display: flex;
     flex: 0 0 auto;
+    box-sizing: border-box;
   }
-  .ticker-item .when { flex: 0 0 auto; margin-right: 8px; font-size: 10px; }
+  .ticker-item .when {
+    flex: 0 0 auto;
+    margin-right: 8px;
+    font-size: 10px;
+    white-space: nowrap;
+  }
   .ticker-item .what {
-    flex: 1 1 0;
+    flex: 1 1 auto;
     min-width: 0;  /* allow shrink so text wraps */
     white-space: normal;
     line-height: 1.25;
