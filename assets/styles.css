@@ -1109,7 +1109,8 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
 .ticker-item .kind.new { color: var(--triage-watch); border-color: rgba(74,222,128,0.3); }
 .ticker-item .kind.featured { color: var(--accent); border-color: rgba(167,139,250,0.3); }
 
-/* Ticker on mobile: taller, allow article text to wrap to 2 lines */
+/* Ticker on mobile: items span the full viewport so article text
+   wraps based on available space (up to 2 lines). */
 @media (max-width: 600px) {
   .ticker {
     height: 88px;
@@ -1118,30 +1119,35 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   .ticker-track {
     padding-left: 90px;
     height: 100%;
-    gap: 24px;  /* gap so the previous item's kind badge isn't on top of the next item's when */
+    gap: 0;  /* items take full width — no gap needed */
   }
   .ticker-item {
+    /* Each item fills the viewport width (track has padding-left 90px for
+       the LIVE label; item width = track_width - 90 = viewport - 40*2 - 90
+       = viewport - 170px). cap at 500 so it doesn't get unwieldy. */
+    width: calc(100% - 90px);
+    max-width: 500px;
     height: 88px;
     padding: 8px 0;
     align-items: center;
+    display: flex;
+    flex: 0 0 auto;
   }
+  .ticker-item .when { flex: 0 0 auto; margin-right: 8px; font-size: 10px; }
   .ticker-item .what {
+    flex: 1 1 0;
+    min-width: 0;  /* allow shrink so text wraps */
     white-space: normal;
     line-height: 1.25;
-    max-width: 180px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  .ticker-item .when { font-size: 10px; }
-  /* Hide the .kind badge on mobile — it overlaps the LIVE label when
-     the previous item scrolls to the visible area. The date + title
-     is enough info; the kind is shown on the article page itself. */
+  /* Hide the .kind badge on mobile — the date + title is enough;
+     the kind is shown on the article page itself. */
   .ticker-item .kind { display: none; }
-  /* Compact LIVE label on mobile: dot + small text, no wrap.
-     Use a high-opacity solid background so previous-item text
-     doesn't bleed through (--accent-bg is only 12% opaque). */
+  /* Compact LIVE label on mobile: dot + small text, no wrap. */
   .ticker .label {
     padding: 0 10px;
     font-size: 9px;
