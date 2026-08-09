@@ -823,8 +823,8 @@
     return `<div class="ticker" aria-label="Recent additions" tabindex="0">
       <button class="ticker-nav prev" type="button" aria-label="Previous item">‹</button>
       <div class="ticker-viewport">
-        <div class="ticker-track">${allItems}</div>
         <div class="label"><span class="pulse"></span>${escapeHtml(cfg.labelText || 'live')}</div>
+        <div class="ticker-track">${allItems}</div>
       </div>
       <button class="ticker-nav next" type="button" aria-label="Next item">›</button>
     </div>`;

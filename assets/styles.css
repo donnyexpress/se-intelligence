@@ -992,8 +992,10 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   position: relative;
   overflow: hidden;
   height: 100%;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+  display: flex;
+  align-items: stretch;
+  /* No mask — the LIVE label and the ticker-track are now separate
+     flex children, so article text never bleeds into the LIVE area. */
 }
 .ticker-nav {
   background: transparent;
@@ -1027,20 +1029,21 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   pointer-events: none;
 }
 .ticker .label {
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
+  /* In-flow flex child (not absolute). Sits in its own column to the
+     left of the ticker-track, so article text can never overlap it. */
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   padding: 0 14px;
-  background: linear-gradient(90deg, var(--accent-bg), transparent);
+  background: var(--accent-bg);
   color: var(--accent);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
-  z-index: 2;
   border-right: 1px solid var(--glass-border);
   pointer-events: none;
+  white-space: nowrap;
 }
 .ticker .label .pulse {
   display: inline-block;
@@ -1057,14 +1060,25 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
 }
 .ticker-track {
+  /* Flex child of .ticker-viewport. Sits in its own column to the
+     right of the LIVE label. On desktop, the track takes its intrinsic
+     width (sum of items) and overflows the viewport, which clips it.
+     On mobile, the track is set to width:100% of the viewport so items
+     fill the available space (see the @media (max-width: 600px) block). */
+  flex: 0 0 auto;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 0;
-  padding-left: 80px;
   white-space: nowrap;
   height: 100%;
   animation: ticker-scroll 50s linear infinite;
   will-change: transform;
+  /* Fade the right edge so the next item doesn't clip abruptly.
+     The left edge fades too so items sliding out don't cut sharply
+     against the LIVE label edge. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
 }
 .ticker:hover .ticker-track { animation-play-state: paused; }
 .ticker.is-paused .ticker-track {
@@ -1407,8 +1421,6 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
 
 @media (max-width: 880px) {
   .doors, .trend-grid, .footer-strip, .audience-grid { grid-template-columns: 1fr; }
-  .ticker-viewport { -webkit-mask-image: none; mask-image: none; }
-  .ticker-track { padding-left: 60px; }
 }
 /* Ticker on mobile: items span the full viewport so article text
    wraps based on available space (up to 2 lines).
@@ -1420,16 +1432,18 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
     grid-template-columns: 40px 1fr 40px;
   }
   .ticker-track {
-    padding-left: 90px;
+    /* On mobile, the track fills the remaining 1fr space (after the
+       LIVE label and the nav buttons). Items are width:100% of the
+       track, so each item fills the visible area. */
+    flex: 1 1 0;
+    min-width: 0;
     height: 100%;
     gap: 0;  /* items take full width — no gap needed */
   }
   .ticker-item {
-    /* Item takes the full width of the track (1fr). The track is the
-       1fr middle column of the ticker grid (40px | 1fr | 40px). With
-       padding-left 90 for the LIVE label, the visible area inside
-       the item is item_width - 90 - padding. The .what flexes to
-       fill the remaining space after the .when. */
+    /* Item takes the full width of the track. The track is a flex
+       child of the viewport, taking the 1fr column to the right of
+       the LIVE label. */
     width: 100%;
     max-width: 500px;
     height: 88px;
@@ -1468,11 +1482,9 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
     border-right: 1px solid var(--glass-border);
   }
   .ticker .label .pulse { margin-right: 4px; }
-  /* Strong left fade hides any peeked text from the previous item */
-  .ticker-viewport {
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 70px, #000 calc(100% - 24px), transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 70px, #000 calc(100% - 24px), transparent 100%);
-  }
+  /* No mask on the viewport — the LIVE label is a separate flex column
+     now, so article text can never peek into the LIVE area. The track
+     has its own right-edge fade in the base CSS. */
 }
 
 
