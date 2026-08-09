@@ -1109,60 +1109,6 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
 .ticker-item .kind.new { color: var(--triage-watch); border-color: rgba(74,222,128,0.3); }
 .ticker-item .kind.featured { color: var(--accent); border-color: rgba(167,139,250,0.3); }
 
-/* Ticker on mobile: items span the full viewport so article text
-   wraps based on available space (up to 2 lines). */
-@media (max-width: 600px) {
-  .ticker {
-    height: 88px;
-    grid-template-columns: 40px 1fr 40px;
-  }
-  .ticker-track {
-    padding-left: 90px;
-    height: 100%;
-    gap: 0;  /* items take full width — no gap needed */
-  }
-  .ticker-item {
-    /* Each item fills the viewport width (track has padding-left 90px for
-       the LIVE label; item width = track_width - 90 = viewport - 40*2 - 90
-       = viewport - 170px). cap at 500 so it doesn't get unwieldy. */
-    width: calc(100% - 90px);
-    max-width: 500px;
-    height: 88px;
-    padding: 8px 0;
-    align-items: center;
-    display: flex;
-    flex: 0 0 auto;
-  }
-  .ticker-item .when { flex: 0 0 auto; margin-right: 8px; font-size: 10px; }
-  .ticker-item .what {
-    flex: 1 1 0;
-    min-width: 0;  /* allow shrink so text wraps */
-    white-space: normal;
-    line-height: 1.25;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  /* Hide the .kind badge on mobile — the date + title is enough;
-     the kind is shown on the article page itself. */
-  .ticker-item .kind { display: none; }
-  /* Compact LIVE label on mobile: dot + small text, no wrap. */
-  .ticker .label {
-    padding: 0 10px;
-    font-size: 9px;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-    background: rgba(35, 33, 70, 0.95);
-    border-right: 1px solid var(--glass-border);
-  }
-  .ticker .label .pulse { margin-right: 4px; }
-  /* Strong left fade hides any peeked text from the previous item */
-  .ticker-viewport {
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 70px, #000 calc(100% - 24px), transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 70px, #000 calc(100% - 24px), transparent 100%);
-  }
-}
 
 /* ----- Three doors ----- */
 .doors {
@@ -1464,6 +1410,64 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   .ticker-viewport { -webkit-mask-image: none; mask-image: none; }
   .ticker-track { padding-left: 60px; }
 }
+/* Ticker on mobile: items span the full viewport so article text
+   wraps based on available space (up to 2 lines).
+   This block must come AFTER the @media (max-width: 880px) block
+   below so it wins for the overlap range. */
+@media (max-width: 600px) {
+  .ticker {
+    height: 88px;
+    grid-template-columns: 40px 1fr 40px;
+  }
+  .ticker-track {
+    padding-left: 90px;
+    height: 100%;
+    gap: 0;  /* items take full width — no gap needed */
+  }
+  .ticker-item {
+    /* Each item fills the available width (track has padding-left 90px
+       for the LIVE label; item width = track_width - 90 = viewport
+       - 40*2 - 90 = viewport - 170px). cap at 500 so it doesn't get
+       unwieldy. */
+    width: calc(100% - 90px);
+    max-width: 500px;
+    height: 88px;
+    padding: 8px 0;
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+  }
+  .ticker-item .when { flex: 0 0 auto; margin-right: 8px; font-size: 10px; }
+  .ticker-item .what {
+    flex: 1 1 0;
+    min-width: 0;  /* allow shrink so text wraps */
+    white-space: normal;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* Hide the .kind badge on mobile — the date + title is enough;
+     the kind is shown on the article page itself. */
+  .ticker-item .kind { display: none; }
+  /* Compact LIVE label on mobile: dot + small text, no wrap. */
+  .ticker .label {
+    padding: 0 10px;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    background: rgba(35, 33, 70, 0.95);
+    border-right: 1px solid var(--glass-border);
+  }
+  .ticker .label .pulse { margin-right: 4px; }
+  /* Strong left fade hides any peeked text from the previous item */
+  .ticker-viewport {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 70px, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 70px, #000 calc(100% - 24px), transparent 100%);
+  }
+}
+
 
 @media (prefers-reduced-motion: reduce) {
   /* Disable the auto-scroll animation but keep the ticker visible and
