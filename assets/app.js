@@ -50,6 +50,24 @@
     const day = m[3] ? parseInt(m[3], 10) : null;
     return day ? `${months[parseInt(m[2], 10) - 1]} ${day}, ${m[1]}` : `${months[parseInt(m[2], 10) - 1]} ${m[1]}`;
   }
+  // Short date for the ticker on mobile (where horizontal space is tight).
+  // Returns "Aug 5" (no year) for current-year dates, otherwise "Aug 2024".
+  function formatDateShort(iso) {
+    if (!iso) return '';
+    if (iso instanceof Date) {
+      if (isNaN(iso.getTime())) return '';
+      iso = iso.toISOString();
+    }
+    const m = String(iso).match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);
+    if (!m) return String(iso);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const day = m[3] ? parseInt(m[3], 10) : null;
+    const thisYear = new Date().getFullYear();
+    const isThisYear = parseInt(m[1], 10) === thisYear;
+    if (day && isThisYear) return `${months[parseInt(m[2], 10) - 1]} ${day}`;
+    if (day) return `${months[parseInt(m[2], 10) - 1]} ${day}, ${m[1].slice(2)}`;
+    return `${months[parseInt(m[2], 10) - 1]} ${m[1]}`;
+  }
   function daysAgo(iso) {
     if (!iso) return Infinity;
     const d = new Date(iso);
@@ -789,9 +807,14 @@
   function renderTicker(items) {
     const cfg = (window.CONFIG && window.CONFIG.ticker) || { labelText: 'live' };
     if (!items || items.length === 0) return '';
+    // On narrow viewports the .when (date) takes too much space, so use
+    // a short format ("Aug 5") instead of "August 5, 2026". This gives
+    // the article title more room to wrap to 2 lines.
+    const isNarrow = window.matchMedia('(max-width: 600px)').matches;
+    const formatWhen = isNarrow ? formatDateShort : formatDate;
     const itemHtml = items.map(t => `
       <a class="ticker-item" href="${t.href}" data-nav="source">
-        <span class="when">${escapeHtml(formatDate(t.date))}</span>
+        <span class="when">${escapeHtml(formatWhen(t.date))}</span>
         <span class="what">${t.isFeatured ? '<strong>NEW</strong> ' : ''}${escapeHtml(t.label)}</span>
         <span class="kind ${t.kind}">${escapeHtml(t.kind)}</span>
       </a>`).join('');
