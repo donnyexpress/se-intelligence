@@ -35,6 +35,10 @@ window.TOPIC_KEYS = [
   'auto',
   'health',
   'energy',
+  'infra',
+  'space',
+  'manufacturing',
+  'finance',
   // Practice areas — cross-cutting engineering practice
   'reliab',
   'observ',

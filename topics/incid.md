@@ -13,7 +13,7 @@ Every claim is cited to a real source — click the bracketed numbers to jump to
 
 ## Why it matters
 
-Most systems run most of the time. The interesting moments are the failures. The incident management discipline is what determines whether a failure is a learning experience (the system gets better) or a recurring experience (the system gets worse). The Tail at Scale paper [reliab-meta-storage-tail-aware], the Jepsen etcd 3.5 analysis [dist-sys-jepsen-etcd-3-5], and the IW 2024 Resilient Systems track [conf-iw2024-resilient-systems] all show that the postmortem and the prevention are where the wins are.
+Most systems run most of the time. The interesting moments are the failures. The incident management discipline is what determines whether a failure is a learning experience (the system gets better) or a recurring experience (the system gets worse). The Tail at Scale paper [reliab-meta-storage-tail-aware], the Jepsen etcd 3.5 analysis [dist-sys-jepsen-etcd-3-5], and the IW 2024 Resilient Systems track [conf-iw2024-resilient-systems] all show that the postmortem and the prevention are where the wins are. The canonical statement of blameless postmortem practice is the Google SRE chapter on Postmortem Culture [incid-google-sre-postmortem] — the most-cited document in incident-response practice.
 
 ## Basics
 
@@ -61,14 +61,15 @@ Active threads in 2024–2026:
 
 If you only read three things on incidents, read:
 
-1. The Meta storage writeup — what production reliability looks like [reliab-meta-storage-tail-aware]
-2. The Jepsen etcd 3.5 analysis — a real bug, a real postmortem, real lessons [dist-sys-jepsen-etcd-3-5]
-3. The INCOSE IW 2024 Resilient Systems track — current state of the discipline [conf-iw2024-resilient-systems]
+1. The Google SRE Postmortem Culture chapter — the canonical statement of blameless practice [incid-google-sre-postmortem]
+2. The Meta storage writeup — what production reliability looks like [reliab-meta-storage-tail-aware]
+3. The Jepsen etcd 3.5 analysis — a real bug, a real postmortem, real lessons [dist-sys-jepsen-etcd-3-5]
 
 ## References
 
-1. Meta storage — 40% p99 reduction via tail-aware scheduling
-2. Jepsen — anomaly in etcd 3.5 linearizable reads
-3. Resilient Systems of Systems — IW 2024 (Torrance)
-4. JAXA — LLM-augmented MBSE / incident analysis (IS 2025)
-5. Service life extension patterns
+1. Google SRE — Postmortem Culture: Learning from Failure
+2. Meta storage — 40% p99 reduction via tail-aware scheduling
+3. Jepsen — anomaly in etcd 3.5 linearizable reads
+4. Resilient Systems of Systems — IW 2024 (Torrance)
+5. JAXA — LLM-augmented MBSE / incident analysis (IS 2025)
+6. Service life extension patterns

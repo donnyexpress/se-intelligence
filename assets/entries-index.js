@@ -51,4 +51,11 @@ const ENTRY_KEYS = [
   'specialty-safety-stpa-leveson-2011',
   'specialty-reliability-fmea-rbd-milhdbk-217',
   'specialty-software-dora-accelerate-2018',
+  // v1.11: fill the 5 empty app domains + 1 practice area
+  'health-iec-62304-2006',
+  'infra-incose-critical-infrastructure-wg',
+  'space-nasa-npr-8705-2c',
+  'manufacturing-rami-40-iec-pas-63088',
+  'finance-cfa-complex-systems-2025',
+  'incid-google-sre-postmortem',
 ];

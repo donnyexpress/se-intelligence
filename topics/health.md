@@ -13,7 +13,7 @@ Every claim is cited to a real source — click the bracketed numbers to jump to
 
 ## Why it matters
 
-Healthcare is one of the largest and most consequential sectors for systems engineering. The cost of failure is human lives. The regulatory environment is strict. The systems are complex (medical devices, hospital operations, public health programs, electronic health records). And the field is under-served by traditional SE practice — most healthcare software is built by domain experts without SE training. INCOSE has a Healthcare Working Group for this reason.
+Healthcare is one of the largest and most consequential sectors for systems engineering. The cost of failure is human lives. The regulatory environment is strict. The systems are complex (medical devices, hospital operations, public health programs, electronic health records). And the field is under-served by traditional SE practice — most healthcare software is built by domain experts without SE training. INCOSE has a Healthcare Working Group for this reason. The IEC 62304 standard [health-iec-62304-2006] is the de facto process framework for medical device software worldwide.
 
 ## Basics
 
@@ -59,12 +59,13 @@ Active threads in 2024–2025:
 
 If you only read three things on healthcare SE, read:
 
-1. The safety/security co-design patterns — the integration is the hard part [eng-domains-safety-security-co-design]
-2. The HFE-in-prototyping talk — the HFE patterns apply to healthcare [human-factors-rapid-prototyping-zeman-wood-2025]
-3. The lifecycle framework — IEC 62304 / 14971 are the regulatory deliverables
+1. The IEC 62304 standard — the de facto framework for medical device software [health-iec-62304-2006]
+2. The safety/security co-design patterns — the integration is the hard part [eng-domains-safety-security-co-design]
+3. The HFE-in-prototyping talk — the HFE patterns apply to healthcare [human-factors-rapid-prototyping-zeman-wood-2025]
 
 ## References
 
-1. Safety and security co-design in critical systems
-2. Human Factors in Rapid Prototyping — Zeman & Wood, INCOSE San Diego, 2025
-3. INCOSE Systems Engineering Handbook v5 + ISO/IEC 15288:2023 (2023)
+1. IEC 62304:2006/AMD1:2015 — Medical device software life cycle processes
+2. Safety and security co-design in critical systems
+3. Human Factors in Rapid Prototyping — Zeman & Wood, INCOSE San Diego, 2025
+4. INCOSE Systems Engineering Handbook v5 + ISO/IEC 15288:2023 (2023)
