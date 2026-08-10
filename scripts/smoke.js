@@ -166,6 +166,11 @@ check('config doors uses active-voice titles ("I have a problem" etc.)',
   /I have a problem/.test(cfgRaw) && /I want to understand SE/.test(cfgRaw) && /what's new/i.test(cfgRaw));
 check('config has ticker block', /ticker:\s*\{/.test(cfgRaw));
 check('config has disruptivePapers block', /disruptivePapers:/.test(cfgRaw));
+check('app.js has renderHot function for /hot route', /function renderHot/.test(appRaw));
+check('app.js getRoute handles /hot', /path\s*===\s*'\/hot'/.test(appRaw));
+check('app.js about page mentions 3 audience pages', /for-practitioners/.test(appRaw) && /for-learners/.test(appRaw) && /for-researchers/.test(appRaw));
+check('app.js about page is in active voice ("I")', /\bI'm\b|\bI (read|write|add|tag|ship|won't)/.test(appRaw));
+check('sitemap.xml includes /hot', /\/hot/.test(fs.readFileSync('sitemap.xml', 'utf8')));
 check('CSS has .ticker class', /\.ticker\s*\{/.test(cssRaw));
 check('CSS has .ticker-stage for the slideshow stage', /\.ticker-stage\s*\{/.test(cssRaw));
 check('CSS has .ticker-current for the active article', /\.ticker-current\s*\{/.test(cssRaw));

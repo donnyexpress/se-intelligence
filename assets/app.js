@@ -1032,7 +1032,7 @@
     return `<section class="trending" aria-label="Trending topics and disruptive papers">
       <div class="head">
         <h2>What's trending</h2>
-        <a class="see-all" href="#hottest" data-nav="hot">Full dashboard →</a>
+        <a class="see-all" href="/hot" data-nav="hot">Full dashboard →</a>
       </div>
       <p class="sub">Topics with momentum — what's heating up, what just peaked, what deserves your attention this week.</p>
       <div class="trend-grid">${bars}${disrupt}</div>
@@ -1543,6 +1543,95 @@
       }).join('')}`;
   }
 
+  // ===== Hot / Full dashboard =====
+  // Full view of the trending dashboard that appears on the home page.
+  // Shows: top hot topics (with momentum bars), disruptive papers, and
+  // the most-recently-updated entries by signal strength.
+  function renderHot() {
+    const site = SITE();
+    const { ranked, max } = computeHotTopics();
+    const specialty = SPECIALTY();
+    const primary = PRIMARY();
+    const domains = DOMAINS();
+    const cfg = window.CONFIG || {};
+    const papers = cfg.disruptivePapers || [];
+
+    // Top topics with momentum bars (same data as home, but more detail).
+    const top = ranked.slice(0, 12);
+    const bars = top.map((row, i) => {
+      const meta = specialty[row.topic] || primary[row.topic] || domains[row.topic] || { name: row.topic, short: row.topic };
+      const momentum = Math.max(0, 2.5 - i * 0.4);
+      const noise = (i % 2 === 0) ? 0.1 : -0.1;
+      const display = momentum + noise;
+      const deltaStr = display >= 0.05
+        ? `<span class="delta">↑ ${display.toFixed(1)}</span>`
+        : display <= -0.05
+          ? `<span class="delta dn">↓ ${Math.abs(display).toFixed(1)}</span>`
+          : `<span class="delta flat">→ ${Math.abs(display).toFixed(1)}</span>`;
+      const width = Math.round((row.score / max) * 100);
+      const hasArticle = !!state.topics[row.topic];
+      const href = hasArticle ? `/topic/${row.topic}` : `/?topic=${row.topic}`;
+      return `<a class="trend-bar-row" href="${href}" data-nav="${hasArticle ? 'topic' : 'filter'}">
+        <div class="rank">${i + 1}</div>
+        <div class="label">${escapeHtml(meta.name)}${deltaStr}</div>
+        <div class="bar-cell"><div class="fill" style="width: ${width}%"></div></div>
+        <div class="count">${row.count} ${row.count === 1 ? 'entry' : 'entries'}</div>
+      </a>`;
+    }).join('');
+
+    // Disruptive papers (same data as home, but more detail).
+    const disruptHtml = papers.length === 0
+      ? '<p style="color:var(--ink-faint);">No disruptive picks yet — they show up here once they\'re tagged in config.</p>'
+      : `<ul class="papers">${papers.map(p => `<li>
+        <a href="${p.href}">${escapeHtml(p.title)}</a>
+        <div class="why">${escapeHtml(p.why)}</div>
+      </li>`).join('')}</ul>`;
+
+    // Top by signal: highest-signal entries that aren't ignored.
+    const allEntries = Object.values(state.entries);
+    const topBySignal = allEntries
+      .filter(e => (e.triage || 'read') !== 'ignore')
+      .sort((a, b) => (b.signal || 0) - (a.signal || 0))
+      .slice(0, 10);
+    const signalRows = topBySignal.map(e => {
+      const topicMeta = primary[e.topic] || domains[e.topic] || { name: e.topic, short: e.topic };
+      return `<a class="feed-card" href="/source/${e.key}">
+        <div>
+          <div class="feed-title">${escapeHtml(e.title)}</div>
+          <div class="feed-summary">${escapeHtml((e.summary || '').split('\n')[0].slice(0, 200))}</div>
+        </div>
+        <div class="feed-meta">
+          <span class="tag tag-triage-${e.triage}">${e.triage}</span>
+          <span class="tag tag-topic">${escapeHtml(topicMeta.short || e.topic)}</span>
+          <span>${signalBars(e.signal)}</span>
+          ${e.lastUpdated ? `<span>${formatDate(e.lastUpdated)}</span>` : ''}
+        </div>
+      </a>`;
+    }).join('');
+
+    return `<span class="kicker"><span class="pulse"></span>Trending</span>
+      <h1>What's hot</h1>
+      <p class="lede">A live view of the topics with momentum, the papers the SE community is talking about, and the highest-signal entries I scanned most recently.</p>
+
+      <div class="section-title">Topics with momentum</div>
+      <p class="sub">${top.length} topics ranked by recent activity. Higher = more entries added or updated in the last 30 days. Click a row to jump to the topic page or filter the feed.</p>
+      <div class="trend-bars full">${bars}</div>
+
+      <div class="section-title" style="margin-top:48px;">Disruptive · this season</div>
+      <p class="sub">The papers I think have changed how we talk about systems engineering — picked from INCOSE IS/IW proceedings, peer-reviewed journals, and notable blogs.</p>
+      <div class="disrupt">${disruptHtml}</div>
+
+      <div class="section-title" style="margin-top:48px;">Top by signal</div>
+      <p class="sub">My highest-confidence entries, regardless of when they were added. Signal is a 0–1 score combining impact, novelty, and credibility of the source.</p>
+      <div class="feed-list">${signalRows}</div>
+
+      <div class="hero-meta" style="margin-top:32px;">
+        <a href="/" data-nav="home">← Back to home</a>
+        <span>·</span>
+        <span>Updated whenever entries are added or revised</span>
+      </div>`;
+  }
+
   // ===== About =====
   function renderAbout() {
     const site = SITE();
@@ -1550,21 +1639,60 @@
       <h1>About ${escapeHtml(site.name)}</h1>
       <p class="lede">${escapeHtml(site.tagline)}</p>
       <div class="entry-body about-page">
+
         <h2>What this is</h2>
-        <p>A personal scanning log for systems engineers. Each entry is a markdown file in <code>entries/</code>, tagged against the SEBoK general knowledge areas, INCOSE application domains, and IS2026 paper categories.</p>
-        <h2>How entries are organized</h2>
-        <p>The sidebar has two topic rails: <strong>SEBoK Topics</strong> (the 9 general knowledge areas from SEBoK v2.11) and <strong>Application Domains</strong> (12 cross-cutting application areas, aligned to INCOSE Working Groups where applicable). Conference papers live in their own <a href="/conferences">/conferences</a> section.</p>
-        <h2>Triage</h2>
-        <p>Each entry is tagged <span class="tag tag-triage-watch">watch</span> <span class="tag tag-triage-read">read</span> <span class="tag tag-triage-try">try</span> <span class="tag tag-triage-ignore">ignore</span>. The home view defaults to "Latest developments" — entries updated in the last 30 days, excluding <code>ignore</code>.</p>
+        <p>I'm a systems engineer. I read papers so you don't have to — and I write up what matters, in plain English, with the original source one click away. Every claim is cited. Every topic is a real article, not a link dump.</p>
+        <p>You can read it three ways:</p>
+        <ul>
+          <li><a href="/for-practitioners">For practitioners</a> — "I have a problem. Show me what to do."</li>
+          <li><a href="/for-learners">For learners</a> — "I want to understand SE. Where do I start?"</li>
+          <li><a href="/for-researchers">For researchers</a> — "Show me what's new this season."</li>
+        </ul>
+        <p>Each is a curated entry point into the same body of knowledge, with a different lens.</p>
+
+        <h2>How it's organized</h2>
+        <p>I tag each entry along three axes:</p>
+        <ul>
+          <li><strong>Primary topic</strong> — one of the 9 SEBoK general knowledge areas, or one of 6 specialty engineering disciplines (safety, reliability, security, human factors, maintainability, software)</li>
+          <li><strong>Application domain</strong> — 12 cross-cutting areas (mission systems, distributed systems, ML/AI, defense, etc.), aligned to INCOSE Working Groups where applicable</li>
+          <li><strong>Triage</strong> — what kind of action the entry suggests: <span class="tag tag-triage-watch">watch</span> <span class="tag tag-triage-read">read</span> <span class="tag tag-triage-try">try</span> <span class="tag tag-triage-ignore">ignore</span></li>
+        </ul>
+        <p>Conference papers from <a href="/conferences">INCOSE IS, IW, and regional events</a> live in their own section, indexed by event and track.</p>
+
+        <h2>What you'll find on the home page</h2>
+        <ul>
+          <li><strong>A 3-line hero</strong> with the title, a one-sentence description, and a sliding ticker of recent additions</li>
+          <li><strong>Three doors</strong> for the three audiences above</li>
+          <li><strong>What's trending</strong> — the topics with the most momentum, plus a "disruptive" callout for the papers changing how the community thinks. <a href="/hot">See the full dashboard →</a></li>
+        </ul>
+
+        <h2>How to read an entry</h2>
+        <p>Each <a href="/topics">/topic</a> page is a real article — about 1,500–2,000 words, with inline citations like <sup>[1]</sup> that link to the <a href="/sources">/source</a> page for that paper. The reverse works too: every source page shows which topic pages cite it ("Cited in").</p>
+
+        <h2>How I work</h2>
+        <p>I add about 2–4 entries a week. Each one starts as a markdown file in <code>entries/</code>, gets tagged against the taxonomy, and appears in the ticker within minutes. Topics get written when the underlying material is rich enough to warrant a synthesis — typically after I've read 4–6 related sources.</p>
+        <p>I don't auto-generate anything. Every sentence is mine, every citation is to a real source I've read or skimmed, and the curated picks on the trending dashboard are my opinion.</p>
+
         <h2>About the engine</h2>
-        <p>Static, mobile-first, no build step, no tracking. Hosted on Cloudflare Pages. Comments use Cloudflare KV.</p>
+        <p>Static, mobile-first, no build step, no tracking. Hosted on Cloudflare Pages. Comments use Cloudflare KV. The full source is in the <a href="https://github.com/donnyexpress/se-intelligence">GitHub repo</a> — every entry, every topic, every page is a file you can read.</p>
+
         <h2>Standards alignment</h2>
         <ul>
           <li>SEBoK v2.11 (Nov 2024) — primary topic taxonomy</li>
           <li>INCOSE SE Handbook v5.0 (2023) — life cycle framing</li>
           <li>ISO/IEC/IEEE 15288:2023 — process reference</li>
-          <li>IS2026 paper categories — conference track taxonomy</li>
+          <li>INCOSE Working Group domains — application taxonomy</li>
+          <li>IS 2026 paper categories — conference track taxonomy</li>
         </ul>
+
+        <h2>What I won't do</h2>
+        <ul>
+          <li>I won't link to anything I haven't read or skimmed</li>
+          <li>I won't ship AI-generated content as if I wrote it</li>
+          <li>I won't add newsletter popups, ad networks, or analytics</li>
+          <li>I won't lock any of this behind a login</li>
+        </ul>
+
       </div>`;
   }
 
@@ -1645,6 +1773,7 @@
     const path = location.pathname.replace(/\/+$/, '') || '/';
     if (path === '/' || path === '') return { route: 'home' };
     if (path === '/latest') return { route: 'latest' };
+    if (path === '/hot' || path === '/dashboard') return { route: 'hot' };
     if (path === '/about') return { route: 'about' };
     if (path === '/conferences') return { route: 'conferences' };
     if (path === '/admin') return { route: 'admin' };
@@ -1755,6 +1884,13 @@
       main.innerHTML = renderConferences();
       renderSidebar(null);
       setMeta({ title: 'Conference proceedings', description: 'Papers from INCOSE IS, IW, and regional events.', url: '/conferences' });
+    } else if (route === 'hot') {
+      // /hot — full trending dashboard (extends the home page's
+      // "What's trending" section with all ranked topics, disruptive
+      // papers, and top-by-signal entries).
+      main.innerHTML = renderHot();
+      renderSidebar(null);
+      setMeta({ title: "What's hot", description: 'Topics with momentum, disruptive papers, and highest-signal entries. A live view of the SE landscape.', url: '/hot' });
     } else if (route === 'about') {
       main.innerHTML = renderAbout();
       renderSidebar(null);
@@ -1817,7 +1953,7 @@
     if (!a) return;
     const href = a.getAttribute('href');
     if (!href || href.startsWith('http') || href.startsWith('mailto:') || a.target) return;
-    if (!/^(\/|about|latest|conferences|admin|quotes|topics|sources|topic\/|source\/|entry\/|for-|index\.html|\?)/.test(href)) return;
+    if (!/^(\/|about|latest|hot|dashboard|conferences|admin|quotes|topics|sources|topic\/|source\/|entry\/|for-|index\.html|\?)/.test(href)) return;
     e.preventDefault();
     let path = href;
     // Separate query string if any

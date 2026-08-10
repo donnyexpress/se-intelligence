@@ -8,20 +8,29 @@ source.
 
 ## What this is
 
-A synthesized knowledge base covering systems engineering. Every topic
-(System Definition, Reliability, Distributed Systems, etc.) is a real
-article — written in the same style as a Wikipedia entry — and every claim
-is cited inline to a real source (paper, blog post, conference paper,
-standard) that the visitor can click through to.
+I'm a systems engineer. I read papers so you don't have to — and I write
+up what matters, in plain English, with the original source one click away.
+Every claim is cited. Every topic is a real article, not a link dump.
 
-- **Two artifact types**: `/topic/<key>` for synthesized articles, `/source/<key>` for the cited references
-- **Inline citations** as `[1]`, `[2]`, etc., with auto-generated numbered references at the bottom
-- **Reverse direction** — every source shows which topic pages cite it ("Cited in")
-- **INCOSE-aligned** — taxonomy matches SEBoK primary topics and application domains
-- **Speed** — no build step, just files
-- **Mobile-first** — works on a phone, scales up
-- **Open data** — everything is in this repo
-- **Search & SEO** — per-topic and per-source meta tags, sitemap, structured data
+You can read it three ways:
+- **For practitioners** (`/for-practitioners`) — "I have a problem. Show me what to do."
+- **For learners** (`/for-learners`) — "I want to understand SE. Where do I start?"
+- **For researchers** (`/for-researchers`) — "Show me what's new this season."
+
+Each is a curated entry point into the same body of knowledge, with a different lens.
+
+## What's in the box
+
+- **30+ cited sources** — papers, blog posts, conference papers, standards, all real
+- **27 topic articles** — 1,500–2,000 words each, with inline citations and a real references list
+- **6 specialty engineering disciplines** — safety, reliability, security, human factors, maintainability, software
+- **9 SEBoK general knowledge areas** — the structural backbone
+- **12 application domains** — defense, mission systems, ML/AI, distributed systems, etc.
+- **Sliding ticker** on the home page — recent additions, auto-advance every 10s, or use the arrows
+- **Trending dashboard** (`/hot`) — topics with momentum + disruptive papers + top-by-signal
+- **Comments on every page** — keyed to topic or source, with admin moderation
+- **Mobile-first** — works on a phone, scales up to desktop
+- **No build step, no tracking, no newsletter** — static site, Cloudflare Pages
 
 ## Architecture
 
