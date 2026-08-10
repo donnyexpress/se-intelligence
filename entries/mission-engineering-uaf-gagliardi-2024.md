@@ -5,7 +5,7 @@ triage: read
 source_type: paper
 signal: 0.76
 maturity: production
-domains: mission, sos
+domains: defense
 source_url: https://www.incose.org/docs/default-source/north_texas/is24_mission_engineering-hoth_example_v28.pdf
 source_label: Read the IS 2024 paper →
 published: 2024-07-15

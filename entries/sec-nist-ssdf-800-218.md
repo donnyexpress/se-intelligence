@@ -5,7 +5,7 @@ triage: read
 source_type: standard
 signal: 0.79
 maturity: production
-domains: sec, eng-domains, platform
+domains: platform
 source_url: https://csrc.nist.gov/pubs/sp/800/218/final
 source_label: NIST SP 800-218 v1.1 (Feb 2022) →
 published: 2022-02-03

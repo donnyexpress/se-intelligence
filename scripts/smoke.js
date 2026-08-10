@@ -61,7 +61,7 @@ for (const [k, e] of Object.entries(entries)) {
   check(`  ${k}: has lastUpdated`, !!e.lastUpdated);
   check(`  ${k}: has triage in {watch,read,try,ignore}`, ['watch','read','try','ignore'].includes(e.triage), `triage: ${e.triage}`);
   check(`  ${k}: signal in 0..1`, e.signal >= 0 && e.signal <= 1, `signal: ${e.signal}`);
-  check(`  ${k}: topic in primary or domain`, !!(CONFIG.primaryTopics[e.topic] || CONFIG.applicationDomains[e.topic]), `topic: ${e.topic}`);
+  check(`  ${k}: topic in primary, domain, or practice`, !!(CONFIG.primaryTopics[e.topic] || CONFIG.applicationDomains[e.topic] || CONFIG.practiceAreas[e.topic]), `topic: ${e.topic}`);
 }
 
 // Conference sources
@@ -119,7 +119,7 @@ if (topicKeys.length > 0) {
   for (const [k, t] of Object.entries(topics)) {
     check(`  ${k}: has title`, !!t.title);
     check(`  ${k}: has lastCurated`, !!t.lastCurated);
-    check(`  ${k}: topicKey in primary or domain`, !!(CONFIG.specialtyTopics[t.topicKey] || CONFIG.primaryTopics[t.topicKey] || CONFIG.applicationDomains[t.topicKey]), `topicKey: ${t.topicKey}`);
+    check(`  ${k}: topicKey in primary, domain, or practice`, !!(CONFIG.specialtyTopics[t.topicKey] || CONFIG.primaryTopics[t.topicKey] || CONFIG.applicationDomains[t.topicKey] || CONFIG.practiceAreas[t.topicKey]), `topicKey: ${t.topicKey}`);
     check(`  ${k}: has ≥1 section`, (t.sections || []).length >= 1, `sections: ${(t.sections || []).length}`);
 
     // Citation validation: every cited key must be a real source

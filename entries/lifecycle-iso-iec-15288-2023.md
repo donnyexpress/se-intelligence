@@ -5,7 +5,6 @@ triage: read
 source_type: rfc
 signal: 0.85
 maturity: production
-domains: management
 source_url: https://www.iso.org/standard/81702.html
 source_label: View on iso.org →
 published: 2023-12-01

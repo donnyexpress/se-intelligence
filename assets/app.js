@@ -16,6 +16,7 @@
     loaded: false,
     activePrimaryTopic: null,
     activeDomain: null,
+    activePractice: null,   // practice area filter
     activeTriage: null,   // null = no filter
   };
 
@@ -26,6 +27,7 @@
   const SPECIALTY = () => (window.CONFIG && window.CONFIG.specialtyTopics) || {};
   const PRIMARY = () => (window.CONFIG && window.CONFIG.primaryTopics) || {};
   const DOMAINS = () => (window.CONFIG && window.CONFIG.applicationDomains) || {};
+  const PRACTICE = () => (window.CONFIG && window.CONFIG.practiceAreas) || {};
   const TRACKS = () => (window.CONFIG && window.CONFIG.tracks) || {};
   const EVENTS = () => (window.CONFIG && window.CONFIG.events) || {};
   const TRIAGE = () => (window.CONFIG && window.CONFIG.triage) || {};
@@ -288,9 +290,11 @@
     const specialty = SPECIALTY();
     const primary = PRIMARY();
     const domains = DOMAINS();
+    const practice = PRACTICE();
     const events = EVENTS();
     const counts = countByField('topic');
     const domainCounts = countByFieldDomains();
+    const practiceCounts = countByFieldPractice();
     const confCount = Object.values(state.entries).filter(e => e.isConference).length;
     const latestCount = countLatest().length;
     const topicCount = state.topicKeys.length;
@@ -344,6 +348,20 @@
         return `<li><a href="${href}"${active} data-nav="${hasArticle ? 'topic' : 'filter'}" data-domain="${k}">${escapeHtml(v.name)} ${badge}</a></li>`;
       }).join('');
 
+    // Practice areas — cross-cutting engineering practice
+    const practiceList = Object.entries(practice)
+      .sort((a, b) => (a[1].order || 99) - (b[1].order || 99))
+      .map(([k, v]) => {
+        const hasArticle = !!state.topics[k];
+        const nCited = hasArticle ? state.topics[k].citations.length : 0;
+        const href = hasArticle ? `/topic/${k}` : `/?practice=${k}`;
+        const active = (state.activePractice === k) || (location.pathname === '/topic/' + k) ? ' class="active"' : '';
+        const badge = hasArticle
+          ? `<span class="count-badge" title="Synthesized article with ${nCited} cited sources">${nCited}</span>`
+          : `<span class="count-badge" title="Sources in this practice area">${practiceCounts[k] || 0}</span>`;
+        return `<li><a href="${href}"${active} data-nav="${hasArticle ? 'topic' : 'filter'}" data-practice="${k}">${escapeHtml(v.name)} ${badge}</a></li>`;
+      }).join('');
+
     const confEventPreview = Object.entries(events)
       .sort((a, b) => (b[1].year || 0) - (a[1].year || 0))
       .slice(0, 4)
@@ -374,6 +392,8 @@
       <h3>Application Domains</h3>
       <ul class="domain-entries">${domainList}</ul>
 
+      ${F().practiceAreas ? `<h3>Practice Areas</h3><ul class="domain-entries">${practiceList}</ul>` : ''}
+
       ${F().conferences && confEventPreview ? `<h3>Recent Conferences</h3><ul class="domain-entries">${confEventPreview}</ul>` : ''}
 
       ${F().admin ? '<div class="sidebar-footer"><a href="/admin" data-nav="admin">Admin</a></div>' : ''}
@@ -395,6 +415,17 @@
       }
       // also count primary topic if it's an app domain
       if (DOMAINS()[e.topic]) out[e.topic] = (out[e.topic] || 0) + 1;
+    }
+    return out;
+  }
+  function countByFieldPractice() {
+    const out = {};
+    for (const e of Object.values(state.entries)) {
+      for (const p of (e.domains || [])) {
+        if (PRACTICE()[p]) out[p] = (out[p] || 0) + 1;
+      }
+      // also count primary topic if it's a practice area
+      if (PRACTICE()[e.topic]) out[e.topic] = (out[e.topic] || 0) + 1;
     }
     return out;
   }
@@ -523,7 +554,7 @@
     const tracks = TRACKS();
     const events = EVENTS();
     const triage = TRIAGE();
-    const topicMeta = primary[e.topic] || DOMAINS()[e.topic] || { name: e.topic, short: e.topic };
+    const topicMeta = primary[e.topic] || DOMAINS()[e.topic] || PRACTICE()[e.topic] || { name: e.topic, short: e.topic };
     const trackMeta = e.track ? tracks[e.track] : null;
     const eventMeta = e.event ? events[e.event] : null;
 
@@ -591,6 +622,26 @@
     const sourceMeta = e.sourceType ? escapeHtml(e.sourceType) : '';
     const maturityMeta = e.maturity ? escapeHtml(e.maturity) : '';
 
+    // Domain + practice tags for the entry header. Each entry's `domains`
+    // field can mix app-domain keys and practice-area keys — we render
+    // each as a clickable chip linking to the corresponding filter view.
+    const domains = DOMAINS();
+    const practice = PRACTICE();
+    const domainChips = (e.domains || [])
+      .map(d => {
+        const isDomain = domains[d];
+        const isPractice = practice[d];
+        if (!isDomain && !isPractice) return null;
+        const label = (isDomain || practice[d]).name;
+        const href = isDomain ? `/?domain=${d}` : `/?practice=${d}`;
+        const cls = isDomain ? 'tag tag-domain' : 'tag tag-practice';
+        const title = isDomain ? `Filter by industry: ${label}` : `Filter by practice: ${label}`;
+        return `<a class="${cls}" href="${href}" data-nav="home" title="${escapeHtml(title)}">${escapeHtml(label)}</a>`;
+      })
+      .filter(Boolean)
+      .join('');
+    const domainChipsHtml = domainChips ? `<div class="entry-domains">${domainChips}</div>` : '';
+
     return `<div class="entry-header">
         <div class="entry-kind">${e.kind} · <span class="tag tag-topic">${escapeHtml(topicMeta.name)}</span></div>
         <h1 class="entry-title">${escapeHtml(e.title)}</h1>
@@ -603,6 +654,7 @@
           ${maturityMeta ? `<span>· ${maturityMeta}</span>` : ''}
           ${e.lastUpdated ? `<span>·</span><span><span class="label">Updated</span> <time datetime="${e.lastUpdated}">${formatDate(e.lastUpdated)}</time></span>` : ''}
         </div>
+        ${domainChipsHtml}
       </div>
       ${confCard}
       <div class="entry-body">${summaryHtml}${sectionHtml}${linksHtml}</div>
@@ -629,7 +681,8 @@
     }
     const primary = PRIMARY();
     const domains = DOMAINS();
-    const topicMeta = primary[t.topicKey] || domains[t.topicKey] || { name: t.topicKey, short: t.topicKey };
+    const practice = PRACTICE();
+    const topicMeta = primary[t.topicKey] || domains[t.topicKey] || practice[t.topicKey] || { name: t.topicKey, short: t.topicKey };
 
     // Render each section as HTML using the citation-aware renderer
     const sectionsHtml = (t.sections || []).map(s =>
@@ -1046,12 +1099,13 @@
     const specialty = SPECIALTY();
     const primary = PRIMARY();
     const domains = DOMAINS();
+    const practice = PRACTICE();
     // Take top 7
     const top = ranked.slice(0, 7);
     const rows = top.map((row, i) => {
       const rank = i + 1;
-      // Look up the topic name from the config (specialty → primary → domain)
-      const meta = specialty[row.topic] || primary[row.topic] || domains[row.topic] || { name: row.topic };
+      // Look up the topic name from the config (specialty → primary → domain → practice)
+      const meta = specialty[row.topic] || primary[row.topic] || domains[row.topic] || practice[row.topic] || { name: row.topic };
       // Synthetic momentum: assume the top-ranked has been growing, and each
       // subsequent rank is plateauing or declining. The top item's delta
       // is positive (growing), others are smaller or zero.
@@ -1110,7 +1164,8 @@
         <ul>
           <li><a href="#specialty" data-nav="home">Specialty engineering</a> — 6 disciplines</li>
           <li><a href="#sebok" data-nav="home">SEBoK Parts 1-9</a> — structural backbone</li>
-          <li><a href="#domains" data-nav="home">Application domains</a> — 12 verticals</li>
+          <li><a href="#domains" data-nav="home">Application domains</a> — 8 verticals</li>
+          <li><a href="#practice" data-nav="home">Practice areas</a> — 7 cross-cutting</li>
         </ul>
       </div>
       <div>
@@ -1195,6 +1250,18 @@
       <div class="what-for">${escapeHtml(p.what)}</div>
     </a>`).join('');
 
+    // By practice — cross-cutting engineering practice (observability, perf, etc.)
+    const practice = PRACTICE();
+    const practiceCards = Object.entries(practice)
+      .sort((a, b) => (a[1].order || 99) - (b[1].order || 99))
+      .map(([k, v]) => {
+        return `<a class="audience-card" href="/?practice=${k}" data-nav="home">
+          <div class="kind">Practice</div>
+          <div class="name">${escapeHtml(v.name)}</div>
+          <div class="what-for">${escapeHtml((v.desc || '').slice(0, 80))}</div>
+        </a>`;
+      }).join('');
+
     return `<div class="audience-section">
       <h2>By specialty</h2>
       <p class="section-lede">When the problem is in a discipline (safety, security, reliability), start here. Each specialty has a synthesized article with patterns, best practices, and research frontiers.</p>
@@ -1206,6 +1273,11 @@
       <div class="audience-grid">${domainCards}</div>
     </div>
     <div class="audience-section">
+      <h2>By practice</h2>
+      <p class="section-lede">When the problem is in a cross-cutting engineering practice (observability, performance, platform), filter the corpus by practice area. These concerns cut across industries and lifecycle stages.</p>
+      <div class="audience-grid">${practiceCards}</div>
+    </div>
+    <div class="audience-section">
       <h2>By pattern</h2>
       <p class="section-lede">When the problem is a recurring pattern (verification, hazard analysis, architecture decision), jump to the topic that covers it.</p>
       <div class="audience-grid">${patternCards}</div>
@@ -1215,7 +1287,10 @@
   // ---- /for-learners: SEBoK Parts 1-9 in order ----
   function renderLearnerPage() {
     const primary = PRIMARY();
+    // Show only the 9 SEBoK Parts (filter out sub-areas like 'sec' which
+    // are sub-pages of Part 7 and would otherwise be a 10th item).
     const ordered = Object.entries(primary)
+      .filter(([k]) => ['sys-fund','lifecycle','concept-def','system-def','realization','deploy-use','eng-domains','management','sos'].includes(k))
       .sort((a, b) => (a[1].order || 99) - (b[1].order || 99));
 
     // Each part: 1-line description from config, link to topic if exists
@@ -1321,6 +1396,7 @@
     const specialty = SPECIALTY();
     const primary = PRIMARY();
     const domains = DOMAINS();
+    const practice = PRACTICE();
     // Sort by last_curated desc, take up to 6
     const recent = topics
       .filter(t => t.lastCurated)
@@ -1328,7 +1404,7 @@
       .slice(0, 6);
     const featured = recent.length ? recent : topics.slice(0, 6);
     const cards = featured.map(t => {
-      const meta = specialty[t.topicKey] || primary[t.topicKey] || domains[t.topicKey] || { name: t.topicKey, short: t.topicKey };
+      const meta = specialty[t.topicKey] || primary[t.topicKey] || domains[t.topicKey] || practice[t.topicKey] || { name: t.topicKey, short: t.topicKey };
       const summary = (t.summary || '').split('\n')[0] || '';
       return `<a class="topic-card" href="/topic/${t.key}">
         <div class="topic-card-kind">Topic · ${escapeHtml(meta.name)}</div>
@@ -1438,9 +1514,17 @@
     if (state.activeDomain) {
       filtered = filtered.filter(e => (e.domains || []).includes(state.activeDomain) || e.topic === state.activeDomain);
     }
+    // Apply practice-area filter
+    if (state.activePractice) {
+      filtered = filtered.filter(e => (e.domains || []).includes(state.activePractice) || e.topic === state.activePractice);
+    }
 
-    const headerNote = (state.activePrimaryTopic || state.activeDomain)
-      ? `<div class="hero-meta">Filtered: ${state.activePrimaryTopic ? PRIMARY()[state.activePrimaryTopic]?.name : ''}${state.activeDomain ? (state.activePrimaryTopic ? ' + ' : '') + DOMAINS()[state.activeDomain]?.name : ''} · <a href="/" data-nav="home">clear filters</a></div>`
+    const headerNote = (state.activePrimaryTopic || state.activeDomain || state.activePractice)
+      ? `<div class="hero-meta">Filtered: ${[
+          state.activePrimaryTopic ? PRIMARY()[state.activePrimaryTopic]?.name : null,
+          state.activeDomain ? DOMAINS()[state.activeDomain]?.name : null,
+          state.activePractice ? PRACTICE()[state.activePractice]?.name : null,
+        ].filter(Boolean).join(' + ')} · <a href="/" data-nav="home">clear filters</a></div>`
       : '';
 
     return `<span class="kicker"><span class="pulse"></span>Live · Scanning</span>
@@ -1467,8 +1551,9 @@
   function renderFeedRow(e) {
     const primary = PRIMARY();
     const domains = DOMAINS();
+    const practice = PRACTICE();
     const events = EVENTS();
-    const topicMeta = primary[e.topic] || domains[e.topic] || { name: e.topic, short: e.topic };
+    const topicMeta = primary[e.topic] || domains[e.topic] || practice[e.topic] || { name: e.topic, short: e.topic };
     const summary = (e.summary || '').split('\n')[0] || '';
     const confTag = e.isConference
       ? `<span class="tag tag-conf">${escapeHtml((events[e.event] || {name: e.event}).name)}</span>`
@@ -1553,13 +1638,14 @@
     const specialty = SPECIALTY();
     const primary = PRIMARY();
     const domains = DOMAINS();
+    const practice = PRACTICE();
     const cfg = window.CONFIG || {};
     const papers = cfg.disruptivePapers || [];
 
     // Top topics with momentum bars (same data as home, but more detail).
     const top = ranked.slice(0, 12);
     const bars = top.map((row, i) => {
-      const meta = specialty[row.topic] || primary[row.topic] || domains[row.topic] || { name: row.topic, short: row.topic };
+      const meta = specialty[row.topic] || primary[row.topic] || domains[row.topic] || practice[row.topic] || { name: row.topic, short: row.topic };
       const momentum = Math.max(0, 2.5 - i * 0.4);
       const noise = (i % 2 === 0) ? 0.1 : -0.1;
       const display = momentum + noise;
@@ -1594,7 +1680,7 @@
       .sort((a, b) => (b.signal || 0) - (a.signal || 0))
       .slice(0, 10);
     const signalRows = topBySignal.map(e => {
-      const topicMeta = primary[e.topic] || domains[e.topic] || { name: e.topic, short: e.topic };
+      const topicMeta = primary[e.topic] || domains[e.topic] || practice[e.topic] || { name: e.topic, short: e.topic };
       return `<a class="feed-card" href="/source/${e.key}">
         <div>
           <div class="feed-title">${escapeHtml(e.title)}</div>
@@ -1654,7 +1740,8 @@
         <p>I tag each entry along three axes:</p>
         <ul>
           <li><strong>Primary topic</strong> — one of the 9 SEBoK general knowledge areas, or one of 6 specialty engineering disciplines (safety, reliability, security, human factors, maintainability, software)</li>
-          <li><strong>Application domain</strong> — 12 cross-cutting areas (mission systems, distributed systems, ML/AI, defense, etc.), aligned to INCOSE Working Groups where applicable</li>
+          <li><strong>Application domain</strong> — 8 vertical industries (defense, automotive, healthcare, energy, infrastructure, space, manufacturing, financial), aligned to INCOSE Application Domain Working Groups where applicable</li>
+          <li><strong>Practice area</strong> — 7 cross-cutting engineering practice areas (observability, performance, platform, reliability, incidents, ML/AI, distributed systems). These are techniques that cut across industries, not industries themselves.</li>
           <li><strong>Triage</strong> — what kind of action the entry suggests: <span class="tag tag-triage-watch">watch</span> <span class="tag tag-triage-read">read</span> <span class="tag tag-triage-try">try</span> <span class="tag tag-triage-ignore">ignore</span></li>
         </ul>
         <p>Conference papers from <a href="/conferences">INCOSE IS, IW, and regional events</a> live in their own section, indexed by event and track.</p>
@@ -1784,7 +1871,15 @@
     if (path === '/for-learners') return { route: 'audience', role: 'learner' };
     if (path === '/for-researchers') return { route: 'audience', role: 'researcher' };
     const tm = path.match(/^\/topic\/([\w-]+)$/);
-    if (tm) return { route: 'topic', key: tm[1] };
+    if (tm) {
+      // legacy topic redirects — old keys renamed in v1.10
+      const redirects = { 'mission': 'defense' };
+      if (redirects[tm[1]]) {
+        history.replaceState(null, '', '/topic/' + redirects[tm[1]]);
+        return { route: 'topic', key: redirects[tm[1]] };
+      }
+      return { route: 'topic', key: tm[1] };
+    }
     const em = path.match(/^\/source\/([\w-]+)$/);
     if (em) return { route: 'source', key: em[1] };
     // legacy /entry/<key> — redirect to /source/<key>
@@ -1852,6 +1947,7 @@
     const q = getQuery();
     state.activePrimaryTopic = q.topic || null;
     state.activeDomain = q.domain || null;
+    state.activePractice = q.practice || null;
     const main = document.getElementById('main');
     const site = SITE();
 

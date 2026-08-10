@@ -7,7 +7,8 @@
 //
 // Order: specialty topics first (the disciplines a practitioner cares
 // about), then SEBoK primary (the structural backbone), then application
-// domains (vertical industries). The order here doesn't affect rendering
+// domains (vertical industries), then practice areas (cross-cutting
+// engineering practice). The order here doesn't affect rendering
 // order — that's driven by the `order` field in assets/config.js.
 
 window.TOPIC_KEYS = [
@@ -28,17 +29,18 @@ window.TOPIC_KEYS = [
   'eng-domains',
   'management',
   'sos',
-  // Application domains
+  'sec',  // sub-area of eng-domains, has its own synthesized page
+  // Application domains — vertical industries (only those with synthesized pages)
+  'defense',
+  'auto',
+  'health',
+  'energy',
+  // Practice areas — cross-cutting engineering practice
   'reliab',
-  'dist-sys',
   'observ',
+  'perf',
   'platform',
   'incid',
   'ml-sys',
-  'sec',
-  'perf',
-  'mission',
-  'energy',
-  'health',
-  'auto',
+  'dist-sys',
 ];

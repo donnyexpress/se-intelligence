@@ -5,7 +5,6 @@ triage: read
 source_type: book
 signal: 0.85
 maturity: production
-domains: platform, management, eng-domains
 source_url: https://teamtopologies.com/book
 source_label: Skelton & Pais — Team Topologies (IT Revolution, 2019) →
 published: 2019-09-07

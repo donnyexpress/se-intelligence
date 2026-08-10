@@ -1,13 +1,13 @@
 ---
-topic_key: mission
+topic_key: defense
 level: 3
 last_curated: 2026-08-05
 maturity: maturing
 ---
 
-# Mission Engineering
+# Defense & Mission Engineering
 
-Mission Engineering is the discipline of designing for the *capability* the warfighter, operator, or end-user needs, not the individual platform, system, or service. It is the discipline that translates strategic needs into capability requirements, decomposes capabilities into services, and orchestrates the systems that provide those services. This article covers the basics, the patterns that work, the research frontiers, and the best practices that are still being established.
+Defense & Mission Engineering is the discipline of designing for the *capability* the warfighter, operator, or end-user needs, not the individual platform, system, or service. It is the discipline that translates strategic needs into capability requirements, decomposes capabilities into services, and orchestrates the systems that provide those services. This article covers the basics, the patterns that work, the research frontiers, and the best practices that are still being established.
 
 Every claim is cited to a real source — click the bracketed numbers to jump to the references list at the bottom.
 
@@ -31,7 +31,7 @@ The Mission Engineer's job is to define the mission in these terms and to ensure
 
 ## Patterns that work
 
-Five patterns recur in Mission Engineering practice:
+Five patterns recur in Defense & Mission Engineering practice:
 
 1. **Capability-driven design.** Start from the capability, not the platform. The platform is an implementation choice; the capability is the requirement.
 2. **Cross-viewpoint consistency.** The UAF viewpoints (stakeholder, capability, activity, performer, service, resource) must be consistent. A service in the service viewpoint links to the performer that provides it, which links to the organization, which links back to the activities.
@@ -61,7 +61,7 @@ Active threads in 2024–2025:
 
 ## What to read first
 
-If you only read three things on Mission Engineering, read:
+If you only read three things on Defense & Mission Engineering, read:
 
 1. The Gagliardi paper on UAF — the worked example [mission-engineering-uaf-gagliardi-2024]
 2. The INCOSE IW 2024 Resilient Systems track — the SoS side of mission work [conf-iw2024-resilient-systems]

@@ -5,7 +5,7 @@ triage: read
 source_type: case-study
 signal: 0.83
 maturity: production
-domains: eng-domains, auto
+domains: auto
 source_url: http://sdincose.org/wp-content/uploads/2025/05/Dieselgate_incose_sd_robert_aftel_april_2025.pdf
 source_label: Read the chapter case study →
 published: 2025-04-15

@@ -111,7 +111,8 @@ const CONFIG = {
     books:         false,   // off; tech-scan uses [[link:id]] instead of [[book:id]]
     quotes:        false,
     topics:        true,    // primary SEBoK rail
-    applicationDomains: true,  // secondary app-domain rail
+    applicationDomains: true,  // secondary app-domain rail (vertical industries)
+    practiceAreas: true,       // cross-cutting engineering practice rail
     conferences:   true,    // /conferences route + conf- entries
     latest:        true,    // /latest route + 30d filter
     admin:         true,
@@ -120,10 +121,11 @@ const CONFIG = {
   // ---- Primary topic rail: SEBoK general knowledge areas (9) ----
   // Authoritative reference: SEBoK v2.11 (Nov 2024) and INCOSE SE Handbook v5.0.
   //
-  // Three-level taxonomy:
-  //   1. specialtyTopics — engineering disciplines (the "what" of SE practice)
-  //   2. primaryTopics   — SEBoK Parts 1–9 (the structural backbone)
+  // Four-level taxonomy:
+  //   1. specialtyTopics   — engineering disciplines (the "what" of SE practice)
+  //   2. primaryTopics     — SEBoK Parts 1–9 (the structural backbone)
   //   3. applicationDomains — vertical industries (where SE is applied)
+  //   4. practiceAreas     — cross-cutting engineering practice (how SEs work)
   //
   // specialtyTopics comes first because practitioners consulting the
   // knowledge base usually have a specialty concern (safety, security,
@@ -149,23 +151,43 @@ const CONFIG = {
     'eng-domains': { name: 'Engineering Specialty',   short: 'eng-domains', order: 7, desc: 'Software, safety, reliability, maintainability, security, human factors.',           ref: 'SEBoK Part 7' },
     'management':  { name: 'SE Management',           short: 'management',  order: 8, desc: 'Planning, assessment & control, risk, configuration, decision, quality.',            ref: 'SEBoK Part 8' },
     'sos':         { name: 'Systems of Systems',      short: 'sos',         order: 9, desc: 'SoS, enterprise SE, product/service SE, capability management.',                      ref: 'SEBoK Part 9' },
+    // Sub-pages of eng-domains (Part 7). Each has its own synthesized article
+    // and citations. They are still part of Part 7, so a sub-page rather than
+    // a separate primary area.
+    'sec':         { name: 'Security Engineering',    short: 'sec',         order: 10, desc: 'Threat modeling, secure design, supply chain, AppSec, zero trust. Sub-area of SEBoK Part 7 (Engineering Specialty).', ref: 'SEBoK Part 7' },
   },
 
-  // ---- Secondary rail: Application domains (cross-cutting) ----
-  // These are how working SEs self-identify. Filter on top of primary topic.
+  // ---- Secondary rail: Application domains (vertical industries) ----
+  // These are the INDUSTRIES where SE is applied. Mapped to INCOSE
+  // Application Domain Working Groups + the IS 2026 emphasis areas.
+  // Filter on top of the primary SEBoK topic.
+  // (Practice concerns like observability, performance, and platform
+  // engineering are NOT here — they live in practiceAreas below.)
   applicationDomains: {
-    'dist-sys': { name: 'Distributed Systems', short: 'dist-sys', order: 1,  desc: 'Consensus, replication, partitioning, ordering, time, CRDTs. (WG: Complex Systems, SoS.)' },
-    'observ':   { name: 'Observability',       short: 'observ',   order: 2,  desc: 'Metrics, logs, traces, profiling, OpenTelemetry, eBPF, SLIs/SLOs.' },
-    'reliab':   { name: 'Reliability & SRE',   short: 'reliab',   order: 3,  desc: 'SRE practice, chaos engineering, capacity, load shedding, DR. (WG: Resilient Systems.)' },
-    'platform': { name: 'Platform & DevEx',    short: 'platform', order: 4,  desc: 'IDPs, golden paths, paved roads, CI/CD. (WG: Lean SE.)' },
-    'incid':    { name: 'Incidents',           short: 'incid',    order: 5,  desc: 'Real outages, blameless postmortems, RCAs, drills, near-misses.' },
-    'ml-sys':   { name: 'ML / AI Systems',     short: 'ml-sys',   order: 6,  desc: 'Inference at scale, training infra, model serving, evals. (WG: AI Systems.)' },
-    'sec':      { name: 'Security Engineering',short: 'sec',      order: 7,  desc: 'AppSec, supply chain, zero trust, threat modeling. (WG: SSE.)' },
-    'perf':     { name: 'Performance',         short: 'perf',     order: 8,  desc: 'Latency, throughput, tail behavior, caching, profiling.' },
-    'mission':  { name: 'Mission Engineering', short: 'mission',  order: 9,  desc: 'Capability-driven, defense, mission analysis. (WG: Defense Systems, IS2026 emphasis area.)' },
-    'energy':   { name: 'Energy & Sustain.',   short: 'energy',   order: 10, desc: 'Energy transformation, sustainability, critical infrastructure. (IS2026 emphasis area.)' },
-    'health':   { name: 'Healthcare SE',       short: 'health',   order: 11, desc: 'Medical devices, healthcare delivery. (WG: Healthcare.)' },
-    'auto':     { name: 'Automotive',          short: 'auto',     order: 12, desc: 'OEM, autonomy, software-defined vehicles. (WG: Automotive.)' },
+    'defense':      { name: 'Defense & Aerospace',  short: 'defense',      order: 1,  desc: 'Mission engineering, capability-driven, defense acquisition, aerospace. (WG: Defense Systems, IS2026 emphasis.)' },
+    'auto':         { name: 'Automotive',           short: 'auto',         order: 2,  desc: 'OEM, autonomy, software-defined vehicles, ISO 26262. (WG: Automotive.)' },
+    'health':       { name: 'Healthcare SE',        short: 'health',       order: 3,  desc: 'Medical devices, healthcare delivery, FDA / IEC 62304. (WG: Healthcare.)' },
+    'energy':       { name: 'Energy & Sustainability', short: 'energy',    order: 4,  desc: 'Power generation, grid, sustainability, critical infrastructure. (WG: Power & Energy, Sustainability WG, IS2026 emphasis.)' },
+    'infra':        { name: 'Critical Infrastructure', short: 'infra',    order: 5,  desc: 'Transport, water, telecom, public services. (WG: Critical Infrastructure.)' },
+    'space':        { name: 'Space Systems',        short: 'space',        order: 6,  desc: 'Satellites, launch, ground systems, mission ops. (WG: Space Systems.)' },
+    'manufacturing':{ name: 'Manufacturing & I4.0', short: 'manufacturing',order: 7,  desc: 'Smart factories, digital twin, IIoT, model-based production.' },
+    'finance':      { name: 'Financial Services',   short: 'finance',      order: 8,  desc: 'Payments, clearing, risk, regtech. Smaller SE community but growing.' },
+  },
+
+  // ---- Cross-cutting rail: Practice areas (how SEs work) ----
+  // These are engineering practice concerns that cut across industries
+  // and lifecycle stages. They are NOT industries and NOT specialties.
+  // Use these when a source is about a technique/pattern rather than
+  // a vertical or a lifecycle phase. (Specialty engineering — safety,
+  // security, reliability, etc. — lives in the specialtyTopics rail.)
+  practiceAreas: {
+    'observ':   { name: 'Observability',     short: 'observ',   order: 1, desc: 'Metrics, logs, traces, profiling, OpenTelemetry, eBPF, SLIs/SLOs.' },
+    'perf':     { name: 'Performance',       short: 'perf',     order: 2, desc: 'Latency, throughput, tail behavior, caching, USE / RED methods.' },
+    'platform': { name: 'Platform & DevEx',  short: 'platform', order: 3, desc: 'IDPs, golden paths, paved roads, CI/CD, team topologies.' },
+    'reliab':   { name: 'Reliability & SRE', short: 'reliab',   order: 4, desc: 'SRE practice, chaos engineering, capacity, load shedding, DR.' },
+    'incid':    { name: 'Incidents',         short: 'incid',    order: 5, desc: 'Real outages, blameless postmortems, RCAs, drills, near-misses.' },
+    'ml-sys':   { name: 'ML / AI Systems',   short: 'ml-sys',   order: 6, desc: 'Inference at scale, training infra, model serving, evals.' },
+    'dist-sys': { name: 'Distributed Systems', short: 'dist-sys', order: 7, desc: 'Consensus, replication, partitioning, ordering, time, CRDTs.' },
   },
 
   // ---- Conference tracks: IS2026 paper categories ----

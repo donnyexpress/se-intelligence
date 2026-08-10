@@ -5,7 +5,7 @@ triage: read
 source_type: talk
 signal: 0.71
 maturity: production
-domains: eng-domains, platform
+domains: platform
 source_url: http://sdincose.org/wp-content/uploads/2025/03/TheRoleOfHumanFactorsEngineeringInRapidPrototyping_2025_Zeman_Wood.pdf
 source_label: Read the chapter talk →
 published: 2025-03-15

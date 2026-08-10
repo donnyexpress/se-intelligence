@@ -5,7 +5,7 @@ triage: read
 source_type: reference
 signal: 0.78
 maturity: production
-domains: eng-domains, mission, auto
+domains: defense, auto
 source_url: https://psas.scripts.mit.edu/home/materials/
 source_label: MIT Partnership for Systems Approaches to Safety →
 published: 2011-04-01

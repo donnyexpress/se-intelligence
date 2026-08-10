@@ -152,6 +152,15 @@ function check(name, ok, detail) {
   check('Legacy /entry/ redirects to /source/', finalPath === '/source/system-def-mbse-patterns-2025',
     `landed at: ${finalPath}`);
 
+  console.log('\n--- v1.10 legacy /topic/mission → /topic/defense redirect ---\n');
+  await visit('/topic/mission');
+  const missionPath = await page.evaluate(() => location.pathname);
+  check('/topic/mission redirects to /topic/defense', missionPath === '/topic/defense',
+    `landed at: ${missionPath}`);
+  const defenseTitle = await page.$eval('.topic-title', el => el.textContent.trim()).catch(() => '');
+  check('/topic/defense: title is "Defense & Mission Engineering"',
+    defenseTitle === 'Defense & Mission Engineering', `title: ${defenseTitle}`);
+
   console.log('\n--- v1.4 audience pages ---\n');
   // /for-practitioners
   await visit('/for-practitioners');
@@ -159,11 +168,11 @@ function check(name, ok, detail) {
     !!(await page.$('.audience-page')));
   check('/for-practitioners: h1 is "I have a problem."',
     await page.$eval('.audience-page h1', el => el.textContent.trim()) === 'I have a problem.');
-  check('/for-practitioners: 3 sub-sections',
-    (await page.$$('.audience-section')).length === 3);
-  check('/for-practitioners: by-specialty / by-domain / by-pattern',
+  check('/for-practitioners: 4 sub-sections',
+    (await page.$$('.audience-section')).length === 4);
+  check('/for-practitioners: by-specialty / by-domain / by-practice / by-pattern',
     (await page.$$eval('.audience-section h2', els => els.map(e => e.textContent.trim())))
-      .every(t => /By (specialty|domain|pattern)/.test(t)));
+      .every(t => /By (specialty|domain|practice|pattern)/.test(t)));
   // /for-learners
   await visit('/for-learners');
   check('/for-learners: audience-page renders',

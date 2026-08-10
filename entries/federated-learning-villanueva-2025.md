@@ -5,7 +5,6 @@ triage: watch
 source_type: talk
 signal: 0.72
 maturity: research
-domains: ml-sys, sec
 source_url: http://sdincose.org/wp-content/uploads/2025/09/2025_Federated_Learning_Art_Villanueva.pdf
 source_label: Read the chapter talk slides →
 published: 2025-09-15

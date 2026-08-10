@@ -5,7 +5,7 @@ triage: watch
 source_type: paper
 signal: 0.80
 maturity: production
-domains: sec, mission
+domains: defense
 source_url: https://psas.scripts.mit.edu/home/
 source_label: Read STPA-SafeSec handbook →
 published: 2023-09-15

@@ -5,7 +5,7 @@ triage: read
 source_type: book
 signal: 0.82
 maturity: production
-domains: perf, observ, dist-sys
+domains: observ, dist-sys
 source_url: https://www.brendangregg.com/systems-performance-2nd-edition-book.html
 source_label: Brendan Gregg — Systems Performance 2nd ed. (Addison-Wesley, 2020) →
 published: 2020-12-16

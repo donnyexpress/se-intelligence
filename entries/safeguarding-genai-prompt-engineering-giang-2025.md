@@ -5,7 +5,7 @@ triage: read
 source_type: paper
 signal: 0.80
 maturity: production
-domains: sec, ml-sys
+domains: ml-sys
 source_url: https://www.incose.org/docs/default-source/enchantment/20250514_enchantment_safeguarding_sensitive_data_pe4genai.pdf
 source_label: Read the INCOSE Enchantment paper →
 published: 2025-05-14

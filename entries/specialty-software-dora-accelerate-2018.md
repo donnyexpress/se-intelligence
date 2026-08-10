@@ -5,7 +5,7 @@ triage: read
 source_type: reference
 signal: 0.81
 maturity: production
-domains: eng-domains, platform
+domains: platform
 source_url: https://itrevolution.com/product/accelerate/
 source_label: Accelerate — Forsgren, Humble, Kim (IT Revolution, 2018) →
 published: 2018-03-27

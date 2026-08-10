@@ -18,14 +18,25 @@ const PRIMARY_TOPIC_KEYS = [
   'realization', 'deploy-use', 'eng-domains', 'management', 'sos',
 ];
 
-// Application domain keys.
+// Application domain keys (vertical industries — INCOSE Application Domain WGs).
+// These live in CONFIG.applicationDomains in config.js; the list here is the
+// hardcoded fallback for tests / node usage where CONFIG may not be available.
 const APP_DOMAIN_KEYS = [
-  'dist-sys', 'observ', 'reliab', 'platform', 'incid', 'ml-sys',
-  'sec', 'perf', 'mission', 'energy', 'health', 'auto',
+  'defense', 'auto', 'health', 'energy', 'infra', 'space',
+  'manufacturing', 'finance',
+];
+
+// Practice area keys (cross-cutting engineering practice, not industries).
+// These live in CONFIG.practiceAreas in config.js; same hardcoded-fallback role.
+const PRACTICE_AREA_KEYS = [
+  'observ', 'perf', 'platform', 'reliab', 'incid', 'ml-sys', 'dist-sys',
 ];
 
 // All known topic-style prefixes for filename-suffix inference.
-const TOPIC_PREFIXES = [...SPECIALTY_TOPIC_KEYS, ...PRIMARY_TOPIC_KEYS, ...APP_DOMAIN_KEYS];
+const TOPIC_PREFIXES = [
+  ...SPECIALTY_TOPIC_KEYS, ...PRIMARY_TOPIC_KEYS,
+  ...APP_DOMAIN_KEYS, ...PRACTICE_AREA_KEYS,
+];
 
 // Reserved headings the renderer detects and renders into the standard
 // layout, instead of as a body h2.

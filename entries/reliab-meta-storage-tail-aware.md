@@ -5,7 +5,7 @@ triage: watch
 source_type: blog
 signal: 0.88
 maturity: production
-domains: reliab, perf
+domains: perf
 source_url: https://engineering.fb.com/2024/03/tail-aware-scheduling/
 source_label: Read the Meta writeup →
 published: 2024-03-15

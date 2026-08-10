@@ -25,7 +25,8 @@ Each is a curated entry point into the same body of knowledge, with a different 
 - **27 topic articles** — 1,500–2,000 words each, with inline citations and a real references list
 - **6 specialty engineering disciplines** — safety, reliability, security, human factors, maintainability, software
 - **9 SEBoK general knowledge areas** — the structural backbone
-- **12 application domains** — defense, mission systems, ML/AI, distributed systems, etc.
+- **8 application domains** — vertical industries (defense, automotive, healthcare, energy, infrastructure, space, manufacturing, financial)
+- **7 practice areas** — cross-cutting engineering practice (observability, performance, platform, reliability, incidents, ML/AI, distributed systems)
 - **Sliding ticker** on the home page — recent additions, auto-advance every 10s, or use the arrows
 - **Trending dashboard** (`/hot`) — topics with momentum + disruptive papers + top-by-signal
 - **Comments on every page** — keyed to topic or source, with admin moderation
@@ -278,12 +279,16 @@ Legacy `entry` param without `ns` defaults to `source` for backward compat.
 
 Aligned to INCOSE / SEBoK sources:
 
-- **Primary topics** (9): SEBoK general knowledge areas — `sys-fund`, `lifecycle`,
-  `concept-def`, `system-def`, `realization`, `deploy-use`, `eng-domains`,
-  `management`, `sos`.
-- **Application domains** (12): cross-cutting, INCOSE-flavored — `dist-sys`,
-  `observ`, `reliab`, `platform`, `incid`, `ml-sys`, `sec`, `perf`, `mission`,
-  `energy`, `health`, `auto`.
+- **Primary topics** (9 + 1 sub-page): SEBoK general knowledge areas — `sys-fund`,
+  `lifecycle`, `concept-def`, `system-def`, `realization`, `deploy-use`,
+  `eng-domains`, `management`, `sos`, plus `sec` as a sub-page of `eng-domains`.
+- **Application domains** (8): vertical industries where SE is applied, mapped
+  to INCOSE Application Domain Working Groups — `defense` (was `mission`),
+  `auto`, `health`, `energy`, `infra`, `space`, `manufacturing`, `finance`.
+- **Practice areas** (7): cross-cutting engineering practice (NOT industries) —
+  `observ`, `perf`, `platform`, `reliab`, `incid`, `ml-sys`, `dist-sys`. These
+  are techniques/patterns that cut across industries and lifecycle stages;
+  specialty engineering (safety, security, etc.) lives in the specialty rail.
 - **Conference tracks** (9): IS2026 paper categories — `innovation`, `management`,
   `uncertainty`, `modelling`, `org-skills`, `service`, `society`, `conception`,
   `se-disciplines`.

@@ -5,7 +5,7 @@ triage: read
 source_type: paper
 signal: 0.74
 maturity: production
-domains: ml-sys, management
+domains: ml-sys
 source_url: http://sdincose.org/wp-content/uploads/2025/06/SE_Maturity_and_Cost_Modeling_Framework_for_GenAI_2025_Ray_Madachy.pdf
 source_label: Read the INCOSE SD paper →
 published: 2025-06-15

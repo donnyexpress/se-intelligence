@@ -5,7 +5,7 @@ triage: read
 source_type: reference
 signal: 0.72
 maturity: production
-domains: eng-domains, mission, auto
+domains: defense, auto
 source_url: https://www.dsiac.org/resources/reliability-prediction-electronic-equipment/
 source_label: Reliability prediction of electronic equipment (MIL-HDBK-217 family) →
 published: 1991-12-01

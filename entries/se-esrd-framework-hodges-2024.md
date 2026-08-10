@@ -5,7 +5,6 @@ triage: read
 source_type: paper
 signal: 0.74
 maturity: production
-domains: sos, management
 source_url: https://www.incose.org/docs/default-source/los-angeles/2024-10_se_in_ernd.pdf
 source_label: Read the INCOSE LA framework →
 published: 2024-10-08
