@@ -72,4 +72,3 @@ If you only read three things on performance, read:
 2. Meta storage — 40% p99 reduction via tail-aware scheduling
 3. LLM inference cost curves — where the floor is in 2026
 4. eBPF practical survey for production observability (2026)
-5. Jepsen — anomaly in etcd 3.5 linearizable reads
