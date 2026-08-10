@@ -181,6 +181,70 @@ function check(name, ok, detail) {
   check('/for-researchers: 3 sub-sections',
     (await page.$$('.audience-section')).length === 3);
 
+  console.log('\n--- /hot (Full dashboard from "What\'s trending") ---\n');
+  // Click the "Full dashboard →" link on the home page and verify it lands
+  // on the /hot page with the right content.
+  await visit('/');
+  await page.waitForFunction(() => window.__getState && window.__getState().loaded, { timeout: 10000 });
+  await new Promise(r => setTimeout(r, 500));
+  const fullDashLink = await page.$('a.see-all[href="/hot"]');
+  check('Home: "Full dashboard →" link points to /hot', !!fullDashLink);
+  if (fullDashLink) {
+    await fullDashLink.click();
+    await new Promise(r => setTimeout(r, 800));
+    await page.waitForFunction(() => window.__getState && window.__getState().loaded, { timeout: 10000 });
+    const afterClickPath = await page.evaluate(() => location.pathname);
+    check('Clicking "Full dashboard →" navigates to /hot',
+      afterClickPath === '/hot',
+      `landed at: ${afterClickPath}`);
+  }
+  // Direct /hot test
+  await visit('/hot');
+  check('/hot: page renders', !!(await page.$('h1')));
+  check('/hot: h1 is "What\'s hot"',
+    (await page.$eval('h1', el => el.textContent.trim())) === "What's hot");
+  check('/hot: trending bars present (top 12 topics)',
+    (await page.$$('.trend-bars.full .trend-bar-row')).length >= 6);
+  check('/hot: disruptive panel present', !!(await page.$('.disrupt')));
+  check('/hot: top-by-signal feed present',
+    (await page.$$('.feed-list .feed-card')).length >= 3);
+  check('/hot: each trend bar has rank, label, bar, count',
+    await page.$$eval('.trend-bar-row', rows => rows.every(r =>
+      r.querySelector('.rank') && r.querySelector('.label') &&
+      r.querySelector('.bar-cell .fill') && r.querySelector('.count')
+    )));
+  check('/hot: each bar has a working href (to /topic or /?topic=)',
+    await page.$$eval('.trend-bar-row', rows => rows.every(r => {
+      const a = r.getAttribute('href');
+      return a && (a.startsWith('/topic/') || a.startsWith('/?topic='));
+    })));
+  check('/hot: "← Back to home" link present', !!(await page.$('a[href="/"][data-nav="home"]')));
+
+  console.log('\n--- /about (What this is) ---\n');
+  await visit('/about');
+  check('/about: page renders', !!(await page.$('h1')));
+  check('/about: "What this is" section present',
+    await page.$$eval('.about-page h2', hs => hs.some(h => /what this is/i.test(h.textContent))));
+  check('/about: links to all 3 audience pages',
+    await page.$$eval('.about-page a[href*="/for-"]', links => {
+      const hrefs = links.map(a => a.getAttribute('href'));
+      return hrefs.includes('/for-practitioners') &&
+        hrefs.includes('/for-learners') &&
+        hrefs.includes('/for-researchers');
+    }));
+  check('/about: has "What I won\'t do" section (active-voice proof)',
+    await page.$$eval('.about-page h2', hs => hs.some(h => /won't do/i.test(h.textContent))));
+  check('/about: lists SEBoK v2.11 alignment',
+    await page.$eval('.about-page', el => el.innerText.includes('SEBoK v2.11')));
+  check('/about: links to /hot in trending section',
+    await page.$$eval('.about-page a[href="/hot"]', links => links.length >= 1));
+  check('/about: links to /conferences',
+    await page.$$eval('.about-page a[href="/conferences"]', links => links.length >= 1));
+
+  console.log('\n--- /conferences ---\n');
+  await visit('/conferences');
+  check('/conferences: page renders', !!(await page.$('h1')));
+
   console.log('\n--- v1.4 home page ---\n');
   await visit('/');
   check('Home: 3-line hero with ticker', !!(await page.$('.hero-strip-v14')));
