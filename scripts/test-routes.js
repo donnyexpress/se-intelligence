@@ -188,83 +188,55 @@ function check(name, ok, detail) {
   check('Home: ticker has prev button', !!(await page.$('.ticker-nav.prev')));
   check('Home: ticker has next button', !!(await page.$('.ticker-nav.next')));
   check('Home: ticker has viewport (scroll area)', !!(await page.$('.ticker-viewport')));
-  check('Home: ticker has 12 items (6 unique × 2 for loop)', await page.$$eval('.ticker-item', els => els.length) === 12);
+  check('Home: ticker has single current item (slideshow)', await page.$$eval('.ticker-current', els => els.length) === 1);
+  check('Home: ticker has dots (6 positions)', await page.$$eval('.ticker-dot', els => els.length) === 6);
+  check('Home: ticker has LIVE label', !!(await page.$('.ticker .label')));
   check('Home: 3 doors are present', (await page.$$('.door')).length === 3);
   check('Home: trending dashboard is present', !!(await page.$('.trending')));
   check('Home: disruptive panel is present', !!(await page.$('.disrupt')));
   check('Home: footer strip is present', !!(await page.$('.footer-strip')));
 
-  console.log('\n--- v1.4 ticker interaction ---\n');
-  // Test the prev/next buttons actually move the track.
-  // 1. Capture initial transform
-  const initialTransform = await page.evaluate(() => {
-    const track = document.querySelector('.ticker-track');
-    return window.getComputedStyle(track).transform;
-  });
-  // 2. Click "next" twice — should translate to the left
-  await page.click('.ticker-nav.next');
-  await new Promise(r => setTimeout(r, 200));
+  console.log('\n--- v1.4 ticker (slideshow) interaction ---\n');
+  // Capture initial state
+  const initialState = await page.evaluate(() => ({
+    text: document.querySelector('.ticker-current .what')?.textContent.trim(),
+    prevDisabled: document.querySelector('.ticker-nav.prev').disabled,
+    nextDisabled: document.querySelector('.ticker-nav.next').disabled,
+    activeDot: document.querySelectorAll('.ticker-dot').length,
+  }));
+  check('Ticker: shows first article initially', initialState.text.length > 0);
+  check('Ticker: prev is disabled at start', initialState.prevDisabled === true);
+  check('Ticker: next is enabled at start', initialState.nextDisabled === false);
+  check('Ticker: 6 dots rendered', initialState.activeDot === 6);
+
+  // Click next — should swap to a different article
   await page.click('.ticker-nav.next');
   await new Promise(r => setTimeout(r, 400));
-  const afterNextTransform = await page.evaluate(() => {
-    const track = document.querySelector('.ticker-track');
-    return { transform: window.getComputedStyle(track).transform, paused: track.style.animationPlayState };
-  });
-  check('Ticker: clicking next twice changes transform',
-    afterNextTransform.transform !== initialTransform);
-  check('Ticker: animation pauses on user interaction',
-    afterNextTransform.paused === 'paused' || afterNextTransform.paused === '');
-  // 3. Click "prev" once — should reduce the offset
+  const afterNext = await page.evaluate(() => ({
+    text: document.querySelector('.ticker-current .what')?.textContent.trim(),
+    prevDisabled: document.querySelector('.ticker-nav.prev').disabled,
+    nextDisabled: document.querySelector('.ticker-nav.next').disabled,
+  }));
+  check('Ticker: clicking next swaps article', afterNext.text !== initialState.text);
+  check('Ticker: prev is enabled after first next', afterNext.prevDisabled === false);
+
+  // Click prev — should swap back
   await page.click('.ticker-nav.prev');
   await new Promise(r => setTimeout(r, 400));
-  const afterPrevTransform = await page.evaluate(() => {
-    const track = document.querySelector('.ticker-track');
-    return window.getComputedStyle(track).transform;
-  });
-  check('Ticker: clicking prev changes transform back',
-    afterPrevTransform.transform !== afterNextTransform.transform);
-
-  // 4. Disabled-state tests: navigate to the last item, then back
-  console.log('\n--- v1.4 ticker disabled state ---\n');
-  // Click next 5 more times to reach the last unique item (we're at position 1, so 4 more = position 5)
-  for (let i = 0; i < 4; i++) {
-    await page.click('.ticker-nav.next');
-    await new Promise(r => setTimeout(r, 200));
-  }
-  await new Promise(r => setTimeout(r, 200));
-  const atEnd = await page.evaluate(() => ({
+  const afterPrev = await page.evaluate(() => ({
+    text: document.querySelector('.ticker-current .what')?.textContent.trim(),
     prevDisabled: document.querySelector('.ticker-nav.prev').disabled,
-    nextDisabled: document.querySelector('.ticker-nav.next').disabled,
   }));
-  check('Ticker: prev is enabled at non-start position', atEnd.prevDisabled === false);
-  check('Ticker: next is disabled at the last position', atEnd.nextDisabled === true);
-  // Try clicking next at the end — should not advance
-  await page.click('.ticker-nav.next').catch(() => {});
-  await new Promise(r => setTimeout(r, 200));
-  const afterEndClick = await page.evaluate(() => window.getComputedStyle(document.querySelector('.ticker-track')).transform);
-  check('Ticker: clicking next at the end is a no-op', afterEndClick === atEnd.nextDisabled ? afterEndClick : true);
-  // Click prev 5 times to go back to start
-  for (let i = 0; i < 5; i++) {
-    await page.click('.ticker-nav.prev');
-    await new Promise(r => setTimeout(r, 200));
-  }
-  await new Promise(r => setTimeout(r, 200));
-  const atStart = await page.evaluate(() => ({
-    prevDisabled: document.querySelector('.ticker-nav.prev').disabled,
-    nextDisabled: document.querySelector('.ticker-nav.next').disabled,
-  }));
-  check('Ticker: prev is disabled at the start', atStart.prevDisabled === true);
-  check('Ticker: next is enabled at the start', atStart.nextDisabled === false);
+  check('Ticker: clicking prev swaps back to first', afterPrev.text === initialState.text);
+  check('Ticker: prev is disabled again at start', afterPrev.prevDisabled === true);
 
-  // 5. After 11s of inactivity, animation should resume
-  console.log('  (waiting 11s for auto-resume...)');
-  await new Promise(r => setTimeout(r, 11000));
-  const afterResume = await page.evaluate(() => {
-    const track = document.querySelector('.ticker-track');
-    return track.style.animationPlayState;
-  });
-  check('Ticker: animation auto-resumes after 10s of inactivity',
-    afterResume === 'running' || afterResume === '');
+  // Click a dot to jump to a specific position
+  await page.click('.ticker-dot[data-idx="2"]');
+  await new Promise(r => setTimeout(r, 400));
+  const atIdx2 = await page.evaluate(() => ({
+    activeDot: Array.from(document.querySelectorAll('.ticker-dot')).findIndex(d => d.classList.contains('is-active')),
+  }));
+  check('Ticker: clicking dot 2 makes dot 2 active', atIdx2.activeDot === 2);
 
   console.log('\n--- v1.4 ticker mobile height ---\n');
   // Switch to a 390px-wide viewport (iPhone)
@@ -274,18 +246,18 @@ function check(name, ok, detail) {
   await new Promise(r => setTimeout(r, 1000));
   const mobileDims = await page.evaluate(() => {
     const ticker = document.querySelector('.ticker');
-    const item = document.querySelector('.ticker-item');
-    if (!ticker || !item) return null;
+    const current = document.querySelector('.ticker-current');
+    if (!ticker || !current) return null;
     return {
       tickerHeight: ticker.getBoundingClientRect().height,
-      itemHeight: item.getBoundingClientRect().height,
-      itemText: item.querySelector('.what')?.textContent.trim(),
+      currentHeight: current.getBoundingClientRect().height,
+      currentText: current.querySelector('.what')?.textContent.trim(),
     };
   });
   check('Ticker: mobile (390px) is 88px tall', mobileDims.tickerHeight >= 80 && mobileDims.tickerHeight <= 96,
     `got: ${mobileDims.tickerHeight}px`);
-  check('Ticker: mobile item height matches ticker height', mobileDims.itemHeight === mobileDims.tickerHeight,
-    `item: ${mobileDims.itemHeight}px, ticker: ${mobileDims.tickerHeight}px`);
+  check('Ticker: mobile current height matches ticker height', mobileDims.currentHeight === mobileDims.tickerHeight,
+    `current: ${mobileDims.currentHeight}px, ticker: ${mobileDims.tickerHeight}px`);
 
   // Switch back to desktop and verify height reverts to 44px
   await page.setViewport({ width: 1280, height: 900 });

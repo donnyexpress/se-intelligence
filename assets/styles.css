@@ -994,8 +994,8 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   height: 100%;
   display: flex;
   align-items: stretch;
-  /* No mask — the LIVE label and the ticker-track are now separate
-     flex children, so article text never bleeds into the LIVE area. */
+  /* LIVE label and .ticker-stage are separate flex children. Article
+     text can never overlap the LIVE label. */
 }
 .ticker-nav {
   background: transparent;
@@ -1029,13 +1029,15 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   pointer-events: none;
 }
 .ticker .label {
-  /* In-flow flex child (not absolute). Sits in its own column to the
-     left of the ticker-track, so article text can never overlap it. */
+  /* In-flow flex child. Solid box on the left; the ticker-stage sits
+     to its right. Article text can never overlap the LIVE label. */
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   padding: 0 14px;
-  background: var(--accent-bg);
+  /* Solid, opaque background. rgba(35, 33, 70, 1.0) blends with the
+     body gradient (--bg: #0f0c29 → #302b63 → #24243e). */
+  background: rgba(28, 26, 60, 1);
   color: var(--accent);
   font-size: 11px;
   text-transform: uppercase;
@@ -1059,59 +1061,53 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   70%  { box-shadow: 0 0 0 8px rgba(34, 211, 238, 0); }
   100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
 }
-.ticker-track {
-  /* Flex child of .ticker-viewport. Sits in its own column to the
-     right of the LIVE label. On desktop, the track takes its intrinsic
-     width (sum of items) and overflows the viewport, which clips it.
-     On mobile, the track is set to width:100% of the viewport so items
-     fill the available space (see the @media (max-width: 600px) block). */
-  flex: 0 0 auto;
+/* ----- Ticker stage (slideshow) ----- */
+.ticker-stage {
+  /* Flex child of .ticker-viewport. Fills the area to the right of
+     the LIVE label. Holds a single .ticker-current element that is
+     swapped in place when the user advances. */
+  flex: 1 1 0;
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 0;
-  white-space: nowrap;
   height: 100%;
-  animation: ticker-scroll 50s linear infinite;
-  will-change: transform;
-  /* Fade the right edge so the next item doesn't clip abruptly.
-     The left edge fades too so items sliding out don't cut sharply
-     against the LIVE label edge. */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+  position: relative;
+  overflow: hidden;
 }
-.ticker:hover .ticker-track { animation-play-state: paused; }
-.ticker.is-paused .ticker-track {
-  animation: none;
-  /* When paused by user, the transform is set inline via JS. */
-  transition: transform 0.25s ease-out;
-}
-@keyframes ticker-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.ticker-item {
-  display: inline-flex;
+.ticker-stage.is-fading { opacity: 0; }
+.ticker-stage { transition: opacity 0.2s ease-out; }
+
+.ticker-current {
+  display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 22px;
+  gap: 12px;
+  padding: 0 16px;
   color: var(--ink-soft);
   font-size: 13.5px;
   text-decoration: none;
-  border-right: 1px solid var(--rule);
-  height: 44px;
+  width: 100%;
+  height: 100%;
   flex: 0 0 auto;
 }
-.ticker-item .what { white-space: nowrap; }
-.ticker-item:hover { color: var(--link); background: var(--glass-bold); }
-.ticker-item .when {
+.ticker-current:hover { color: var(--link); }
+.ticker-current .when {
+  flex: 0 0 auto;
   font-size: 11px;
   color: var(--ink-faint);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  white-space: nowrap;
 }
-.ticker-item .what strong { color: var(--accent-2); font-weight: 600; }
-.ticker-item .kind {
+.ticker-current .what {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ticker-current .what strong { color: var(--accent-2); font-weight: 600; }
+.ticker-current .kind {
+  flex: 0 0 auto;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1119,9 +1115,39 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
   padding: 2px 7px;
   border: 1px solid var(--glass-border);
   border-radius: 5px;
+  white-space: nowrap;
 }
-.ticker-item .kind.new { color: var(--triage-watch); border-color: rgba(74,222,128,0.3); }
-.ticker-item .kind.featured { color: var(--accent); border-color: rgba(167,139,250,0.3); }
+.ticker-current .kind.new { color: var(--triage-watch); border-color: rgba(74,222,128,0.3); }
+.ticker-current .kind.featured { color: var(--accent); border-color: rgba(167,139,250,0.3); }
+
+/* ----- Ticker dots (position indicator) ----- */
+.ticker-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 0;
+}
+.ticker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--glass-bold);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.ticker-dot:hover { background: var(--ink-faint); }
+.ticker-dot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.ticker-dot.is-active {
+  background: var(--accent);
+  transform: scale(1.4);
+}
 
 
 /* ----- Three doors ----- */
@@ -1422,78 +1448,53 @@ sup.cite a:hover { color: var(--link-hover); text-decoration: underline; }
 @media (max-width: 880px) {
   .doors, .trend-grid, .footer-strip, .audience-grid { grid-template-columns: 1fr; }
 }
-/* Ticker on mobile: items span the full viewport so article text
-   wraps based on available space (up to 2 lines).
-   This block must come AFTER the @media (max-width: 880px) block
-   below so it wins for the overlap range. */
+/* Ticker on mobile: 88px tall so the article title can wrap to 2 lines.
+   The LIVE label is a separate flex column. */
 @media (max-width: 600px) {
   .ticker {
     height: 88px;
     grid-template-columns: 40px 1fr 40px;
   }
-  .ticker-track {
-    /* On mobile, the track fills the remaining 1fr space (after the
-       LIVE label and the nav buttons). Items are width:100% of the
-       track, so each item fills the visible area. */
-    flex: 1 1 0;
-    min-width: 0;
-    height: 100%;
-    gap: 0;  /* items take full width — no gap needed */
-  }
-  .ticker-item {
-    /* Item takes the full width of the track. The track is a flex
-       child of the viewport, taking the 1fr column to the right of
-       the LIVE label. */
-    width: 100%;
-    max-width: 500px;
-    height: 88px;
+  .ticker-current {
+    flex-wrap: wrap;
+    align-content: center;
     padding: 8px 0;
-    align-items: center;
-    display: flex;
-    flex: 0 0 auto;
-    box-sizing: border-box;
   }
-  .ticker-item .when {
+  .ticker-current .when {
     flex: 0 0 auto;
     margin-right: 8px;
     font-size: 10px;
-    white-space: nowrap;
   }
-  .ticker-item .what {
-    flex: 1 1 auto;
-    min-width: 0;  /* allow shrink so text wraps */
+  .ticker-current .what {
+    flex: 1 1 100%;
+    min-width: 0;
     white-space: normal;
     line-height: 1.25;
-    display: -webkit-box;
     -webkit-line-clamp: 2;
+    display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-overflow: clip;
   }
   /* Hide the .kind badge on mobile — the date + title is enough;
      the kind is shown on the article page itself. */
-  .ticker-item .kind { display: none; }
+  .ticker-current .kind { display: none; }
   /* Compact LIVE label on mobile: dot + small text, no wrap. */
   .ticker .label {
     padding: 0 10px;
     font-size: 9px;
     letter-spacing: 0.05em;
-    white-space: nowrap;
-    background: rgba(35, 33, 70, 0.95);
-    border-right: 1px solid var(--glass-border);
   }
   .ticker .label .pulse { margin-right: 4px; }
-  /* No mask on the viewport — the LIVE label is a separate flex column
-     now, so article text can never peek into the LIVE area. The track
-     has its own right-edge fade in the base CSS. */
 }
 
 
 @media (prefers-reduced-motion: reduce) {
-  /* Disable the auto-scroll animation but keep the ticker visible and
-     the prev/next buttons working — they let the user navigate manually. */
-  .ticker-track { animation: none; }
+  /* Disable the auto-advance in the slideshow ticker; the prev/next
+     buttons still work for manual navigation. */
+  .ticker-stage { transition: none; }
   .ticker .label .pulse { animation: none; }
-  /* When reduced-motion is on, mark the ticker paused by default so the
-     JS can read .is-paused and skip the auto-resume timer. */
+  /* Mark the ticker as paused by default so the JS can read this and
+     skip the auto-advance timer. */
   .ticker { --ticker-default-pause: 1; }
 }

@@ -804,6 +804,9 @@
   }
 
   // Render the ticker: items duplicated 2x for seamless loop.
+  // Slideshow-style ticker. Renders a single .ticker-current element that
+  // wireTicker() swaps in place. Items are stored on a global object so
+  // wireTicker() can read them when it advances.
   function renderTicker(items) {
     const cfg = (window.CONFIG && window.CONFIG.ticker) || { labelText: 'live' };
     if (!items || items.length === 0) return '';
@@ -812,141 +815,173 @@
     // the article title more room to wrap to 2 lines.
     const isNarrow = window.matchMedia('(max-width: 600px)').matches;
     const formatWhen = isNarrow ? formatDateShort : formatDate;
-    const itemHtml = items.map(t => `
-      <a class="ticker-item" href="${t.href}" data-nav="source">
-        <span class="when">${escapeHtml(formatWhen(t.date))}</span>
-        <span class="what">${t.isFeatured ? '<strong>NEW</strong> ' : ''}${escapeHtml(t.label)}</span>
-        <span class="kind ${t.kind}">${escapeHtml(t.kind)}</span>
-      </a>`).join('');
-    // Duplicate for seamless loop
-    const allItems = itemHtml + itemHtml;
-    return `<div class="ticker" aria-label="Recent additions" tabindex="0">
+    // Store the items with the date formatter baked in, so wireTicker
+    // can re-render a single item without re-deciding the format.
+    const allItems = items.map(t => ({
+      ...t,
+      whenText: formatWhen(t.date),
+    }));
+    // Expose for wireTicker() — single instance per page, so a global
+    // ref is fine.
+    window.__tickerItems = allItems;
+    const first = allItems[0];
+    const dots = allItems.map((_, i) =>
+      `<button class="ticker-dot ${i === 0 ? 'is-active' : ''}" type="button" data-idx="${i}" aria-label="Go to slide ${i + 1}"></button>`
+    ).join('');
+    const currentHtml = `
+      <a class="ticker-current" href="${first.href}" data-nav="source">
+        <span class="when">${escapeHtml(first.whenText)}</span>
+        <span class="what">${first.isFeatured ? '<strong>NEW</strong> ' : ''}${escapeHtml(first.label)}</span>
+        <span class="kind ${first.kind}">${escapeHtml(first.kind)}</span>
+      </a>`;
+    return `<div class="ticker ticker-slideshow" aria-label="Recent additions" tabindex="0">
       <button class="ticker-nav prev" type="button" aria-label="Previous item">‹</button>
       <div class="ticker-viewport">
         <div class="label"><span class="pulse"></span>${escapeHtml(cfg.labelText || 'live')}</div>
-        <div class="ticker-track">${allItems}</div>
+        <div class="ticker-stage">${currentHtml}</div>
       </div>
       <button class="ticker-nav next" type="button" aria-label="Next item">›</button>
-    </div>`;
+    </div>
+    <div class="ticker-dots" role="tablist" aria-label="Slide position">${dots}</div>`;
   }
 
-  // Wire up ticker nav buttons after the home page renders.
-  // The ticker is a single instance on the home page, so we attach
-  // event handlers once per render. Behavior:
-  //   - Click prev/next: shift the track by ~one item width
-  //   - At the first article, the prev button is disabled
-  //   - At the last article, the next button is disabled
-  //   - Pause auto-scroll for 10s (so the user can read what they navigated to)
-  //   - On auto-resume, reset to the first article
-  //   - On reduced-motion: start paused; buttons still work
-  //   - On focus or hover: pause
-  //   - Keyboard: ArrowLeft/ArrowRight on the ticker also work
+  // Wire up ticker nav buttons + auto-advance for the slideshow.
+  // The ticker is a single instance on the home page. Behavior:
+  //   - Slideshow: one article visible at a time, swapped in place
+  //   - ‹ / › buttons advance/retreat by 1; clicking a dot jumps to it
+  //   - Auto-advance every AUTO_ADVANCE_MS (10s) when not paused
+  //   - User interaction pauses auto-advance for RESUME_MS (10s)
+  //   - Reduced-motion users: auto-advance disabled, manual only
+  //   - Hover/focus pauses; mouse leave / focus out resumes
+  //   - Keyboard: ArrowLeft/ArrowRight on the ticker
+  //   - Touch swipe on the viewport (>50px)
   function wireTicker() {
     const ticker = document.querySelector('.ticker');
     if (!ticker) return;
-    const track = ticker.querySelector('.ticker-track');
+    const items = window.__tickerItems || [];
+    if (items.length === 0) return;
     const prev = ticker.querySelector('.ticker-nav.prev');
     const next = ticker.querySelector('.ticker-nav.next');
-    if (!track || !prev || !next) return;
+    const stage = ticker.querySelector('.ticker-stage');
+    const dots = ticker.parentElement?.querySelectorAll('.ticker-dot');
+    if (!prev || !next || !stage) return;
 
     // Skip if already wired (defensive — in case render runs twice)
     if (ticker.dataset.wired === '1') return;
     ticker.dataset.wired = '1';
 
-    // The track contains N unique items × 2 (duplicated for seamless loop).
-    // We measure the half-count: the maximum usable index is N-1.
-    const allItems = track.querySelectorAll('.ticker-item');
-    if (allItems.length < 2) return;
-    const uniqueCount = allItems.length / 2;
-    const lastIndex = uniqueCount - 1;
-
-    // Compute the "step" distance between items. This is the item's width
-    // plus the flex gap (if any) on the track. Each "next" press should
-    // shift the track by exactly this distance.
-    function getStep() {
-      const w = allItems[0].getBoundingClientRect().width;
-      // The track may have a CSS gap. Measure the offset between two items
-      // rather than just the item width, so the math is robust to gap.
-      if (allItems.length < 2) return w;
-      const a = allItems[0].getBoundingClientRect();
-      const b = allItems[1].getBoundingClientRect();
-      return b.left - a.left;
-    }
-    let step = getStep();
-    window.addEventListener('resize', () => {
-      // Re-measure; also re-apply the current offset at the new scale.
-      step = getStep();
-      applyOffset();
-    });
-
-    // Detect reduced-motion at runtime (not just via CSS media query).
+    const lastIndex = items.length - 1;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // We track a logical position (0..lastIndex) instead of a pixel offset.
-    // The pixel offset is derived: offset = -position * itemWidth.
-    let position = 0;
-    let resumeTimer = null;
+    const AUTO_ADVANCE_MS = 10000;
     const RESUME_MS = 10000;
 
-    function pause(reason) {
-      ticker.classList.add('is-paused');
-      track.style.animationPlayState = 'paused';
-      if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null; }
+    let position = 0;
+    let autoTimer = null;
+    let resumeTimer = null;
+    let isPaused = false;
+
+    function renderCurrent() {
+      const it = items[position];
+      if (!it) return;
+      // Cross-fade: opacity 0, then update content, then opacity 1.
+      // Skip the fade if reduced-motion is on.
+      if (reducedMotion) {
+        stage.innerHTML = renderSlide(it);
+      } else {
+        stage.classList.add('is-fading');
+        setTimeout(() => {
+          stage.innerHTML = renderSlide(it);
+          stage.classList.remove('is-fading');
+        }, 200);
+      }
+      // Update disabled state
+      prev.disabled = (position <= 0);
+      next.disabled = (position >= lastIndex);
+      // Update dots
+      if (dots) dots.forEach((d, i) => d.classList.toggle('is-active', i === position));
     }
+
+    function renderSlide(it) {
+      return `<a class="ticker-current" href="${it.href}" data-nav="source">
+        <span class="when">${escapeHtml(it.whenText)}</span>
+        <span class="what">${it.isFeatured ? '<strong>NEW</strong> ' : ''}${escapeHtml(it.label)}</span>
+        <span class="kind ${it.kind}">${escapeHtml(it.kind)}</span>
+      </a>`;
+    }
+
+    function goTo(idx) {
+      if (idx < 0 || idx > lastIndex || idx === position) return;
+      position = idx;
+      renderCurrent();
+    }
+
+    function advance(direction) {
+      const newPos = position + direction;
+      if (newPos < 0 || newPos > lastIndex) {
+        // At edge — do nothing (the button is already disabled, but
+        // also defend against programmatic calls).
+        return;
+      }
+      goTo(newPos);
+    }
+
+    function startAutoAdvance() {
+      if (reducedMotion) return;
+      if (autoTimer) clearTimeout(autoTimer);
+      autoTimer = setTimeout(() => {
+        if (isPaused) return;
+        // Advance; if at the end, wrap to start (or stop?). For slideshow,
+        // wrapping to start is the more natural behavior — it gives a
+        // continuous cycle.
+        if (position >= lastIndex) {
+          goTo(0);
+        } else {
+          advance(+1);
+        }
+        startAutoAdvance();
+      }, AUTO_ADVANCE_MS);
+    }
+
+    function pauseAuto() {
+      isPaused = true;
+      if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+    }
+
     function scheduleResume() {
-      if (reducedMotion) return;  // never auto-resume for reduced-motion
+      if (reducedMotion) return;
+      isPaused = false;
       if (resumeTimer) clearTimeout(resumeTimer);
       resumeTimer = setTimeout(() => {
-        position = 0;
-        // Clear the inline transform so the animation can take over.
-        // The animation starts at translateX(0), so this snaps cleanly.
-        track.style.transform = '';
-        // Re-enable prev (next stays enabled).
-        prev.disabled = false;
-        next.disabled = (lastIndex <= 0);
-        ticker.classList.remove('is-paused');
-        track.style.animationPlayState = 'running';
+        startAutoAdvance();
         resumeTimer = null;
       }, RESUME_MS);
     }
 
-    function applyOffset() {
-      const offset = -position * step;
-      track.style.transform = `translateX(${offset}px)`;
-      // Update disabled state (clamp position defensively)
-      const clamped = Math.max(0, Math.min(position, lastIndex));
-      prev.disabled = (clamped <= 0);
-      next.disabled = (clamped >= lastIndex);
+    // Initial state
+    prev.disabled = true;
+    next.disabled = (lastIndex <= 0);
+
+    // Wire up buttons
+    prev.addEventListener('click', () => { advance(-1); pauseAuto(); scheduleResume(); });
+    next.addEventListener('click', () => { advance(+1); pauseAuto(); scheduleResume(); });
+
+    // Wire up dots
+    if (dots) {
+      dots.forEach((d, i) => {
+        d.addEventListener('click', () => { goTo(i); pauseAuto(); scheduleResume(); });
+      });
     }
 
-    function advance(direction) {
-      // direction: -1 (prev) or +1 (next)
-      const newPos = position + direction;
-      if (newPos < 0 || newPos > lastIndex) return;  // bound check
-      position = newPos;
-      applyOffset();
-      pause('user');
-      scheduleResume();
-    }
-
-    // Initialize disabled state
-    applyOffset();
-
-    prev.addEventListener('click', () => advance(-1));
-    next.addEventListener('click', () => advance(+1));
-
-    // Hover-to-pause (desktop nicety, no-op on touch)
-    ticker.addEventListener('mouseenter', () => { pause('hover'); });
-    ticker.addEventListener('mouseleave', () => { scheduleResume(); });
-
-    // Focus-within pause (keyboard / screen reader users)
-    ticker.addEventListener('focusin', () => { pause('focus'); });
-    ticker.addEventListener('focusout', () => { scheduleResume(); });
+    // Hover/focus to pause (desktop nicety, also touch-friendly via focus)
+    ticker.addEventListener('mouseenter', () => pauseAuto());
+    ticker.addEventListener('mouseleave', () => scheduleResume());
+    ticker.addEventListener('focusin', () => pauseAuto());
+    ticker.addEventListener('focusout', () => scheduleResume());
 
     // Keyboard arrows when ticker is focused
     ticker.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); advance(-1); }
-      else if (e.key === 'ArrowRight') { e.preventDefault(); advance(+1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); advance(-1); pauseAuto(); scheduleResume(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); advance(+1); pauseAuto(); scheduleResume(); }
     });
 
     // Touch swipe on the viewport — 50px threshold
@@ -959,16 +994,14 @@
       viewport.addEventListener('touchend', (e) => {
         if (startX == null) return;
         const dx = e.changedTouches[0].clientX - startX;
-        if (Math.abs(dx) > 50) advance(dx > 0 ? -1 : +1);
+        if (Math.abs(dx) > 50) { advance(dx > 0 ? -1 : +1); pauseAuto(); scheduleResume(); }
         startX = null;
       }, { passive: true });
     }
 
-    // For reduced-motion users, the animation is already disabled via CSS.
-    // Mark the ticker as paused from the start so the layout is stable
-    // and the first interaction is "I want to read X, how do I get there?"
-    if (reducedMotion) {
-      pause('reduced-motion');
+    // Start auto-advance (skip if reduced motion or only 1 item)
+    if (!reducedMotion && lastIndex > 0) {
+      startAutoAdvance();
     }
   }
 
