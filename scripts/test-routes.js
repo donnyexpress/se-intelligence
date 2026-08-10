@@ -256,7 +256,9 @@ function check(name, ok, detail) {
   });
   check('Ticker: mobile (390px) is 88px tall', mobileDims.tickerHeight >= 80 && mobileDims.tickerHeight <= 96,
     `got: ${mobileDims.tickerHeight}px`);
-  check('Ticker: mobile current height matches ticker height', mobileDims.currentHeight === mobileDims.tickerHeight,
+  // The current element is inside a stage that's inside a ticker with a 1px
+  // border, so the current is 2px shorter than the ticker. Allow a 4px tolerance.
+  check('Ticker: mobile current height ≈ ticker height', Math.abs(mobileDims.currentHeight - mobileDims.tickerHeight) <= 4,
     `current: ${mobileDims.currentHeight}px, ticker: ${mobileDims.tickerHeight}px`);
 
   // Switch back to desktop and verify height reverts to 44px
