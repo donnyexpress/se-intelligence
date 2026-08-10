@@ -1575,7 +1575,7 @@
         <div class="rank">${i + 1}</div>
         <div class="label">${escapeHtml(meta.name)}${deltaStr}</div>
         <div class="bar-cell"><div class="fill" style="width: ${width}%"></div></div>
-        <div class="count">${row.count} ${row.count === 1 ? 'entry' : 'entries'}</div>
+        <div class="count">${row.totalCount || 0} ${(row.totalCount || 0) === 1 ? 'entry' : 'entries'}</div>
       </a>`;
     }).join('');
 
