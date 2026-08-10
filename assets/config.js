@@ -73,6 +73,11 @@ const CONFIG = {
       href: '/source/specialty-software-dora-accelerate-2018',
       why: 'Why: gives software engineering the empirical measurement framework that other SE disciplines have had for decades.',
     },
+    {
+      title: 'Team Topologies — Skelton & Pais',
+      href: '/source/platform-team-topologies-skelton-pais',
+      why: 'Why: operationalized Conway\'s Law. The four team types (stream-aligned, platform, enabling, complicated-subsystem) are now the foundation of platform engineering.',
+    },
   ],
 
   // ---- Theme: Option 4 — Glass Gradient ----

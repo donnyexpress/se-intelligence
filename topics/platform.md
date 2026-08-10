@@ -53,6 +53,7 @@ Five patterns recur in platform and DevEx practice:
 Active threads in 2024–2026:
 
 - **Human factors in platform adoption.** Why teams don't use the paved road, and how to fix it. The Zeman & Wood talk on HFE in rapid prototyping applies directly [human-factors-rapid-prototyping-zeman-wood-2025].
+- **Team Topologies — the org design foundation.** The four team types (stream-aligned, platform, enabling, complicated-subsystem) and three interaction modes are the foundation of the platform engineering movement [platform-team-topologies-skelton-pais].
 - **AI-assisted platform operations.** Using LLMs to operate the platform itself: incident triage, runbook automation, configuration synthesis. The Giang paper on prompt engineering applies [safeguarding-genai-prompt-engineering-giang-2025].
 - **Federated learning for platform telemetry.** When the platform spans organizational boundaries, telemetry sharing is hard. Federated learning offers a path [federated-learning-villanueva-2025].
 - **Service life extension for platforms.** The deploy-use patterns apply to the platform itself: modernize, don't replace [deploy-use-service-life-extension].
@@ -62,13 +63,14 @@ Active threads in 2024–2026:
 
 If you only read three things on platform and DevEx, read:
 
-1. The HFE-in-rapid-prototyping talk — why adoption is a human factors problem [human-factors-rapid-prototyping-zeman-wood-2025]
-2. The Giang paper on prompt engineering safety — the platform is where GenAI lives, and the platform needs to be safe [safeguarding-genai-prompt-engineering-giang-2025]
-3. Service life extension — the platform is a system, and the system has a life cycle [deploy-use-service-life-extension]
+1. Skelton & Pais's *Team Topologies* — if you have more than ~5 teams, draw the four team types on a whiteboard before you build the platform [platform-team-topologies-skelton-pais]
+2. The HFE-in-rapid-prototyping talk — why adoption is a human factors problem [human-factors-rapid-prototyping-zeman-wood-2025]
+3. The Giang paper on prompt engineering safety — the platform is where GenAI lives, and the platform needs to be safe [safeguarding-genai-prompt-engineering-giang-2025]
 
 ## References
 
-1. Human Factors in Rapid Prototyping — Zeman & Wood, INCOSE San Diego, 2025
-2. Safeguarding Sensitive Data: Prompt Engineering for GenAI — INCOSE Enchantment, 2025
-3. Federated Learning — Villanueva, INCOSE San Diego, 2025
-4. Service life extension patterns
+1. Skelton & Pais — Team Topologies (IT Revolution Press, 2019)
+2. Human Factors in Rapid Prototyping — Zeman & Wood, INCOSE San Diego, 2025
+3. Safeguarding Sensitive Data: Prompt Engineering for GenAI — INCOSE Enchantment, 2025
+4. Federated Learning — Villanueva, INCOSE San Diego, 2025
+5. Service life extension patterns

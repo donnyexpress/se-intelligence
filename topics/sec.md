@@ -53,6 +53,7 @@ Five patterns recur in security engineering practice:
 Active threads in 2024–2025:
 
 - **Safety and security co-design.** New patterns for integrating safety and security analyses from the start of the architecture [eng-domains-safety-security-co-design].
+- **NIST Secure Software Development Framework (SSDF).** The US government baseline for software security practices after EO 14028 — the procurement language is now starting to ask for it [sec-nist-ssdf-800-218].
 - **GenAI security.** Prompt injection, model exfiltration, training data leakage — the new attack surfaces of GenAI in the SE workflow [safeguarding-genai-prompt-engineering-giang-2025].
 - **Federated learning for data-residency security.** A pattern for ML where the data cannot move [federated-learning-villanueva-2025].
 - **DieselGate as the canonical security failure.** What happens when security is designed to defeat inspection [dieselgate-smoke-and-mirrors-aftel-2025].
@@ -62,13 +63,14 @@ Active threads in 2024–2025:
 
 If you only read three things on security engineering, read:
 
-1. The safety/security co-design patterns — the integration is the hard part [eng-domains-safety-security-co-design]
-2. The Giang paper on prompt engineering safety — GenAI in the SE workflow introduces new attack surfaces [safeguarding-genai-prompt-engineering-giang-2025]
+1. The NIST SSDF — the US government baseline for software security practice; if you sell to the federal government, this is the procurement language [sec-nist-ssdf-800-218]
+2. The safety/security co-design patterns — the integration is the hard part [eng-domains-safety-security-co-design]
 3. The DieselGate case study — what happens when security is designed to defeat inspection [dieselgate-smoke-and-mirrors-aftel-2025]
 
 ## References
 
-1. Safety and security co-design in critical systems
-2. Safeguarding Sensitive Data: Prompt Engineering for GenAI — INCOSE Enchantment, 2025
-3. Federated Learning — Villanueva, INCOSE San Diego, 2025
-4. DieselGate — Smoke and Mirrors, INCOSE San Diego, 2025
+1. NIST SP 800-218 v1.1 — Secure Software Development Framework (Feb 2022)
+2. Safety and security co-design in critical systems
+3. Safeguarding Sensitive Data: Prompt Engineering for GenAI — INCOSE Enchantment, 2025
+4. Federated Learning — Villanueva, INCOSE San Diego, 2025
+5. DieselGate — Smoke and Mirrors, INCOSE San Diego, 2025

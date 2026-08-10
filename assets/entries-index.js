@@ -17,11 +17,14 @@ const ENTRY_KEYS = [
   'eng-domains-safety-security-co-design',
   'management-decision-analysis-mcda',
   'sos-sos-architecting-patterns',
-  // Application domains
+  // Application domains — performance / security / platform
   'reliab-meta-storage-tail-aware',
   'dist-sys-jepsen-etcd-3-5',
   'observ-ebpf-practical-survey-2026',
   'ml-sys-inference-cost-curves-2026',
+  'perf-brendan-gregg-systems-performance',
+  'sec-nist-ssdf-800-218',
+  'platform-team-topologies-skelton-pais',
   // INCOSE chapter papers — 2024-2025
   'se-esrd-framework-hodges-2024',
   'mission-engineering-uaf-gagliardi-2024',

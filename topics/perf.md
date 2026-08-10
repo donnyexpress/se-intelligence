@@ -53,6 +53,7 @@ Active threads in 2024–2026:
 
 - **Inference cost curves.** Where the floor is in 2026, and what the cost-performance frontier looks like [ml-sys-inference-cost-curves-2026].
 - **eBPF for performance observability.** Kernel-level instrumentation for production performance work [observ-ebpf-practical-survey-2026].
+- **Brendan Gregg's methodology.** The USE method (Utilization, Saturation, Errors) and RED method (Rate, Errors, Duration) — the practitioner's checklist for performance debugging [perf-brendan-gregg-systems-performance].
 - **Tail-aware scheduling.** The Meta storage patterns generalize beyond storage [reliab-meta-storage-tail-aware].
 - **Performance for ML systems.** The 2026 inference cost survey is the most current state of the discipline [ml-sys-inference-cost-curves-2026].
 - **Performance for systems of systems.** When the system crosses organizational boundaries, the performance budget is federated.
@@ -61,13 +62,14 @@ Active threads in 2024–2026:
 
 If you only read three things on performance, read:
 
-1. The Tail at Scale paper — the canonical reference for production performance [reliab-meta-storage-tail-aware]
-2. The 2026 inference cost survey — current state of ML performance economics [ml-sys-inference-cost-curves-2026]
-3. The eBPF survey — current state of production instrumentation [observ-ebpf-practical-survey-2026]
+1. Brendan Gregg's *Systems Performance* — the definitive reference for production performance analysis; start with the USE method [perf-brendan-gregg-systems-performance]
+2. The Tail at Scale paper — the canonical reference for production performance [reliab-meta-storage-tail-aware]
+3. The 2026 inference cost survey — current state of ML performance economics [ml-sys-inference-cost-curves-2026]
 
 ## References
 
-1. Meta storage — 40% p99 reduction via tail-aware scheduling
-2. LLM inference cost curves — where the floor is in 2026
-3. eBPF practical survey for production observability (2026)
-4. Jepsen — anomaly in etcd 3.5 linearizable reads
+1. Brendan Gregg — Systems Performance 2nd edition (Addison-Wesley, 2020)
+2. Meta storage — 40% p99 reduction via tail-aware scheduling
+3. LLM inference cost curves — where the floor is in 2026
+4. eBPF practical survey for production observability (2026)
+5. Jepsen — anomaly in etcd 3.5 linearizable reads
