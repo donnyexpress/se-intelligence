@@ -12,6 +12,7 @@ source_url: https://www.incose.org/events-education/previous-international-event
 source_label: View in INCOSE IS 2023 proceedings →
 authors: "Leffingwell, D.; et al."
 year: 2023
+published: 2023-07-15
 event_date: 2023-07-18
 ---
 

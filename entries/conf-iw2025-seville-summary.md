@@ -12,6 +12,7 @@ source_url: https://www.incose.org/events-education/previous-international-event
 source_label: View INCOSE event archive →
 authors: "INCOSE Working Groups"
 year: 2025
+published: 2025-01-30
 domains: reliab
 event_date: 2025-02-04
 ---

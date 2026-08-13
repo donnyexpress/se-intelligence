@@ -59,6 +59,8 @@ for (const [k, e] of Object.entries(entries)) {
   check(`  ${k}: has title`, !!e.title);
   check(`  ${k}: has summary`, !!e.summary, e.summary ? '' : 'no TL;DR section');
   check(`  ${k}: has lastUpdated`, !!e.lastUpdated);
+  check(`  ${k}: has published`, !!e.published, e.published ? '' : 'no published date');
+  check(`  ${k}: published is valid date`, !isNaN(new Date(e.published).getTime()), `published: ${e.published}`);
   check(`  ${k}: has triage in {watch,read,try,ignore}`, ['watch','read','try','ignore'].includes(e.triage), `triage: ${e.triage}`);
   check(`  ${k}: signal in 0..1`, e.signal >= 0 && e.signal <= 1, `signal: ${e.signal}`);
   check(`  ${k}: topic in primary, domain, or practice`, !!(CONFIG.primaryTopics[e.topic] || CONFIG.applicationDomains[e.topic] || CONFIG.practiceAreas[e.topic]), `topic: ${e.topic}`);
@@ -217,6 +219,27 @@ check('app.js renderTicker exposes items via __tickerItems', /__tickerItems/.tes
 check('app.js wireTicker wires dot clicks', /dots\.forEach/.test(appRaw) || /ticker-dot/.test(appRaw));
 check('CSS has mobile breakpoint for ticker height', /@media\s*\(max-width:\s*600px\)\s*\{[^}]*\.ticker\s*\{[^}]*height:\s*88px/m.test(cssRaw));
 check('CSS ticker-current .what allows text wrap on mobile', /\.ticker-current\s+\.what\s*\{[^}]*white-space:\s*normal/m.test(cssRaw));
+
+// v1.11: "Latest" and ticker are sorted by published date (not lastUpdated).
+// "Latest" means "the original source was published recently", not "the
+// entry was recently added to the site".
+console.log('\nv1.11 published-date sorting:');
+check('computeTickerItems sorts by published date, not lastUpdated',
+  // The function should reference e.published in its sort comparator.
+  /function\s+computeTickerItems[\s\S]*?e\.published\s*\|\|\s*e\.lastUpdated[\s\S]*?localeCompare/.test(appRaw));
+check('countLatest filters by published date (falls back to lastUpdated)',
+  /function\s+countLatest[\s\S]*?e\.published\s*\|\|\s*e\.lastUpdated[\s\S]*?daysAgo/.test(appRaw));
+check('renderLatest sorts by published date',
+  /function\s+renderLatest[\s\S]*?e\.published\s*\|\|\s*e\.lastUpdated[\s\S]*?localeCompare/.test(appRaw));
+check('renderResearcherPage sorts "what changed" by published date',
+  /function\s+renderResearcherPage[\s\S]*?e\.published\s*\|\|\s*e\.lastUpdated[\s\S]*?localeCompare/.test(appRaw));
+check('setOrCreateJsonLd uses published for datePublished and lastUpdated for dateModified',
+  /data\.datePublished\s*=\s*published\s*\|\|\s*lastUpdated/.test(appRaw) &&
+  /data\.dateModified\s*=\s*lastUpdated\s*\|\|\s*published/.test(appRaw));
+check('setMeta sets article:published_time from entry.published',
+  /article:published_time.*published/s.test(appRaw));
+check('entry header shows "Published" date (not just "Updated")',
+  /<span class="label">Published<\/span>/.test(appRaw));
 
 console.log(`\n==================================================`);
 console.log(`  ${pass} passed, ${fail} failed`);

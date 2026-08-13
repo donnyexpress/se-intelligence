@@ -434,7 +434,11 @@
     const cutoffDays = cfg.windowDays || 30;
     return Object.values(state.entries).filter(e => {
       if (!(cfg.defaultTriage || ['watch','read','try']).includes(e.triage)) return false;
-      return daysAgo(e.lastUpdated) <= cutoffDays;
+      // "Latest" means "published within the window" — based on the
+      // original publication date, not when the entry was added to the site.
+      // Falls back to lastUpdated if published is missing.
+      const refDate = e.published || e.lastUpdated;
+      return daysAgo(refDate) <= cutoffDays;
     });
   }
 
@@ -652,7 +656,8 @@
           <span>${signalBars(e.signal)}</span>
           ${sourceMeta ? `<span>· ${sourceMeta}</span>` : ''}
           ${maturityMeta ? `<span>· ${maturityMeta}</span>` : ''}
-          ${e.lastUpdated ? `<span>·</span><span><span class="label">Updated</span> <time datetime="${e.lastUpdated}">${formatDate(e.lastUpdated)}</time></span>` : ''}
+          ${e.published ? `<span>·</span><span><span class="label">Published</span> <time datetime="${e.published}">${formatDate(e.published)}</time></span>` : ''}
+          ${e.lastUpdated ? `<span>·</span><span><span class="label">Added</span> <time datetime="${e.lastUpdated}">${formatDate(e.lastUpdated)}</time></span>` : ''}
         </div>
         ${domainChipsHtml}
       </div>
@@ -832,21 +837,29 @@
     </div>`;
   }
 
-  // Compute the ticker items: top N entries by lastUpdated desc.
+  // Compute the ticker items: top N entries by published date desc.
+  // "Latest" means most recently PUBLISHED (original source date), not
+  // most recently added to the site. Falls back to lastUpdated if no
+  // published date is set.
   // Returns array of { date, label, kind, href, isNew, isFeatured }.
   function computeTickerItems() {
     const cfg = (window.CONFIG && window.CONFIG.ticker) || { maxItems: 6, featureWindowDays: 7 };
     const entries = Object.values(state.entries);
     const sorted = entries
-      .filter(e => e.lastUpdated)
-      .sort((a, b) => String(b.lastUpdated || '').localeCompare(String(a.lastUpdated || '')))
+      .filter(e => e.published || e.lastUpdated)
+      .sort((a, b) => {
+        const aDate = a.published || a.lastUpdated || '';
+        const bDate = b.published || b.lastUpdated || '';
+        return String(bDate).localeCompare(String(aDate));
+      })
       .slice(0, cfg.maxItems);
     return sorted.map(e => {
-      const isNew = daysAgo(e.lastUpdated) <= cfg.featureWindowDays;
+      const refDate = e.published || e.lastUpdated;
+      const isNew = daysAgo(refDate) <= cfg.featureWindowDays;
       const isFeatured = !!(e.featured || (e.triage === 'watch'));
       const title = (e.title || '').slice(0, 60);
       return {
-        date: e.lastUpdated,
+        date: refDate,
         label: title,
         kind: isFeatured ? 'featured' : (isNew ? 'new' : 'source'),
         href: '/source/' + e.key,
@@ -1335,10 +1348,16 @@
 
   // ---- /for-researchers: what's new / what's hot / disruptive ----
   function renderResearcherPage() {
-    // What changed in the last 30 days — top 6 by lastUpdated
+    // What changed in the last 30 days — top 6 by published date
+    // (when the original source was published, not when the entry was
+    // added to the site). Falls back to lastUpdated if published is missing.
     const recent = Object.values(state.entries)
-      .filter(e => e.lastUpdated)
-      .sort((a, b) => String(b.lastUpdated || '').localeCompare(String(a.lastUpdated || '')))
+      .filter(e => e.published || e.lastUpdated)
+      .sort((a, b) => {
+        const aDate = a.published || a.lastUpdated || '';
+        const bDate = b.published || b.lastUpdated || '';
+        return String(bDate).localeCompare(String(aDate));
+      })
       .slice(0, 6);
     const recentCards = recent.map(e => `<a class="audience-card" href="/source/${e.key}" data-nav="source">
       <div class="kind">${escapeHtml(e.triage || 'source')}</div>
@@ -1467,8 +1486,10 @@
   // /latest — the v1.3 "Latest developments" view, now a deep page
   // (it's no longer on the home page — the news ticker replaced it).
   // Shows entries with triage ∈ {watch,read,try} from the last 30 days,
-  // sorted by signal desc, then last_updated desc. Includes the
-  // triage filter chips from the original /latest page.
+  // sorted by signal desc, then published date desc. "Latest" filters by
+  // the original source publication date, not when the entry was added
+  // to the site — so a 2025-published paper added in 2026 is still "latest"
+  // in 2026, and a 2020-published book added in 2026 is not.
   function renderLatest() {
     const entries = Object.values(state.entries);
     if (entries.length === 0) {
@@ -1478,11 +1499,14 @@
     const cutoffDays = cfg.windowDays || 30;
     let view = entries.filter(e => {
       if (!(cfg.defaultTriage || ['watch','read','try']).includes(e.triage)) return false;
-      return daysAgo(e.lastUpdated) <= cutoffDays;
+      const refDate = e.published || e.lastUpdated;
+      return daysAgo(refDate) <= cutoffDays;
     });
     view.sort((a, b) => {
       if (b.signal !== a.signal) return b.signal - a.signal;
-      return String(b.lastUpdated || '').localeCompare(String(a.lastUpdated || ''));
+      const aDate = a.published || a.lastUpdated || '';
+      const bDate = b.published || b.lastUpdated || '';
+      return String(bDate).localeCompare(String(aDate));
     });
     return renderFeed('Latest developments', view, { isLatest: true });
   }
@@ -1572,7 +1596,7 @@
         <span class="tag tag-topic">${escapeHtml(topicMeta.short)}</span>
         ${domainTags}
         <span>${signalBars(e.signal)}</span>
-        ${e.lastUpdated ? `<span>${formatDate(e.lastUpdated)}</span>` : ''}
+        ${(e.published || e.lastUpdated) ? `<span>${formatDate(e.published || e.lastUpdated)}</span>` : ''}
       </div>
     </a>`;
   }
@@ -1690,7 +1714,7 @@
           <span class="tag tag-triage-${e.triage}">${e.triage}</span>
           <span class="tag tag-topic">${escapeHtml(topicMeta.short || e.topic)}</span>
           <span>${signalBars(e.signal)}</span>
-          ${e.lastUpdated ? `<span>${formatDate(e.lastUpdated)}</span>` : ''}
+          ${(e.published || e.lastUpdated) ? `<span>${formatDate(e.published || e.lastUpdated)}</span>` : ''}
         </div>
       </a>`;
     }).join('');
@@ -1896,7 +1920,7 @@
     for (const [k, v] of sp.entries()) out[k] = v;
     return out;
   }
-  function setMeta({ title, description, url, type, lastUpdated }) {
+  function setMeta({ title, description, url, type, lastUpdated, published }) {
     const site = SITE();
     if (!title) title = site.name;
     if (!description) description = site.description;
@@ -1908,12 +1932,13 @@
     setOrCreateMeta('property', 'og:url', fullUrl);
     setOrCreateMeta('property', 'og:type', type || 'website');
     setOrCreateMeta('property', 'og:site_name', site.name);
+    if (published) setOrCreateMeta('property', 'article:published_time', published);
     if (lastUpdated) setOrCreateMeta('property', 'article:modified_time', lastUpdated);
     setOrCreateMeta('name', 'twitter:card', 'summary_large_image');
     setOrCreateMeta('name', 'twitter:title', `${title} — ${site.name}`);
     setOrCreateMeta('name', 'twitter:description', description);
     setOrCreateLink('canonical', fullUrl);
-    setOrCreateJsonLd({ title, description, url: fullUrl, type: type || 'website', lastUpdated, siteName: site.name, siteUrl: site.url });
+    setOrCreateJsonLd({ title, description, url: fullUrl, type: type || 'website', lastUpdated, published, siteName: site.name, siteUrl: site.url });
   }
   function setOrCreateMeta(attr, key, value) {
     let el = document.head.querySelector(`meta[${attr}="${key}"]`);
@@ -1926,11 +1951,13 @@
     el.setAttribute('href', href);
   }
   let jsonLdEl = null;
-  function setOrCreateJsonLd({ title, description, url, type, lastUpdated, siteName, siteUrl }) {
+  function setOrCreateJsonLd({ title, description, url, type, lastUpdated, published, siteName, siteUrl }) {
     const data = { '@context': 'https://schema.org', '@type': type === 'article' ? 'Article' : 'WebSite', name: title, headline: title, description, url, publisher: { '@type': 'Organization', name: siteName, url: siteUrl } };
     if (type === 'article') {
-      data.datePublished = lastUpdated || '2024-01-01';
-      data.dateModified = lastUpdated || new Date().toISOString().slice(0, 10);
+      // datePublished = when the original source was published
+      // dateModified = when the entry was last updated on the site
+      data.datePublished = published || lastUpdated || '2024-01-01';
+      data.dateModified = lastUpdated || published || new Date().toISOString().slice(0, 10);
       data.author = { '@type': 'Organization', name: siteName };
       data.mainEntityOfPage = { '@type': 'WebPage', '@id': url };
     }
@@ -1956,7 +1983,7 @@
       main.innerHTML = renderSource(key);
       renderSidebar(key);
       if (F().comments) { loadComments(key, 'source'); wireCommentForm(key, 'source'); }
-      setMeta(entry ? { title: entry.title, description: (entry.summary || '').split('\n')[0] || entry.title, url: '/source/' + key, type: 'article', lastUpdated: entry.lastUpdated } : { title: 'Not Found', description: '', url: '/source/' + key });
+      setMeta(entry ? { title: entry.title, description: (entry.summary || '').split('\n')[0] || entry.title, url: '/source/' + key, type: 'article', lastUpdated: entry.lastUpdated, published: entry.published } : { title: 'Not Found', description: '', url: '/source/' + key });
     } else if (route === 'topic' && key) {
       const topic = state.topics[key];
       main.innerHTML = renderTopic(key);

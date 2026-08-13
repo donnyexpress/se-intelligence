@@ -12,6 +12,7 @@ source_url: https://www.incose.org/symp2025
 source_label: View in INCOSE IS 2025 program →
 authors: "Pavalkis, S.; Correa, P."
 year: 2025
+published: 2025-07-15
 event_date: 2025-07-28
 ---
 

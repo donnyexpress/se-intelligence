@@ -32,3 +32,4 @@ build/
 .env
 .env.local
 docs/mockups/
+__pycache__/

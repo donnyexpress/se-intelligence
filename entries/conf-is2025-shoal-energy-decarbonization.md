@@ -13,6 +13,7 @@ source_url: https://www.incose.org/resource/early-stage-digital-engineering-for-
 source_label: Read on INCOSE →
 authors: "Unewisse, M.; Cook, S.; Wylie, M."
 year: 2025
+published: 2025-07-15
 domains: energy
 event_date: 2025-07-31
 ---

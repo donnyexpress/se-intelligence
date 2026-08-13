@@ -12,6 +12,7 @@ source_url: https://www.incose.org/events-education/previous-international-event
 source_label: View in INCOSE IW 2024 proceedings →
 authors: "Jackson, S.; et al."
 year: 2024
+published: 2024-01-25
 event_date: 2024-01-29
 ---
 

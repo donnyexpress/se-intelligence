@@ -12,6 +12,7 @@ source_url: https://www.incose.org/events-education/previous-international-event
 source_label: View in INCOSE IS 2024 proceedings →
 authors: "Holt, J.; Perry, S.; Brownsword, M."
 year: 2024
+published: 2024-10-15
 event_date: 2024-07-03
 ---
 
