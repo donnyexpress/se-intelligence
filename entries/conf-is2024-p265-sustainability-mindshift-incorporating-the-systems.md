@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: energy
+last_updated: 2026-08-13
+topic: realization
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy"]
+practice_tags: ["perf"]
 authors: "Keating et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Sustainability,Paradigm Shift,Systems Engineering,SE Vision 2035
 - **IS2024 topic codes**: 1.5 Systems Science, 1.6 Systems Thinking, 3.5 Technical Leadership
-- **Primary topic (SE Intelligence taxonomy)**: energy (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: defense, energy
+- **Also tagged (practice areas)**: perf
 
 ## When to use
 

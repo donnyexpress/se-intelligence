@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["auto", "defense", "health", "manufacturing"]
+practice_tags: []
 authors: "Lunney et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Minimal Viable Capability (MVC),Minimal Viable Product (MVP),Agility,Lean,Iterative,Incremental,Digital Engineering,Digital Transformation
 - **IS2024 topic codes**: 2.4 System Architecture/Design Definition, 3.7 Project Planning, 5.1 Agile Systems Engineering
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: auto, defense, health, manufacturing
 
 ## When to use
 

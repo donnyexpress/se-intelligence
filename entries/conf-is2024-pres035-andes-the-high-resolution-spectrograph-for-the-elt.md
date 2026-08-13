@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: eng-domains
+last_updated: 2026-08-13
+topic: space
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["space"]
+practice_tags: []
 authors: "Zanutta et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: astronomy,ELT,ANDES
 - **IS2024 topic codes**: 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: eng-domains (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: space
+- **Also tagged (app domains)**: space
 
 ## When to use
 

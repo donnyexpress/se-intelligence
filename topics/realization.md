@@ -59,6 +59,12 @@ Active threads in 2024–2025:
 - **Design reviews with MBSE support.** Modern design review tools that pull from the model rather than from documents [conf-is2025-dassault-mb-design-reviews].
 - **Verification as a defense against defeat devices.** The DieselGate case study is the canonical example of verification design that matches the operational environment [dieselgate-smoke-and-mirrors-aftel-2025].
 
+The 2024 Symposium surfaced several realization-focused patterns worth adding:
+
+- **Real-to-real analogy: software development from film production.** Borrowed practices from film production (time-boxed iterations, scene blocking, asset reuse) mapped to SE realization work [conf-is2024-p276-real-to-real-deriving-software-development-practic]. Useful for teams that have to deliver under hard time and budget pressure.
+- **Traceability across the realization lifecycle.** A vision paper from Airbus on how traceability needs to evolve to support model-based and digital engineering [conf-is2024-p148-traceability-a-vision-for-now-and-tomorrow].
+- **COSYSMO + MBSE convergence.** A practical paper on converging parametric cost estimation with model-based systems engineering so the cost model is derived from the system model, not maintained separately [conf-is2024-p180-the-convergence-of-cosysmo-parametric-cost-estimat].
+
 ## What to read first
 
 If you only read three things on system realization, read:

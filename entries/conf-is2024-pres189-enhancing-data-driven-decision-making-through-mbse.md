@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: realization
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["defense"]
+practice_tags: []
 authors: "Parnell et al."  # 5 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: mbse,decision analysis working group,digital transformation,decision,decision analysis,decision management,sysml,dodaf,uaf,architecture,management,project management,risk,configuration management,patterns,reuse
 - **IS2024 topic codes**: 2.1 Business or Mission Analysis, 3.3 Decision Analysis and/or Decision Management, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: defense
 
 ## When to use
 

@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
-triage: watch
+last_updated: 2026-08-13
+topic: management
+triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["defense", "infra", "space"]
+practice_tags: []
 authors: "Densford et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: MBSE,Advanced Tool Features,Scripting,Parametric Diagrams,Cost Analysis,Model Query,Model Based Systems Engineering,Cameo,Opaque Behaviors
 - **IS2024 topic codes**: 5.12 Automation, 5.3 MBSE, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: management
+- **Also tagged (app domains)**: defense, infra, space
 
 ## When to use
 

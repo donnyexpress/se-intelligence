@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: auto
+last_updated: 2026-08-13
+topic: sys-fund
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "space"]
+practice_tags: []
 authors: "Tunstel et al."  # 8 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: INCOSE Alliance,IEEE SMC Society,joint activities,SE research and practice
 - **IS2024 topic codes**: 1.2 Cybernetics, 1.5 Systems Science, 4.1 Human-Systems Integration
-- **Primary topic (SE Intelligence taxonomy)**: auto (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sys-fund
+- **Also tagged (app domains)**: defense, space
 
 ## When to use
 

@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: []
+practice_tags: []
 authors: "Quayle et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,7 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: system,systems engineering,concept,abstract-virtual-physical
 - **IS2024 topic codes**: 1.5 Systems Science, 3.5 Technical Leadership, 5.9 Teaching and Training
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
 
 ## When to use
 

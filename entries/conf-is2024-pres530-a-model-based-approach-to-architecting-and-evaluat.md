@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: sos
 triage: watch
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy", "infra", "space"]
+practice_tags: ["observ", "perf", "platform"]
 authors: "Adejokun et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Unmanned Aerial Vehicle,Satellites,SWARN,Network-Centric Warfare,Weapon Systems
 - **IS2024 topic codes**: 1.6 Systems Thinking, 2.1 Business or Mission Analysis, 5.3 MBSE, 5.8 Systems of Systems (Internet of Things
-- **Primary topic (SE Intelligence taxonomy)**: sos (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: defense, energy, infra, space
+- **Also tagged (practice areas)**: observ, perf, platform
 
 ## When to use
 

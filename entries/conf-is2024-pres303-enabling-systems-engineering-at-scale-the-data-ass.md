@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
-triage: read
+last_updated: 2026-08-13
+topic: sos
+triage: watch
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["auto", "defense", "space"]
+practice_tags: []
 authors: "Barre et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: SE,MBSE,common language,common reference,ontology,semantic,model,concept,data,information,interoperability,at scale
 - **IS2024 topic codes**: 1.1 Complexity, 3.4 Information Management Process, 5.2 Lean Systems Engineering
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: auto, defense, space
 
 ## When to use
 

@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["defense"]
+practice_tags: ["observ"]
 authors: "Barbosa et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Requirements quality metrics,Natural language requirements,Dependency grammar
 - **IS2024 topic codes**: 2.3 Needs and Requirements Definition, 3.6 Measurement and Metrics
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense
+- **Also tagged (practice areas)**: observ
 
 ## When to use
 

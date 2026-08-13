@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: manufacturing
+last_updated: 2026-08-13
+topic: realization
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "health", "manufacturing"]
+practice_tags: []
 authors: "D'Souza et al."  # 6 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Traceability,Systems Engineering,Configuration Management,INCOSE Vision 2035
 - **IS2024 topic codes**: 3.2 Configuration Management, 3.7 Project Planning
-- **Primary topic (SE Intelligence taxonomy)**: manufacturing (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: defense, health, manufacturing
 
 ## When to use
 

@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: eng-domains
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "space"]
+practice_tags: ["dist-sys", "platform", "reliab"]
 authors: "Russell et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: System Safety,Reliability,Product Support,Product Assurance
 - **IS2024 topic codes**: 4.3 Reliability, 4.6 System Safety, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: eng-domains
+- **Also tagged (app domains)**: defense, space
+- **Also tagged (practice areas)**: dist-sys, platform, reliab
 
 ## When to use
 

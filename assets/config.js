@@ -237,8 +237,8 @@ const CONFIG = {
   // a blog post about a hot topic in March is just as relevant as a
   // paper about the same topic in March.
   hotTopics: {
-    windowMonths: 18,        // hard cut-off for what's counted
-    topN: 6,                 // how many topics to show in the dashboard
+    windowMonths: 36,        // v1.13: widened from 18 to surface IS2024 papers
+    topN: 12,                // v1.13: bumped from 6 to cover all 8 SEBoK + 8 app + 7 practice
     // Decay: score = 1 / (1 + decayRate * monthsSince)
     // decayRate=0.05 → a 12-month-old entry scores ~0.625 of fresh;
     // a 24-month-old entry scores ~0.45; a 60-month-old entry ~0.25.

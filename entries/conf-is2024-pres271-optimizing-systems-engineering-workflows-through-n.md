@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
-triage: watch
+last_updated: 2026-08-13
+topic: system-def
+triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["auto", "defense", "space"]
+practice_tags: ["ml-sys", "reliab"]
 authors: "Serzo et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Large Language Models,Machine Learning,MBSE,Model Based Systems Engineering,Systems Engineering,mbX,Automation,Artificial Intelligence,System Architecture
 - **IS2024 topic codes**: 2.4 System Architecture/Design Definition, 5.11 Artificial Intelligence, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: auto, defense, space
+- **Also tagged (practice areas)**: ml-sys, reliab
 
 ## When to use
 

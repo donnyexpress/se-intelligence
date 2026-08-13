@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
+last_updated: 2026-08-13
+topic: sos
 triage: watch
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["auto", "defense", "infra"]
+practice_tags: []
 authors: "Lunney et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Digital Transformation,Digital Engineering,Agile,System Modernization,Systems of Systems (SoS),Engineering Management,Digital culture,Digital thread,SE Toolkit
 - **IS2024 topic codes**: 5.12 Automation, 5.3 MBSE, 5.5 Processes
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: auto, defense, infra
 
 ## When to use
 

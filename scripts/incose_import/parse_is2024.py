@@ -67,43 +67,118 @@ def is_topics_to_track(topics_text):
     return 'modelling'  # safe default
 
 
-def is_code_to_se_topic(topics_text):
-    """Given the IS Topics line, return the best SE Intelligence topic key."""
-    se_topics = []
-    text = topics_text.lower()
-    if 'aerospace' in text or 'defense' in text:
-        se_topics.append('defense')
-    if 'automotive' in text or 'autonomous' in text:
-        se_topics.append('auto')
-    if 'health' in text or 'medical' in text:
-        se_topics.append('health')
-    if 'energy' in text or 'environment' in text:
-        se_topics.append('energy')
-    if 'infrastructure' in text:
-        se_topics.append('infra')
-    if 'space' in text:
-        se_topics.append('space')
-    if 'manufacturing' in text or 'industry 4' in text:
-        se_topics.append('manufacturing')
-    if 'enterprise' in text or 'social' in text:
-        se_topics.append('management')
-    if 'systems of systems' in text:
-        se_topics.append('sos')
+def is_codes_to_se_topics(topics_text, keywords_text='', abstract_text=''):
+    """Return ALL SE Intelligence topic keys that match the IS2024 paper.
 
+    Returns (primary, domain_tags, practice_tags) where:
+      - primary: single best-fit topic for grouping
+      - domain_tags: app domains the paper touches (defense, health, etc.)
+      - practice_tags: practice areas the paper touches (ml-sys, observ, etc.)
+    """
+    text = (topics_text + ' ' + keywords_text + ' ' + abstract_text).lower()
+
+    # App domain detection (any match -> domain_tags)
+    app_domains = set()
+    if 'defense' in text or 'aerospace' in text or 'military' in text or 'maritime' in text or 'naval' in text:
+        app_domains.add('defense')
+    if 'automotive' in text or 'autonomous vehicle' in text or 'arp4754' in text or 'arp4761' in text:
+        app_domains.add('auto')
+    if 'health' in text or 'medical' in text or 'clinical' in text or 'hospital' in text:
+        app_domains.add('health')
+    if 'energy' in text or 'environment' in text or 'sustainability' in text or 'nuclear' in text or 'reactor' in text or 'wind' in text or 'solar' in text:
+        app_domains.add('energy')
+    if 'infrastructure' in text or 'railway' in text or 'rail' in text or 'maritime' in text or 'highway' in text or 'construction' in text or 'bridge' in text or 'water system' in text:
+        app_domains.add('infra')
+    if 'space' in text or 'satellite' in text or 'orbit' in text or 'telescope' in text or 'spectrograph' in text:
+        app_domains.add('space')
+    if 'manufacturing' in text or 'industry 4' in text or 'industry 5' in text or 'factory' in text or 'production system' in text:
+        app_domains.add('manufacturing')
+    if 'finance' in text or 'financial' in text or 'banking' in text or 'insurance' in text:
+        app_domains.add('finance')
+
+    # Practice area detection (any match -> practice_tags)
+    practice_areas = set()
+    if 'observability' in text or 'monitoring' in text or 'telemetry' in text or 'ebpf' in text or 'metrics' in text:
+        practice_areas.add('observ')
+    if 'performance' in text or 'latency' in text or 'throughput' in text or 'bottleneck' in text or 'tail latency' in text:
+        practice_areas.add('perf')
+    if 'platform' in text and ('engineering' in text or 'team' in text or 'developer' in text or 'idp' in text):
+        practice_areas.add('platform')
+    if 'reliability' in text or 'slo' in text or 'error budget' in text or 'fault toleran' in text or 'resilien' in text:
+        practice_areas.add('reliab')
+    if 'incident' in text or 'postmortem' in text or 'post-mortem' in text or 'sre' in text or 'on-call' in text or 'oncall' in text:
+        practice_areas.add('incid')
+    if 'ml system' in text or 'ml platform' in text or 'machine learning' in text or 'inference' in text or 'training pipeline' in text or ' llm' in text or 'chatgpt' in text or 'gpt-4' in text or 'gpt-' in text or 'neural network' in text:
+        practice_areas.add('ml-sys')
+    if 'distributed' in text or 'consensus' in text or 'raft' in text or 'partition' in text or 'replication' in text:
+        practice_areas.add('dist-sys')
+
+    # SEBoK primary topic detection via numeric codes (1.x, 2.x, 3.x, 4.x, 5.x)
+    sebok_primary = set()
     for m in re.finditer(r'(\d+)\.(\d+)\.?', topics_text):
         prefix = f'{m.group(1)}.{m.group(2)}'
         for se_topic, prefixes in TOPIC_MAP.items():
+            if se_topic in {'defense', 'auto', 'health', 'energy', 'infra', 'space', 'manufacturing'}:
+                continue  # handled above
             if prefix in prefixes or f'{m.group(1)}.' in prefixes:
-                se_topics.append(se_topic)
+                sebok_primary.add(se_topic)
                 break
 
-    priority = ['sec', 'sos', 'ml-sys', 'defense', 'health', 'energy', 'auto', 'space', 'manufacturing', 'infra',
-                'realization', 'system-def', 'sys-fund',
-                'management', 'eng-domains']
-    for p in priority:
-        if p in se_topics:
-            return p
-    return 'eng-domains'
+    # Special keyword to SEBoK primary
+    if 'systems of systems' in text or 'system-of-systems' in text or 'system of systems' in text or 'sos' in text or 'federat' in text or 'collaborative' in text and 'system' in text:
+        sebok_primary.add('sos')
+    if 'enterprise' in text and ('se' in text or 'system' in text):
+        sebok_primary.add('management')
+    if 'social' in text or 'sociotechnical' in text or 'socio-technical' in text:
+        sebok_primary.add('sys-fund')  # 22 Social systems → sys-fund
+
+    # App domain code mapping (6.x, 7.x, 11.x, 13.x, etc.) when keywords missed
+    for m in re.finditer(r'(\d+)\.', topics_text):
+        n = int(m.group(1))
+        if n == 6 or n == 2:  # 6. Defense, 2. Aerospace
+            app_domains.add('defense')
+        elif n == 7:
+            app_domains.add('health')
+        elif n == 8 or n == 10:
+            app_domains.add('energy')
+        elif n == 11 or n == 21:
+            app_domains.add('auto')
+        elif n == 12 or n == 13:
+            app_domains.add('infra')
+        elif n == 14 or n == 15:
+            app_domains.add('space')
+        elif n == 20:
+            app_domains.add('manufacturing')
+
+    # Pick PRIMARY topic:
+    #   1. SEBoK primary if any
+    #   2. else first app domain
+    #   3. else eng-domains (fallback)
+    sebok_priority = ['sos', 'system-def', 'realization', 'concept-def', 'sys-fund', 'lifecycle',
+                      'deploy-use', 'management', 'eng-domains']
+    primary = None
+    for p in sebok_priority:
+        if p in sebok_primary:
+            primary = p
+            break
+    if not primary:
+        if app_domains:
+            # Pick app domain by priority
+            for d in ['defense', 'health', 'energy', 'auto', 'space', 'manufacturing', 'infra', 'finance']:
+                if d in app_domains:
+                    primary = d
+                    break
+        else:
+            primary = 'eng-domains'
+
+    # Add primary itself to domain_tags if it's an app domain (so dashboard counts it)
+    if primary in {'defense', 'auto', 'health', 'energy', 'infra', 'space', 'manufacturing', 'finance'}:
+        app_domains.add(primary)
+    # Add primary to practice_tags if it's a practice area
+    if primary in {'observ', 'perf', 'platform', 'reliab', 'incid', 'ml-sys', 'dist-sys'}:
+        practice_areas.add(primary)
+
+    return primary, sorted(app_domains), sorted(practice_areas)
 
 
 def parse_section(content):
@@ -215,7 +290,11 @@ def parse_first_author(authors):
 
 def build_entry(section_type, section_id, parsed):
     """section_type: 'Paper' or 'Presentation'"""
-    se_topic = is_code_to_se_topic(parsed['topics'])
+    # v1.13: multi-tagging — paper can cut through multiple domains
+    primary, domain_tags, practice_tags = is_codes_to_se_topics(
+        parsed['topics'], parsed['keywords'], parsed['abstract']
+    )
+    se_topic = primary  # backwards-compat: topic: field = primary
     track = is_topics_to_track(parsed['topics'])
     title = re.sub(r'\s+', ' ', parsed['title']).strip()
     last_name = parse_first_author(parsed['authors'])
@@ -249,8 +328,12 @@ def build_entry(section_type, section_id, parsed):
     if len(parsed['authors']) > 5:
         authors_display += f'; +{len(parsed["authors"]) - 5} more'
 
+    # JSON arrays for tags (no tags field if empty)
+    domain_tags_str = json.dumps(domain_tags) if domain_tags else '[]'
+    practice_tags_str = json.dumps(practice_tags) if practice_tags else '[]'
+
     md = f'''---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: {se_topic}
 triage: {triage}
 source_type: paper
@@ -258,6 +341,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: {track}
+domain_tags: {domain_tags_str}
+practice_tags: {practice_tags_str}
 authors: "{last_name} et al."{("  # " + str(len(parsed["authors"])) + " authors") if len(parsed["authors"]) > 1 else ""}
 year: 2024
 published: 2024-07-15
@@ -282,7 +367,11 @@ This {"paper" if section_type == "Paper" else "presentation"} was {"presented" i
         md += f'- **Keywords**: {keywords}\n'
     if topics_display:
         md += f'- **IS2024 topic codes**: {topics_display}\n'
-    md += f'- **Primary topic (SE Intelligence taxonomy)**: {se_topic} (mapped from IS topic codes above)\n'
+    md += f'- **Primary topic (SE Intelligence taxonomy)**: {se_topic}\n'
+    if domain_tags:
+        md += f'- **Also tagged (app domains)**: {", ".join(domain_tags)}\n'
+    if practice_tags:
+        md += f'- **Also tagged (practice areas)**: {", ".join(practice_tags)}\n'
 
     md += '''
 ## When to use
@@ -302,7 +391,8 @@ This {"paper" if section_type == "Paper" else "presentation"} was {"presented" i
 
 # Find all Paper#N and Presentation#N sections (handles form feed separator)
 # The text has form feed (\x0c) between paper sections in some places
-pattern = r'(?:\n|\x0c)((?:Paper|Presentation)#(\d+))\s*\n'
+# Also handles "Key Reserve Paper#N" prefix (backup papers)
+pattern = r'(?:\n|\x0c)(?:Key Reserve )?((?:Paper|Presentation)#(\d+))\s*\n'
 parts = re.split(pattern, TEXT)
 # parts: [pre, full_match, num, content, full_match, num, content, ...]
 

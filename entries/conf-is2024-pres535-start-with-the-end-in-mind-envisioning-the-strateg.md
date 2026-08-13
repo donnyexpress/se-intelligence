@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: sos
 triage: watch
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy"]
+practice_tags: ["reliab"]
 authors: "Geier et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Modular Open Systems Approach,MOSA,Defense Modernization,Systems Engineering,Architecture,Interoperability,Incremental Development,Open Architecture,Open Systems,System Integration,Resilience,Adaptability
 - **IS2024 topic codes**: 1.1 Complexity, 2.5 System Integration, 5.8 Systems of Systems (Internet of Things
-- **Primary topic (SE Intelligence taxonomy)**: sos (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: defense, energy
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

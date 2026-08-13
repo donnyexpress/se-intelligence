@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: energy
+last_updated: 2026-08-13
+topic: sys-fund
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy", "manufacturing"]
+practice_tags: []
 authors: "Brook et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Pursuing INCOSE's Vision,Evolving the SE Discipline,Sustainability,Global Problems,Transdisciplinarity
 - **IS2024 topic codes**: 1.1 Complexity, 1.5 Systems Science, 1.6 Systems Thinking
-- **Primary topic (SE Intelligence taxonomy)**: energy (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sys-fund
+- **Also tagged (app domains)**: defense, energy, manufacturing
 
 ## When to use
 

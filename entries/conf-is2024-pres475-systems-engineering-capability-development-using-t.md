@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: health
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: management
+domain_tags: ["energy", "health"]
+practice_tags: []
 authors: "Strandberg et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Enterprise Capability development,Tailoring,Organizational maturity,Evolutionary development
 - **IS2024 topic codes**: 3.5 Technical Leadership, 4.5 Competency/Resource Management, 5.9 Teaching and Training
-- **Primary topic (SE Intelligence taxonomy)**: health (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: energy, health
 
 ## When to use
 

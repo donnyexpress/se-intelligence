@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: sos
 triage: watch
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "energy", "infra"]
+practice_tags: []
 authors: "Hoehne et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: System of Systems,Emergence,Interoperability,Model-Based Systems Integration,Element of definition,Element of usage
 - **IS2024 topic codes**: 2.4 System Architecture/Design Definition, 2.5 System Integration, 5.3 MBSE, 5.8 Systems of Systems (Internet of Things
-- **Primary topic (SE Intelligence taxonomy)**: sos (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: defense, energy, infra
 
 ## When to use
 

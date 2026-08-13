@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: org-skills
+domain_tags: ["defense", "space"]
+practice_tags: []
 authors: "Gueit et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Trainings,Competency,Feedback,Framework,Lessons learnt,Safran
 - **IS2024 topic codes**: 4.5 Competency/Resource Management, 5.9 Teaching and Training
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, space
 
 ## When to use
 

@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: energy
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "energy"]
+practice_tags: ["reliab"]
 authors: "Plants et al."  # 7 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: MBSE,SysML,Nuclear,Impact Analysis,Lifecycle,Maintenance,Safety,Reliability
 - **IS2024 topic codes**: 2.4 System Architecture/Design Definition, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: energy (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, energy
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

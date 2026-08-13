@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy", "space"]
+practice_tags: []
 authors: "Fale et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Systems Engineering,Systems Engineering Process,Self-leadership,Leadership Theory,Authentic Leadership,Culture of Inquiry,Culture of Reflection,Culture of Innovation
 - **IS2024 topic codes**: 1.6 Systems Thinking, 3.3 Decision Analysis and/or Decision Management, 5.10 Diversity (cultural boundaries
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, energy, space
 
 ## When to use
 

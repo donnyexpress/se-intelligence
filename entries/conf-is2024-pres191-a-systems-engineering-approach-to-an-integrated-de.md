@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: health
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy", "health"]
+practice_tags: []
 authors: "Reddy et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Design Controls,Risk Management,Medical Device Product Development
 - **IS2024 topic codes**: 1.6 Systems Thinking, 2.3 Needs and Requirements Definition, 3.5 Technical Leadership, 3.8 Quality Management Process, 5.5 Processes
-- **Primary topic (SE Intelligence taxonomy)**: health (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, energy, health
 
 ## When to use
 

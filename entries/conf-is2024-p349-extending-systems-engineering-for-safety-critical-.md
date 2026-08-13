@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: eng-domains
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense"]
+practice_tags: []
 authors: "Potiron et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: systems safety,systems engineering,standards,IEC 63187,IEC 61508,ISO/IEC/IEEE 15288
 - **IS2024 topic codes**: 4.6 System Safety
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: eng-domains
+- **Also tagged (app domains)**: defense
 
 ## When to use
 

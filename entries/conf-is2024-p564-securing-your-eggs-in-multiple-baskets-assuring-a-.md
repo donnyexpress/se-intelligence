@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: manufacturing
-triage: read
+last_updated: 2026-08-13
+topic: sos
+triage: watch
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["manufacturing"]
+practice_tags: ["reliab"]
 authors: "Hause et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Supply Chain,UAF,Systems of Systems,MBSE,Enterprise,Assurance,Risk Management
 - **IS2024 topic codes**: 3.1 Acquisition and/or Supply, 4.3 Reliability, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: manufacturing (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: manufacturing
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

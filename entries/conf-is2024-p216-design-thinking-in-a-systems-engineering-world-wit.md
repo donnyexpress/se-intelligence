@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "space"]
+practice_tags: ["dist-sys"]
 authors: "Braun et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Systems engineering,systems thinking,design thinking,government,DoD,concept development
 - **IS2024 topic codes**: 1.6 Systems Thinking, 2.3 Needs and Requirements Definition, 4.1 Human-Systems Integration
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, space
+- **Also tagged (practice areas)**: dist-sys
 
 ## When to use
 

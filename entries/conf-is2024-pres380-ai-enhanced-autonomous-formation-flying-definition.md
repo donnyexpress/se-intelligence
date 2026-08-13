@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
-triage: watch
+last_updated: 2026-08-13
+topic: eng-domains
+triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["auto", "defense", "energy", "infra", "space"]
+practice_tags: ["ml-sys", "perf"]
 authors: "Dion et al."  # 5 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Autonomy,Mission,Safety-Critical Systems,AI/ML-Enabled Subsystems,Airworthiness,Certification,MBSE,Safety,Simulation
 - **IS2024 topic codes**: 4.6 System Safety, 5.11 Artificial Intelligence, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: eng-domains
+- **Also tagged (app domains)**: auto, defense, energy, infra, space
+- **Also tagged (practice areas)**: ml-sys, perf
 
 ## When to use
 

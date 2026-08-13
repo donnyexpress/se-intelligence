@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: management
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["defense", "space"]
+practice_tags: ["reliab"]
 authors: "Ndao et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: systems engineering,ECSS,standards,nanosattelites
 - **IS2024 topic codes**: 5.2 Lean Systems Engineering, 5.5 Processes
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: management
+- **Also tagged (app domains)**: defense, space
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

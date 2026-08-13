@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: system-def
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["auto", "defense", "energy", "health", "space"]
+practice_tags: ["perf"]
 authors: "Sharma et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: MBSE,Digital Engineering,System Engineering,Digital Engineering Ecosystem,Analysis,Trade Study,Requirements Verification,System Architecture Model,SAM,Model Based System Engineering,Integration,Automation
 - **IS2024 topic codes**: 1.1 Complexity, 2.5 System Integration, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: system-def (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: auto, defense, energy, health, space
+- **Also tagged (practice areas)**: perf
 
 ## When to use
 

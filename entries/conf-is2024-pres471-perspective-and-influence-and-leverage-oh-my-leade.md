@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: realization
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: management
+domain_tags: []
+practice_tags: []
 authors: "Long et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,7 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Technical Leadership,Facilitation,Collaboration,Influence,Perspectives
 - **IS2024 topic codes**: 3.5 Technical Leadership
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
 
 ## When to use
 

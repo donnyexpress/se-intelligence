@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: realization
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "space"]
+practice_tags: []
 authors: "Wozniak et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Systems Thinking,Technical Leadership,Leadership,Leadership Model,Leadership Skills,Technical Skills
 - **IS2024 topic codes**: 1.6 Systems Thinking, 3.5 Technical Leadership
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: defense, space
 
 ## When to use
 

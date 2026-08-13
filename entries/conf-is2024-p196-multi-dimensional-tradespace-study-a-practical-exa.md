@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "space"]
+practice_tags: ["dist-sys"]
 authors: "Holst et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Tradespace,Trade Space,Set-Based Design,Consensus,Pareto Front,Multi Domain Optimization,Morphological Matrix,Morphological Box,Architecture
 - **IS2024 topic codes**: 2.4 System Architecture/Design Definition, 3.3 Decision Analysis and/or Decision Management, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, space
+- **Also tagged (practice areas)**: dist-sys
 
 ## When to use
 

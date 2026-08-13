@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense"]
+practice_tags: []
 authors: "Krueger et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Digital Engineering,Digital Thread,Model-based Systems Engineering,System Family Engineering,Feature-based Product Line Engineering,Variation Management,Temporal Management,Configuration Management
 - **IS2024 topic codes**: 1.6 Systems Thinking, 3.2 Configuration Management, 5.3 MBSE, 5.6 Product Line Engineering
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense
 
 ## When to use
 

@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: sos
 triage: watch
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["auto", "energy"]
+practice_tags: []
 authors: "Hylleseth et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Waste Management Industry,IoT,GHG emissions accounting
 - **IS2024 topic codes**: 3.4 Information Management Process, 5.8 Systems of Systems (Internet of Things
-- **Primary topic (SE Intelligence taxonomy)**: sos (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: auto, energy
 
 ## When to use
 

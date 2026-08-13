@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: energy
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "energy", "manufacturing"]
+practice_tags: []
 authors: "Nonaka et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Cooking recipe,Alternative proteins,Process Design,Systems Engineering
 - **IS2024 topic codes**: 2.4 System Architecture/Design Definition, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: energy (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, energy, manufacturing
 
 ## When to use
 

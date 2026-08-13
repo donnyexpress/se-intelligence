@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: realization
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["auto", "energy", "health"]
+practice_tags: ["ml-sys"]
 authors: "Schindel et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Digital Thread,Hamiltonian,Hamilton’s Principle,Energy,Momentum,Machine Learning
 - **IS2024 topic codes**: 1.4 Systems Dynamics, 1.5 Systems Science, 3.7 Project Planning
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: auto, energy, health
+- **Also tagged (practice areas)**: ml-sys
 
 ## When to use
 

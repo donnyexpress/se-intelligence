@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: sys-fund
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense"]
+practice_tags: []
 authors: "Sarathi et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: MBSE,Model Based Systems Engineering,Military Mission,Modeling and Simulation
 - **IS2024 topic codes**: 1.6 Systems Thinking, 5.3 MBSE, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sys-fund
+- **Also tagged (app domains)**: defense
 
 ## When to use
 

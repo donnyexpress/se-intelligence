@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
-triage: read
+last_updated: 2026-08-13
+topic: sos
+triage: watch
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["defense", "space"]
+practice_tags: []
 authors: "Martinez et al."  # 7 authors
 year: 2024
 published: 2024-07-15
@@ -27,7 +29,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 ## Key ideas
 
 - **Keywords**: MBSE,Digital Twin,Digital Transformation
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: defense, space
 
 ## When to use
 

@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: []
+practice_tags: []
 authors: "Call et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,7 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: model-based systems engineering,diffusion of innovations,adoption rate,MBSE adoption
 - **IS2024 topic codes**: 1.1 Complexity, 3.5 Technical Leadership, 5.3 MBSE, 5.9 Teaching and Training
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
 
 ## When to use
 

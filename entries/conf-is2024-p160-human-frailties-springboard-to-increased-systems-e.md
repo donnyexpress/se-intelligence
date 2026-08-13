@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: manufacturing
+last_updated: 2026-08-13
+topic: realization
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["infra", "manufacturing"]
+practice_tags: []
 authors: "Arnold et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Leveraging human frailties,systems engineering influence,strategies,tactics,case studies
 - **IS2024 topic codes**: 3.3 Decision Analysis and/or Decision Management, 3.5 Technical Leadership, 3.9 Risk and Opportunity Management
-- **Primary topic (SE Intelligence taxonomy)**: manufacturing (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: infra, manufacturing
 
 ## When to use
 

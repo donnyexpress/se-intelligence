@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: realization
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "space"]
+practice_tags: ["observ"]
 authors: "Pierce et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: MBSE,digital engineering,MBCA,MBCM
 - **IS2024 topic codes**: 3.6 Measurement and Metrics, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: defense, space
+- **Also tagged (practice areas)**: observ
 
 ## When to use
 

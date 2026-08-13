@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy"]
+practice_tags: []
 authors: "Dominguez et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: System Engineering,DOE,NNSA,Defense,Energy
 - **IS2024 topic codes**: 1.6 Systems Thinking, 2.3 Needs and Requirements Definition, 2.5 System Integration, 2.6 Verification/Validation
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, energy
 
 ## When to use
 

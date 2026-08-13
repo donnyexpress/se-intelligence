@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: eng-domains
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: []
+practice_tags: []
 authors: "Velthuizen et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,7 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Model-Based Systems Engineering,MBSE adoption,Force Field Analysis,Organisational change,Adoption strategy
 - **IS2024 topic codes**: 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: eng-domains (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: eng-domains
 
 ## When to use
 

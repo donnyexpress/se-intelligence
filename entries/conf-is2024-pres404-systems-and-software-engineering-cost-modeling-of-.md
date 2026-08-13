@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
-triage: watch
+last_updated: 2026-08-13
+topic: realization
+triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: management
+domain_tags: ["auto", "defense", "health", "space"]
+practice_tags: ["ml-sys"]
 authors: "Madachy et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Artificial Intelligence (AI),Generative Artificial Intelligence,Cost Modeling,COSYSMO,COCOMO,Systems Engineering,software engineering,Large Language Models (LLMs),Parametric Cost Modeling
 - **IS2024 topic codes**: 3.7 Project Planning, 4.2 Life-Cycle Costing and/or Economic Evaluation, 5.11 Artificial Intelligence
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: auto, defense, health, space
+- **Also tagged (practice areas)**: ml-sys
 
 ## When to use
 

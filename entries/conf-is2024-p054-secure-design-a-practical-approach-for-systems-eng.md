@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: system-def
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "health"]
+practice_tags: ["perf", "reliab"]
 authors: "Winstead et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Security,System Security,Resilience,Design,Architecture,System Security Engineering
 - **IS2024 topic codes**: 2.4 System Architecture/Design Definition, 4.4 Resilience, 4.7 System Security (cyber-attack
-- **Primary topic (SE Intelligence taxonomy)**: system-def (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, health
+- **Also tagged (practice areas)**: perf, reliab
 
 ## When to use
 

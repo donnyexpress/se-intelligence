@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: sos
 triage: watch
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["energy", "infra"]
+practice_tags: []
 authors: " et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: MBSE,UAF,System of Systems,SoS,Offshore Wind,Green Hydrogen,Wind Power,Sustainable,Simulation
 - **IS2024 topic codes**: 5.3 MBSE, 5.4 Modeling/Simulation/Analysis, 5.8 Systems of Systems (Internet of Things
-- **Primary topic (SE Intelligence taxonomy)**: sos (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: energy, infra
 
 ## When to use
 

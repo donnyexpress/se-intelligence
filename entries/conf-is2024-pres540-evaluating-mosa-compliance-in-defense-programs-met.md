@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense"]
+practice_tags: ["observ"]
 authors: "Geier et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Modular Open Systems Approach,MOSA,Open Architecture,Open Systems,Standards,IP,Intellectual Property,Data Rights,Assessment Criteria,Compliance Evaluation,Program Lifecycle Assessment,Quantitative and Qualitative Evaluation
 - **IS2024 topic codes**: 1.1 Complexity, 2.5 System Integration, 3.6 Measurement and Metrics, 5.5 Processes
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense
+- **Also tagged (practice areas)**: observ
 
 ## When to use
 

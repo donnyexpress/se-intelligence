@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "energy", "finance", "health"]
+practice_tags: ["ml-sys", "reliab"]
 authors: "Parnell et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Analytics,Data Analytics,System Engineering,Decision Analysis,AI,Machine Learning
 - **IS2024 topic codes**: 3.3 Decision Analysis and/or Decision Management, 5.1 Agile Systems Engineering, 5.7 Software-Intensive Systems
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, energy, finance, health
+- **Also tagged (practice areas)**: ml-sys, reliab
 
 ## When to use
 

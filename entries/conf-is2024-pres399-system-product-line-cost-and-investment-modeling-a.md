@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "space"]
+practice_tags: []
 authors: "Madachy et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: product lines,economics,COPLIMO,COSYSMO,cost modeling,ROI,UUV,systems engineering
 - **IS2024 topic codes**: 4.2 Life-Cycle Costing and/or Economic Evaluation, 5.4 Modeling/Simulation/Analysis, 5.6 Product Line Engineering
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, space
 
 ## When to use
 

@@ -58,6 +58,13 @@ Several active threads at the 2024–2025 INCOSE Symposium focused on LLM-augmen
 - **Multi-level FMEA driven by the architecture.** Automated FMEA at the system, subsystem, and component levels, generated from the same architecture model [conf-is2025-fmea-multilevel].
 - **MBSE for Model-Based Design Engineering (MBDE) in robotics.** The patterns work for mechatronic systems but need adaptation for real-time control loops [conf-is2025-pavalkis-mbde-robotic-arm].
 
+The 2024 Symposium also surfaced concrete patterns worth noting:
+
+- **Secure design as a first-class activity in system definition**, not an add-on at the end [conf-is2024-p054-secure-design-a-practical-approach-for-systems-eng]. Practical framework for integrating security into MBSE from day one.
+- **Mean dependency length as a requirements-quality metric.** A new quantitative measure for requirements structure, validated across 10 MBSE course offerings and 601 student models [conf-is2024-p568-automating-rule-checking-to-identify-sysml-modelin].
+- **ARCADIA / Capella in maritime system definition.** Real case study of the ARCADIA method for wind-assisted bulk carrier vessel design — concrete example of MBSE in non-traditional defense domains [conf-is2024-p260-application-of-the-arcadia-method-on-a-bulk-carrie].
+- **V-Model modernization for digital engineering.** The "Arch Model" refreshes the classical V-Model for integrated digital engineering, addressing the misperceptions that have reduced the V-Model's efficacy in practice [conf-is2024-p370-a-classical-modernization-of-the-v-model].
+
 ## What to read first
 
 If you only read three things on System Definition, read:

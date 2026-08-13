@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: energy
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy", "health"]
+practice_tags: ["reliab"]
 authors: "Lyle et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: MBSE,CATIA,Biomimicry,Sustainability,MBSE Deployment,Systems Design,Systems Thinking
 - **IS2024 topic codes**: 1.6 Systems Thinking, 5.3 MBSE, 5.7 Software-Intensive Systems
-- **Primary topic (SE Intelligence taxonomy)**: energy (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, energy, health
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

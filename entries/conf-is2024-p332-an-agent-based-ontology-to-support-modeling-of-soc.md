@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: sos
 triage: watch
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy"]
+practice_tags: []
 authors: "Axelsson et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Systems-of-systems,Modeling,Analysis,Agents,Ontology
 - **IS2024 topic codes**: 1.1 Complexity, 1.5 Systems Science, 1.6 Systems Thinking, 5.4 Modeling/Simulation/Analysis, 5.8 Systems of Systems (Internet of Things
-- **Primary topic (SE Intelligence taxonomy)**: sos (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: defense, energy
 
 ## When to use
 

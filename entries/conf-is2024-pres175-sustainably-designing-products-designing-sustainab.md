@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: energy
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["auto", "defense", "energy", "infra"]
+practice_tags: []
 authors: "Marsh et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Sustainability,Sustainability Technologies,Requirements Management,Compliance,Systems Engineering,Sustainable Design
 - **IS2024 topic codes**: 1.6 Systems Thinking, 2.3 Needs and Requirements Definition, 2.4 System Architecture/Design Definition
-- **Primary topic (SE Intelligence taxonomy)**: energy (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: auto, defense, energy, infra
 
 ## When to use
 

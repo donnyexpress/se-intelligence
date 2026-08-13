@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: system-def
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["defense", "infra"]
+practice_tags: ["dist-sys"]
 authors: "Welford et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Requirements,Presentation,Syntax,Authoring
 - **IS2024 topic codes**: 2.3 Needs and Requirements Definition, 5.5 Processes
-- **Primary topic (SE Intelligence taxonomy)**: system-def (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, infra
+- **Also tagged (practice areas)**: dist-sys
 
 ## When to use
 

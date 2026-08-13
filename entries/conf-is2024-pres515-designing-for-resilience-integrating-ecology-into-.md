@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: energy
+last_updated: 2026-08-13
+topic: sys-fund
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["energy"]
+practice_tags: ["reliab"]
 authors: "Lewark et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Biomimicry,Sustainability,Natural Systems,MBSE,Resilience
 - **IS2024 topic codes**: 1.3 Natural Systems, 1.4 Systems Dynamics, 4.4 Resilience
-- **Primary topic (SE Intelligence taxonomy)**: energy (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sys-fund
+- **Also tagged (app domains)**: energy
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

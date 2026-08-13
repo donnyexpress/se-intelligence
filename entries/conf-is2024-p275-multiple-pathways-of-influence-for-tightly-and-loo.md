@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: energy
+last_updated: 2026-08-13
+topic: realization
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["energy", "manufacturing"]
+practice_tags: ["reliab"]
 authors: "Valdez et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: organizations,structure,influence,decision-making,systems resilience
 - **IS2024 topic codes**: 3.3 Decision Analysis and/or Decision Management, 4.4 Resilience, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: energy (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: energy, manufacturing
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: sos
 triage: watch
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["energy"]
+practice_tags: ["reliab"]
 authors: "Chen et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: biophilia,nature-based smart city (NBSC),system of systems,systems engineering,unified architecture framework (UAF)
 - **IS2024 topic codes**: 5.8 Systems of Systems (Internet of Things
-- **Primary topic (SE Intelligence taxonomy)**: sos (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: energy
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

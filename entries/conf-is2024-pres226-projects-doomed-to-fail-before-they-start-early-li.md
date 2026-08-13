@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: infra
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["auto", "defense", "health", "infra"]
+practice_tags: []
 authors: "Brown et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Lifecycle,Infrastructure,Transportation,Needs,Requirements,Risk,Planning,Organization,Society,Stakeholder
 - **IS2024 topic codes**: 2.3 Needs and Requirements Definition, 3.1 Acquisition and/or Supply, 3.7 Project Planning
-- **Primary topic (SE Intelligence taxonomy)**: infra (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: auto, defense, health, infra
 
 ## When to use
 

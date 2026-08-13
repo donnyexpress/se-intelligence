@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: system-def
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy"]
+practice_tags: []
 authors: "Anyanhun et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Model-Based Systems Engineering,Model-Based Test and Evaluation,Shift Left,MB-Testing,System Development Cycle Time
 - **IS2024 topic codes**: 1.6 Systems Thinking, 2.4 System Architecture/Design Definition, 2.6 Verification/Validation, 5.3 MBSE, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: system-def (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, energy
 
 ## When to use
 

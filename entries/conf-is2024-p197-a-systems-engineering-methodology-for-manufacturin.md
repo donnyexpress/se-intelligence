@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: manufacturing
+last_updated: 2026-08-13
+topic: concept-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["defense", "infra", "manufacturing"]
+practice_tags: []
 authors: "Guo et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Manufacturing Enterprise,Enterprise Architecture,Systems Engineering
 - **IS2024 topic codes**: 2.2 Manufacturing Systems and Operational Aspects, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: manufacturing (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: concept-def
+- **Also tagged (app domains)**: defense, infra, manufacturing
 
 ## When to use
 

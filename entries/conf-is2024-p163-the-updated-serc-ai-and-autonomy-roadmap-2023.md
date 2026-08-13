@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
-triage: watch
+last_updated: 2026-08-13
+topic: auto
+triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["auto", "infra", "manufacturing"]
+practice_tags: ["ml-sys"]
 authors: "McDermott et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Artificial Intelligence,Machine Learning,Autonomy,AI4SE,SE4AI,FuSE
 - **IS2024 topic codes**: 5.11 Artificial Intelligence, 5.12 Automation
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: auto
+- **Also tagged (app domains)**: auto, infra, manufacturing
+- **Also tagged (practice areas)**: ml-sys
 
 ## When to use
 

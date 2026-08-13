@@ -59,6 +59,13 @@ Active threads in 2024–2025:
 - **Digital Engineering for mission work.** Model-based approaches that start the model at the mission level, not the platform level.
 - **R&D for mission capabilities.** The SE-ESR&D framework applies to capability discovery, not just platform development [se-esrd-framework-hodges-2024].
 
+The 2024 Symposium added concrete defense-domain patterns:
+
+- **Mission engineering for tank operations.** A practical model-based approach to mission analysis and configuration using MBSE — useful for defense programs trying to scale mission engineering beyond single-platform thinking [conf-is2024-p267-leveraging-mission-solution-configuration-through-].
+- **The Darth Vader pattern — mission engineering in practice.** An accessible introduction to mission engineering for defense programs, named for the original "implementing mission engineering" framing [conf-is2024-p482-darth-vaders-secret-weapon-implementing-mission-en].
+- **Architecting for multilevel security (MLS).** A practical approach to SysML model federation that handles classified networks — concrete example of DE in real defense environments [conf-is2024-p040-extending-sysml-model-federation-to-support-system].
+- **STPA-SEC for defense security analysis.** Translating the STPA-SEC security method into a model-based workflow using SysML, applying Leveson's safety analysis to security in defense contexts [conf-is2024-p176-translating-the-stpa-sec-security-method-into-a-mo].
+
 ## What to read first
 
 If you only read three things on Defense & Mission Engineering, read:

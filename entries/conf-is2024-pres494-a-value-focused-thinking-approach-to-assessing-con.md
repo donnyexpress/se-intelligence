@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: realization
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "infra"]
+practice_tags: ["observ"]
 authors: "Nachtmann et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Maritime transportation systems,Container on Barge,Readiness assessment,Value-focused thinking,Scorecard
 - **IS2024 topic codes**: 3.3 Decision Analysis and/or Decision Management, 3.6 Measurement and Metrics
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: defense, infra
+- **Also tagged (practice areas)**: observ
 
 ## When to use
 

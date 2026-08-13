@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: management
+domain_tags: ["health"]
+practice_tags: ["dist-sys"]
 authors: "Littin et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: community engaged engineering,science and engineering policy,engineering ethics
 - **IS2024 topic codes**: 3.7 Project Planning, 4.1 Human-Systems Integration, 5.9 Teaching and Training
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: health
+- **Also tagged (practice areas)**: dist-sys
 
 ## When to use
 

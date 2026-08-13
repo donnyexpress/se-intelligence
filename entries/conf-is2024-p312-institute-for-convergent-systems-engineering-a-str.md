@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: energy
+last_updated: 2026-08-13
+topic: sys-fund
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy", "manufacturing"]
+practice_tags: []
 authors: "Wade et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Convergent systems engineering,ethical sustainability,value supply chains,research institutes,strategic plans
 - **IS2024 topic codes**: 1.6 Systems Thinking, 4.1 Human-Systems Integration, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: energy (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sys-fund
+- **Also tagged (app domains)**: defense, energy, manufacturing
 
 ## When to use
 

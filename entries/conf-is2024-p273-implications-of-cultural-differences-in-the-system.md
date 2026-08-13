@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: system-def
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: org-skills
+domain_tags: ["energy"]
+practice_tags: []
 authors: "Hahn et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Professional competencies,Cultural differences,Organizational implications
 - **IS2024 topic codes**: 4.5 Competency/Resource Management, 5.10 Diversity (cultural boundaries
-- **Primary topic (SE Intelligence taxonomy)**: system-def (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: energy
 
 ## When to use
 

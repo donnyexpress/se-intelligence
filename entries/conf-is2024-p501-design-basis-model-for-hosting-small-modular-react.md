@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
-triage: watch
+last_updated: 2026-08-13
+topic: system-def
+triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "energy", "infra"]
+practice_tags: []
 authors: "Claghorn et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Nuclear Energy,Design Basis,Model-Based Systems Engineering,Nuclear Reactor Infrastructure
 - **IS2024 topic codes**: 2.4 System Architecture/Design Definition, 3.9 Risk and Opportunity Management, 5.12 Automation
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, energy, infra
 
 ## When to use
 

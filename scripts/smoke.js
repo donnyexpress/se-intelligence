@@ -64,6 +64,21 @@ for (const [k, e] of Object.entries(entries)) {
   check(`  ${k}: has triage in {watch,read,try,ignore}`, ['watch','read','try','ignore'].includes(e.triage), `triage: ${e.triage}`);
   check(`  ${k}: signal in 0..1`, e.signal >= 0 && e.signal <= 1, `signal: ${e.signal}`);
   check(`  ${k}: topic in primary, domain, or practice`, !!(CONFIG.primaryTopics[e.topic] || CONFIG.applicationDomains[e.topic] || CONFIG.practiceAreas[e.topic]), `topic: ${e.topic}`);
+  // v1.13: multi-tag mapping — every entry should have domain_tags/practice_tags as arrays (possibly empty)
+  check(`  ${k}: domain_tags is array`, Array.isArray(e.domain_tags));
+  check(`  ${k}: practice_tags is array`, Array.isArray(e.practice_tags));
+  // v1.13: every domain_tag should be a known app domain
+  if (Array.isArray(e.domain_tags)) {
+    for (const tag of e.domain_tags) {
+      check(`  ${k}: domain_tag "${tag}" is known app domain`, !!CONFIG.applicationDomains[tag], `tag: ${tag}`);
+    }
+  }
+  // v1.13: every practice_tag should be a known practice area
+  if (Array.isArray(e.practice_tags)) {
+    for (const tag of e.practice_tags) {
+      check(`  ${k}: practice_tag "${tag}" is known practice area`, !!CONFIG.practiceAreas[tag], `tag: ${tag}`);
+    }
+  }
 }
 
 // Conference sources

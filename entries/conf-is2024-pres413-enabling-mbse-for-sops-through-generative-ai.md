@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
-triage: watch
+last_updated: 2026-08-13
+topic: system-def
+triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["auto", "defense", "manufacturing", "space"]
+practice_tags: ["ml-sys"]
 authors: "Jordan et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Generative AI,MBSE,Standard Operating Procedures
 - **IS2024 topic codes**: 5.11 Artificial Intelligence, 5.3 MBSE, 5.9 Teaching and Training
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: auto, defense, manufacturing, space
+- **Also tagged (practice areas)**: ml-sys
 
 ## When to use
 

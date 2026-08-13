@@ -96,22 +96,29 @@
     return 1 / (1 + cfg.decayRate * months);
   }
 
-  // Compute the dashboard: top topics by Σ entryHotScore.
-  // Returns an array of { topic, score, totalCount, confCount, confWindowCount }
-  // sorted by score desc, length <= cfg.topN.
+  // v1.13: Count entries across ALL their topic tags (primary + domain_tags
+  // + practice_tags). A paper that covers "system-def + defense" should
+  // count toward BOTH. Returns an array of { topic, score, totalCount,
+  // confCount, confWindowCount } sorted by score desc, length <= cfg.topN.
   function computeHotTopics() {
-    const cfg = (window.CONFIG && window.CONFIG.hotTopics) || { windowMonths: 12, topN: 6, decayRate: 0.05 };
+    const cfg = (window.CONFIG && window.CONFIG.hotTopics) || { windowMonths: 18, topN: 12, decayRate: 0.05 };
     const entries = Object.values(state.entries);
     const byTopic = {};
+    function bump(topic, e, s) {
+      if (!byTopic[topic]) byTopic[topic] = { topic, score: 0, totalCount: 0, confCount: 0, confWindowCount: 0 };
+      byTopic[topic].score += s;
+      byTopic[topic].totalCount += 1;
+      if (e.isConference) byTopic[topic].confCount += 1;
+      if (e.isConference && e.published) byTopic[topic].confWindowCount += 1;
+    }
     for (const e of entries) {
       const s = entryHotScore(e, cfg);
       if (s <= 0) continue;
-      const t = e.topic;
-      if (!byTopic[t]) byTopic[t] = { topic: t, score: 0, totalCount: 0, confCount: 0, confWindowCount: 0 };
-      byTopic[t].score += s;
-      byTopic[t].totalCount += 1;
-      if (e.isConference) byTopic[t].confCount += 1;
-      if (e.isConference && e.published) byTopic[t].confWindowCount += 1;
+      // Accumulate against primary topic AND domain_tags AND practice_tags
+      const tags = [e.topic, ...(e.domain_tags || []), ...(e.practice_tags || [])];
+      for (const t of tags) {
+        if (t) bump(t, e, s);
+      }
     }
     const ranked = Object.values(byTopic).sort((a, b) => b.score - a.score).slice(0, cfg.topN);
     const max = ranked[0] ? ranked[0].score : 1;
@@ -1113,8 +1120,9 @@
     const primary = PRIMARY();
     const domains = DOMAINS();
     const practice = PRACTICE();
-    // Take top 7
-    const top = ranked.slice(0, 7);
+    // v1.13: show top 12 (was 7) — covers all 8 SEBoK primary + 8 app domains
+    // + 7 practice areas
+    const top = ranked.slice(0, 12);
     const rows = top.map((row, i) => {
       const rank = i + 1;
       // Look up the topic name from the config (specialty → primary → domain → practice)
@@ -1136,11 +1144,13 @@
       // Link to the topic page if it exists, otherwise to a filtered feed
       const hasArticle = !!state.topics[row.topic];
       const href = hasArticle ? `/topic/${row.topic}` : `/?topic=${row.topic}`;
-      return `<div class="trend-bar-row">
+      const count = row.totalCount || 0;
+      return `<a class="trend-bar-row" href="${href}" data-nav="${hasArticle ? 'topic' : 'filter'}">
         <div class="rank">${rank}</div>
-        <div class="label"><a href="${href}" data-nav="${hasArticle ? 'topic' : 'filter'}">${escapeHtml(meta.name)}</a>${deltaStr}</div>
+        <div class="label">${escapeHtml(meta.name)}${deltaStr}</div>
         <div class="bar-cell"><div class="fill" style="width: ${width}%"></div></div>
-      </div>`;
+        <div class="count">${count} ${count === 1 ? 'entry' : 'entries'}</div>
+      </a>`;
     }).join('');
     return `<div class="trend-bars">${rows}</div>`;
   }

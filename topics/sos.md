@@ -60,6 +60,12 @@ Active threads in 2024–2025:
 - **SoS for R&D.** The SE-ESR&D framework for managing R&D as an SoS, where the constituents are research projects with their own purposes [se-esrd-framework-hodges-2024].
 - **RWE and SoS governance.** Patterns for SoS governance that do not require a single owner.
 
+The 2024 Symposium added several useful SoS case studies:
+
+- **SoS for public services: healthcare as a collaborative SoS.** A paper framing the US healthcare delivery system as a collaborative SoS with a proposed hybrid governance model — concrete example of SoS thinking applied outside defense [conf-is2024-p490-a-new-horizon-for-healthcare-delivery-a-system-of-].
+- **Wind power in Norway as a SoS.** Uses stakeholder salience analysis and causal loop diagrams to understand public acceptance of wind power — a real-world application of systems thinking to socio-technical SoS [conf-is2024-p020-a-systems-perspective-on-the-public-perception-of-].
+- **Risk assessment for SoS operations.** A risk assessment method specifically for SoS operations, where no single entity owns the system [conf-is2024-p403-risk-assessment-method-for-systems-of-systems-oper].
+
 ## What to read first
 
 If you only read three things on systems of systems, read:

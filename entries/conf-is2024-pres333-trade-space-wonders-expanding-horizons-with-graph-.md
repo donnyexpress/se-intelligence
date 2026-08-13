@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
-triage: watch
+last_updated: 2026-08-13
+topic: realization
+triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["auto", "defense", "space"]
+practice_tags: ["ml-sys"]
 authors: "Sun et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: trade space wonders,generative methods,graph embeddings
 - **IS2024 topic codes**: 3.3 Decision Analysis and/or Decision Management, 5.11 Artificial Intelligence
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: auto, defense, space
+- **Also tagged (practice areas)**: ml-sys
 
 ## When to use
 

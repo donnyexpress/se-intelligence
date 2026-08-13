@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: sys-fund
+last_updated: 2026-08-13
+topic: concept-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense", "energy"]
+practice_tags: ["dist-sys"]
 authors: "Bhosale et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Systems Thinking,Overton Window,Context Diagram,Larger Systems,Sociotechnical Systems
 - **IS2024 topic codes**: 1.5 Systems Science, 1.6 Systems Thinking, 2.1 Business or Mission Analysis
-- **Primary topic (SE Intelligence taxonomy)**: sys-fund (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: concept-def
+- **Also tagged (app domains)**: defense, energy
+- **Also tagged (practice areas)**: dist-sys
 
 ## When to use
 

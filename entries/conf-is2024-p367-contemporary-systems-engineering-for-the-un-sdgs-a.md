@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: system-def
-triage: read
+last_updated: 2026-08-13
+topic: sos
+triage: watch
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["energy"]
+practice_tags: []
 authors: "Bhada et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: Social Systems Engineering,Public Policy,Systems Engineering Education
 - **IS2024 topic codes**: 4.1 Human-Systems Integration, 5.9 Teaching and Training
-- **Primary topic (SE Intelligence taxonomy)**: system-def (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sos
+- **Also tagged (app domains)**: energy
 
 ## When to use
 

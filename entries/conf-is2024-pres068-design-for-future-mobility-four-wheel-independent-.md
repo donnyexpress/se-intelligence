@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: auto
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["auto", "defense"]
+practice_tags: []
 authors: "Hwang et al."  # 6 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: 4WIS (4 Wheel Independent Steering),Pareto Frontier,Technology Roadmap
 - **IS2024 topic codes**: 2.1 Business or Mission Analysis, 2.4 System Architecture/Design Definition, 3.3 Decision Analysis and/or Decision Management
-- **Primary topic (SE Intelligence taxonomy)**: auto (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: auto, defense
 
 ## When to use
 

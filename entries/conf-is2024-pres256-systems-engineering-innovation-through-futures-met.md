@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: sys-fund
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["auto", "defense", "space"]
+practice_tags: []
 authors: "Johnson et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: systems engineering,futures methods,forecasting,systems analysis,technology assessment,emerging technology,system design
 - **IS2024 topic codes**: 1.1 Complexity, 1.5 Systems Science, 1.6 Systems Thinking
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sys-fund
+- **Also tagged (app domains)**: auto, defense, space
 
 ## When to use
 

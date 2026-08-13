@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: management
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "energy", "health"]
+practice_tags: ["reliab"]
 authors: "Clifford et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Secure cyber resilient engineering,Mbse,Workforce development
 - **IS2024 topic codes**: 4.4 Resilience, 4.7 System Security (cyber-attack, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: management
+- **Also tagged (app domains)**: defense, energy, health
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

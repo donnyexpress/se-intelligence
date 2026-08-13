@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: ml-sys
-triage: watch
+last_updated: 2026-08-13
+topic: defense
+triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["auto", "defense"]
+practice_tags: ["dist-sys", "ml-sys"]
 authors: "Johns et al."  # 5 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: AI,AI-integration,ChatGPT,GPT-4,MBSE,SysML,Systems Modeling,Modeling Assistant
 - **IS2024 topic codes**: 5.11 Artificial Intelligence, 5.3 MBSE, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: ml-sys (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: defense
+- **Also tagged (app domains)**: auto, defense
+- **Also tagged (practice areas)**: dist-sys, ml-sys
 
 ## When to use
 

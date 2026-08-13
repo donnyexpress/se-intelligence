@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["energy", "manufacturing"]
+practice_tags: []
 authors: "Gregory et al."  # 10 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: model-based systems engineering,digital engineering,digital thread,education,semantic web technologies
 - **IS2024 topic codes**: 3.4 Information Management Process, 5.3 MBSE, 5.9 Teaching and Training
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: energy, manufacturing
 
 ## When to use
 

@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: health
+last_updated: 2026-08-13
+topic: realization
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "health"]
+practice_tags: ["observ"]
 authors: "Matt et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Benefit/Risk Ratio,Benefit Exceeds Risk,Benefit-Risk,benefit:risk,benefit risk,Risk-Benefit,BRA,RBA,Risk Management,Objective,Novel,Risk Algebra,efficacy,safety
 - **IS2024 topic codes**: 3.6 Measurement and Metrics, 4.6 System Safety, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: health (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: defense, health
+- **Also tagged (practice areas)**: observ
 
 ## When to use
 

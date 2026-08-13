@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["defense", "health", "infra", "space"]
+practice_tags: []
 authors: "Cabak et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Organizational competency assessment,Requirements-driven risk management,Contractor-Supplier risk requirements
 - **IS2024 topic codes**: 2.3 Needs and Requirements Definition, 3.9 Risk and Opportunity Management, 4.5 Competency/Resource Management
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, health, infra, space
 
 ## When to use
 

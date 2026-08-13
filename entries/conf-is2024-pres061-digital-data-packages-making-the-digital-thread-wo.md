@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: manufacturing
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: modelling
+domain_tags: ["manufacturing"]
+practice_tags: []
 authors: "Long et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: MBSE,Digital Engineering,Digital Thread,Technical Data Package
 - **IS2024 topic codes**: 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: manufacturing (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: manufacturing
+- **Also tagged (app domains)**: manufacturing
 
 ## When to use
 

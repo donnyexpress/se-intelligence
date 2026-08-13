@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["defense", "health", "infra"]
+practice_tags: []
 authors: "Hidle et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: A3 Architectural Overviews,Early Validation,A3AO
 - **IS2024 topic codes**: 2.3 Needs and Requirements Definition, 2.4 System Architecture/Design Definition, 2.6 Verification/Validation, 3.7 Project Planning, 5.9 Teaching and Training
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, health, infra
 
 ## When to use
 

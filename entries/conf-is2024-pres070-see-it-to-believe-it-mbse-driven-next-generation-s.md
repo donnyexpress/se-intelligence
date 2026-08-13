@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "infra"]
+practice_tags: []
 authors: "Meharg et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: digital twin,Model Based System Engineering (MBSE),visualization technologies,authoritative source of truth,specifications,simulation,SysML,Unified Architecture Framework (UAF),simulation based validation
 - **IS2024 topic codes**: 2.6 Verification/Validation, 3.3 Decision Analysis and/or Decision Management, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense, infra
 
 ## When to use
 

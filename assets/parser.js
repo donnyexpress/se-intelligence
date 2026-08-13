@@ -99,6 +99,10 @@ function parseMarkdown(filename, raw) {
     isConference,
     topic: frontmatter.topic || inferTopicFromKey(key) || 'sys-fund',
     domains: parseDomainsField(frontmatter.domains),
+    // v1.13: multi-tag mapping. A paper covering both MBSE and defense
+    // gets both `domain_tags: [defense]` and primary `topic: system-def`.
+    domain_tags: parseJsonArray(frontmatter.domain_tags) || parseDomainsField(frontmatter.domain_tags),
+    practice_tags: parseJsonArray(frontmatter.practice_tags) || parseDomainsField(frontmatter.practice_tags),
     triage: frontmatter.triage || 'read',
     sourceType: frontmatter.source_type || (isConference ? 'paper' : 'blog'),
     signal: parseFloat(frontmatter.signal) || 0.5,
@@ -241,6 +245,20 @@ function inferTopicFromKey(key) {
 function parseDomainsField(val) {
   if (!val) return [];
   return String(val).split(/[,\s]+/).map(s => s.trim()).filter(Boolean);
+}
+
+// Parse a JSON array string like '["defense","ml-sys"]' into an array.
+// Returns null if val is not a valid JSON array.
+function parseJsonArray(val) {
+  if (!val) return null;
+  const s = String(val).trim();
+  if (!s.startsWith('[')) return null;
+  try {
+    const arr = JSON.parse(s);
+    return Array.isArray(arr) ? arr : null;
+  } catch (_) {
+    return null;
+  }
 }
 
 // Convert one entry's section content (markdown) to safe HTML.

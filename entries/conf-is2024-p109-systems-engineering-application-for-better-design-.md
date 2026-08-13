@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: manufacturing
+last_updated: 2026-08-13
+topic: concept-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["defense", "energy", "manufacturing"]
+practice_tags: ["ml-sys"]
 authors: "Taghiyar et al."  # 5 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: SysML-PPR Model Transformation,System Behavior based Trade-off Analysis,Production-Specific Simulation,Assembly Scenario,Product-Process-Resource (PPR) View
 - **IS2024 topic codes**: 2.2 Manufacturing Systems and Operational Aspects, 5.3 MBSE, 5.4 Modeling/Simulation/Analysis
-- **Primary topic (SE Intelligence taxonomy)**: manufacturing (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: concept-def
+- **Also tagged (app domains)**: defense, energy, manufacturing
+- **Also tagged (practice areas)**: ml-sys
 
 ## When to use
 

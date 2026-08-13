@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: realization
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["defense", "health", "manufacturing", "space"]
+practice_tags: []
 authors: "Davidz et al."  # 3 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Solution Debt,Technical Debt,Industry 40
 - **IS2024 topic codes**: 2.2 Manufacturing Systems and Operational Aspects, 3.7 Project Planning, 3.9 Risk and Opportunity Management
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: defense, health, manufacturing, space
 
 ## When to use
 

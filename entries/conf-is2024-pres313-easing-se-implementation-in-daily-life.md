@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: conception
+domain_tags: ["defense"]
+practice_tags: []
 authors: "Balslev et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: SE in daily life,Doing SE from scratch in an organization,SE instruction layer
 - **IS2024 topic codes**: 2.3 Needs and Requirements Definition, 2.4 System Architecture/Design Definition, 2.5 System Integration, 3.3 Decision Analysis and/or Decision Management, 5.1 Agile Systems Engineering
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: defense
 
 ## When to use
 

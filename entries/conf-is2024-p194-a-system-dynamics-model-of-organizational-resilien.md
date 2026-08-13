@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 topic: sys-fund
 triage: read
 source_type: paper
@@ -7,6 +7,8 @@ signal: 0.72
 maturity: established
 event: is2024
 track: innovation
+domain_tags: ["defense"]
+practice_tags: ["reliab"]
 authors: "Taylor et al."  # 2 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: modeling and simulation,Systems Dynamics,resilience,adaptability,recruiting
 - **IS2024 topic codes**: 1.4 Systems Dynamics, 1.6 Systems Thinking
-- **Primary topic (SE Intelligence taxonomy)**: sys-fund (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: sys-fund
+- **Also tagged (app domains)**: defense
+- **Also tagged (practice areas)**: reliab
 
 ## When to use
 

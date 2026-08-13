@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: realization
+last_updated: 2026-08-13
+topic: system-def
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["auto", "health"]
+practice_tags: []
 authors: "Woody et al."
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: software supply chain risk,software bill of materials (SBOM),cybersecurity risk management
 - **IS2024 topic codes**: 3.1 Acquisition and/or Supply, 4.7 System Security (cyber-attack, 5.7 Software-Intensive Systems
-- **Primary topic (SE Intelligence taxonomy)**: realization (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: system-def
+- **Also tagged (app domains)**: auto, health
 
 ## When to use
 

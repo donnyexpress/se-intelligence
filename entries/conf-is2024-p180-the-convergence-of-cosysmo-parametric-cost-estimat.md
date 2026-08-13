@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: realization
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["defense", "energy", "health", "space"]
+practice_tags: ["observ"]
 authors: "Papke et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,9 @@ This paper was presented at the 34th Annual INCOSE International Symposium (IS 2
 
 - **Keywords**: COSYSMO,Parametric Cost Estimation,MBSE,Systems Engineering,Project Planning,Reuse
 - **IS2024 topic codes**: 3.6 Measurement and Metrics, 3.7 Project Planning, 4.2 Life-Cycle Costing and/or Economic Evaluation, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: defense, energy, health, space
+- **Also tagged (practice areas)**: observ
 
 ## When to use
 

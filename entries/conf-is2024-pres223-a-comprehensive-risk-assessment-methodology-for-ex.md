@@ -1,12 +1,14 @@
 ---
-last_updated: 2026-08-12
-topic: defense
+last_updated: 2026-08-13
+topic: realization
 triage: read
 source_type: paper
 signal: 0.72
 maturity: established
 event: is2024
 track: se-disciplines
+domain_tags: ["auto", "defense", "space"]
+practice_tags: []
 authors: "Stroup et al."  # 4 authors
 year: 2024
 published: 2024-07-15
@@ -28,7 +30,8 @@ This presentation was delivered at the 34th Annual INCOSE International Symposiu
 
 - **Keywords**: Risk Management,Model-based Systems Engineering,Digital Engineering,Defense Acquisitions,Mission Readiness
 - **IS2024 topic codes**: 3.3 Decision Analysis and/or Decision Management, 3.9 Risk and Opportunity Management, 5.3 MBSE
-- **Primary topic (SE Intelligence taxonomy)**: defense (mapped from IS topic codes above)
+- **Primary topic (SE Intelligence taxonomy)**: realization
+- **Also tagged (app domains)**: auto, defense, space
 
 ## When to use
 
