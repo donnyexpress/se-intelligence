@@ -1,7 +1,7 @@
 ---
 topic_key: sys-fund
 level: 1
-last_curated: 2026-08-05
+last_curated: 2026-08-15
 maturity: established
 ---
 
@@ -53,6 +53,17 @@ Active threads in 2024–2025:
 - **Mission Engineering for SoS.** Treating missions as systems of systems, with the UAF framework as the dominant open standard for the modelling [mission-engineering-uaf-gagliardi-2024].
 - **LLM-augmented system modeling.** Using LLMs to translate between system models and natural language, with the JAXA team's graph-database approach for SysML-to-LLM querying [conf-is2025-jaxa-llm-mbse].
 - **SoS architecting patterns.** The INCOSE SoS working group has been publishing patterns for architecting systems of systems — the *meta-system* in which the systems are the parts [sos-sos-architecting-patterns].
+
+## What's new in 2024-2025
+
+The 2024-2025 Symposia pushed systems fundamentals in three new directions:
+
+- **Bifurcation analysis for resilience.** A 2024 paper proposed bifurcation analysis as a tool for understanding complex systems resilience — mathematical tools from dynamical systems theory applied to engineering resilience questions [conf-is2024-p548-a-framework-to-use-bifurcation-analysis-for-insigh]. This is a notable cross-pollination: classical systems theory (bifurcations) meets modern resilience research.
+- **Trust and distrust as system dynamics.** A 2024 paper on trust modeling in human-AI systems, using causal loop diagrams to map how trust/distrust evolves [conf-is2024-p376-a-model-for-trust-and-distrust-the-systems-dynamic]. As AI systems enter the loop, trust dynamics become a first-class SE concern, not just a sociotechnical one.
+- **Resilience as a designed property, not an emergent one.** A 2024 paper on resilience design — making it an explicit goal of the system design phase, not something that emerges from operations [conf-is2024-pres515-designing-for-resilience-integrating-ecology-into-]. This complements the operational resilience work from INCOSE IW 2024 and signals that resilience is moving from the "test phase" to the "design phase" of the lifecycle.
+- **Soft systems methodology in defense.** A 2025 paper applied Soft Systems Methodology (SSM) to the defense industry — using Checkland's 7-stage SSM to handle the "messy" problems that don't fit a hard-systems analysis [conf-is2025-p053-applying-systems-thinking-and-soft-systems-methodo]. The defense industry is the canonical example of where hard-system SE alone is insufficient.
+
+These are extensions of the classical systems thinking canon (Ackoff, Checkland, Beer), but applied to problems that didn't exist when the canon was written — AI in the loop, formal bifurcation analysis, resilience as a designed property. The core SEBoK Part 1 framework still holds; what's new is the front.
 
 ## What to read first
 

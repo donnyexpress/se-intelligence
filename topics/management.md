@@ -1,7 +1,7 @@
 ---
 topic_key: management
 level: 8
-last_curated: 2026-08-05
+last_curated: 2026-08-15
 maturity: established
 ---
 
@@ -58,6 +58,17 @@ Active threads in 2024–2025:
 - **Decision patterns in the age of GenAI.** With LLMs in the SE workflow, the decision process itself changes — and new decision patterns are needed.
 - **R&D portfolio management.** A framework for managing SE work in R&D portfolios, where the goal is discovering what to build [se-esrd-framework-hodges-2024].
 - **Mission Engineering management.** Mission-level management patterns for defense and aerospace [mission-engineering-uaf-gagliardi-2024].
+
+## What's new in 2024-2025
+
+The 2024-2025 Symposia pushed SE management in two new directions:
+
+- **Enterprise transformation as an SE problem.** A 2025 paper on Enterprise Transformation Planning with UAF [conf-is2025-p164-enterprise-transformation-planning-with-uaf] is a notable scaling: the UAF framework, originally for mission engineering, is now being applied to whole-enterprise transformation. The pattern: the same view-based architecture that works for a defense mission works for a business transformation, with stakeholders, capabilities, activities, and performers mapped to business functions.
+- **Competency assessment in the MBSE era.** The 2024 INCOSE Competency Assessment Guide paper [conf-is2024-p037-incose-systems-engineering-competency-assessment-g] extends the 37-competency framework with a SysML model that represents the architecture of the assessment itself. The "competency framework is a model" approach opens the door to digital competency tracking, where an SE's competency profile is a queryable artifact, not a static document.
+- **LLM-augmented MBSE for data initialization.** A 2025 paper from COMAC on using LLMs to initialize Product-Based SE (PBSE) data [conf-is2025-p052-pbse-data-initialization-framework-and-practive-by] addresses a real pain point: the initial MBSE model population is a heavy, manual task, and LLMs can dramatically reduce the time-to-first-useful-model. This is one of the most concrete productivity gains in the management layer.
+- **Learning through MBSE sandbox.** A 2024 presentation on learning system security through MBSE sandbox environments [conf-is2024-pres546-learning-system-security-playing-in-an-mbse-sandbo] reframes training and competency development as an SE management concern — the curriculum is a model, and the sandbox is the development environment.
+
+What's notable: SE management in 2024-2025 is becoming more "operational" and "platform-like" — the SEMP, the competency framework, the risk register, the training curriculum are all becoming digital artifacts managed through MBSE itself, not documents maintained in Word.
 
 ## What to read first
 

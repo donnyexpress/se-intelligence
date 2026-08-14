@@ -1,7 +1,7 @@
 ---
 topic_key: realization
 level: 5
-last_curated: 2026-08-05
+last_curated: 2026-08-15
 maturity: established
 ---
 
@@ -64,6 +64,16 @@ The 2024 Symposium surfaced several realization-focused patterns worth adding:
 - **Real-to-real analogy: software development from film production.** Borrowed practices from film production (time-boxed iterations, scene blocking, asset reuse) mapped to SE realization work [conf-is2024-p276-real-to-real-deriving-software-development-practic]. Useful for teams that have to deliver under hard time and budget pressure.
 - **Traceability across the realization lifecycle.** A vision paper from Airbus on how traceability needs to evolve to support model-based and digital engineering [conf-is2024-p148-traceability-a-vision-for-now-and-tomorrow].
 - **COSYSMO + MBSE convergence.** A practical paper on converging parametric cost estimation with model-based systems engineering so the cost model is derived from the system model, not maintained separately [conf-is2024-p180-the-convergence-of-cosysmo-parametric-cost-estimat].
+
+## What's new in 2024-2025
+
+The 2024-2025 Symposia showed realization practices continuing to converge with two long-running trends:
+
+- **Agile + SE integration getting real.** A 2024 analysis of SAFe (Scaled Agile Framework) through Stafford Beer's Viable System Model [conf-is2024-p463-synergizing-structure-and-agility-a-comprehensive-] is a notable attempt to ground SAFe in classical systems theory — the gap between "agile teams" and "the system" has been a recurring pain. The INCOSE-PMI Alliance continued to develop cross-references between program management and SE practices, suggesting that the integration of project management frameworks with SE is a stable trend [conf-is2024-pres069-the-latest-on-the-incose-pmi-alliance-and-integrat].
+- **Reliability and maintainability as enterprise decisions.** A 2025 paper reframes R&M as an enterprise architecting problem — fleet maintenance isn't a single-system question but a system-of-systems decision across the enterprise [conf-is2025-p098-enterprise-architecting-to-advance-reliability-and]. This is a significant broadening of what "realization" covers: it now includes sustainment and lifecycle economics, not just initial build.
+- **Generative AI as a cost/schedule multiplier.** A 2025 paper proposed a maturity and cost model for SE with GenAI — explicitly modeling how AI tools reduce effort in routine tasks and where they don't help (still requires human-in-the-loop for safety-critical decisions) [conf-is2025-pres148-a-maturity-and-cost-model-for-systems-engineering-]. The realistic framing here is important: AI augments, doesn't replace.
+
+What's likely on the 2026+ agenda: the realization phase is starting to be the *operational* phase, not just the *build* phase. The digital twin + digital thread papers from 2024-2025 suggest the system model becomes a live runtime artifact during sustainment, blurring the realization/operational boundary. Expect more "realization as operations" papers.
 
 ## What to read first
 

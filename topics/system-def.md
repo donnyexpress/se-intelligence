@@ -1,7 +1,7 @@
 ---
 topic_key: system-def
 level: 4
-last_curated: 2026-08-05
+last_curated: 2026-08-15
 maturity: established
 ---
 
@@ -64,6 +64,22 @@ The 2024 Symposium also surfaced concrete patterns worth noting:
 - **Mean dependency length as a requirements-quality metric.** A new quantitative measure for requirements structure, validated across 10 MBSE course offerings and 601 student models [conf-is2024-p568-automating-rule-checking-to-identify-sysml-modelin].
 - **ARCADIA / Capella in maritime system definition.** Real case study of the ARCADIA method for wind-assisted bulk carrier vessel design — concrete example of MBSE in non-traditional defense domains [conf-is2024-p260-application-of-the-arcadia-method-on-a-bulk-carrie].
 - **V-Model modernization for digital engineering.** The "Arch Model" refreshes the classical V-Model for integrated digital engineering, addressing the misperceptions that have reduced the V-Model's efficacy in practice [conf-is2024-p370-a-classical-modernization-of-the-v-model].
+
+## What's new in 2024-2025
+
+The 2024-2025 INCOSE Symposia surfaced a transformative shift: **LLM-augmented MBSE has moved from speculation to working practice**. Three concrete patterns emerged:
+
+- **AI systems modeling enhancer (AI-SME).** Initial investigations into a ChatGPT-enabled MBSE modeling assistant integrated with CATIA Magic — comparing AI-generated models against human systems engineers. The takeaway: LLMs are useful for routine modeling tasks but reliability is still too low for safety-critical domains without human review [conf-is2024-p562-ai-systems-modeling-enhancer-ai-sme-initial-invest].
+- **LLM as SysML v2 query interface.** Converting SysML models to a Neo4j graph database, then using an LLM to translate natural-language questions into Cypher queries — making models queryable to non-modellers. Addresses the long-standing MBSE pain point that the model is "write-only" [conf-is2025-jaxa-llm-mbse].
+- **LLM-driven requirements traceability.** Using LLMs to automatically establish traceability between requirements and MBSE artifacts — critical for safety standards compliance where manual traceability is the most expensive part of the lifecycle [conf-is2024-p098-llm-based-approach-to-automatically-establish-trac].
+
+Beyond LLMs, three other 2024-2025 themes stood out:
+
+- **SysML v2 as the new baseline.** Multiple papers (Dassault, Siemens, INCOSE working groups) reported on real-world SysML v2 adoption. The 2025 Symposium had an entire SysML v2 track — the language is no longer "coming soon", it is the new default for new projects [conf-is2025-sysmlv2-magicgrid].
+- **Model federation across security boundaries.** Federated PLM/MBSE for multinational programs where models span classification levels (e.g., defense + allied nations) and need to be reasoned about without merging into a single classified model [conf-is2024-p099-enabling-digital-engineering-with-federated-plm-ex].
+- **Verification-first modeling.** Multiple papers argued that the architecture should be the source of truth for verification, not a separate document. The "ConOps-driven verification" pattern from 2024 papers built on this — operational scenarios drive both architecture decisions and verification procedures, closing the loop that classic V-Model processes leave open [conf-is2024-p266-early-validation-using-architectural-overviews-a3a].
+
+What's likely to be on the 2026+ research agenda based on this: trustworthy AI for safety-critical MBSE (formal verification of LLM-generated models), SysML v2 migration tooling, and digital thread + digital twin as the next MBSE plateau (the model isn't just a design artifact — it becomes the operational runtime).
 
 ## What to read first
 

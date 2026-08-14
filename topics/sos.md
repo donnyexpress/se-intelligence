@@ -1,7 +1,7 @@
 ---
 topic_key: sos
 level: 9
-last_curated: 2026-08-05
+last_curated: 2026-08-15
 maturity: maturing
 ---
 
@@ -65,6 +65,16 @@ The 2024 Symposium added several useful SoS case studies:
 - **SoS for public services: healthcare as a collaborative SoS.** A paper framing the US healthcare delivery system as a collaborative SoS with a proposed hybrid governance model — concrete example of SoS thinking applied outside defense [conf-is2024-p490-a-new-horizon-for-healthcare-delivery-a-system-of-].
 - **Wind power in Norway as a SoS.** Uses stakeholder salience analysis and causal loop diagrams to understand public acceptance of wind power — a real-world application of systems thinking to socio-technical SoS [conf-is2024-p020-a-systems-perspective-on-the-public-perception-of-].
 - **Risk assessment for SoS operations.** A risk assessment method specifically for SoS operations, where no single entity owns the system [conf-is2024-p403-risk-assessment-method-for-systems-of-systems-oper].
+
+## What's new in 2024-2025
+
+The 2024-2025 Symposia pushed SoS thinking in two new directions:
+
+- **SoS for sustainability transitions.** Several papers applied SoS framing to climate and energy transitions, treating national sustainability efforts as SoS problems where no single entity can drive the transition. The Norway wind-power SoS case study [conf-is2024-p020-a-systems-perspective-on-the-public-perception-of-] is a concrete example — the grid, the regulators, the communities, the developers, and the energy users are all independent systems that need to coordinate without a single owner. Similar work on urban air mobility SoS [conf-is2024-p107-evaluating-the-eco-efficiency-of-urban-air-mobilit] and offshore wind-to-hydrogen SoS [conf-is2024-pres202-seeing-the-bigger-picture-with-the-unified-archite] extends this into the energy transition.
+- **Healthcare SoS as a multi-layer governance problem.** A 2025 paper proposed a multi-layer governance framework for healthcare SoS, building on the 2024 healthcare-as-SoS work. The progression: from "this is an SoS" (2024) to "here is how to govern it" (2025) [conf-is2025-p120-enhancing-healthcare-delivery-through-systems-of-s]. The pattern is generalizable — once you frame a domain as an SoS, the next question is always "how do we govern it without ownership?"
+- **UN SDGs as an SoS problem.** A systematic review of how systems engineering can address the UN Sustainable Development Goals — treating the 17 SDGs as a coupled SoS where progress on one affects others [conf-is2024-p367-contemporary-systems-engineering-for-the-un-sdgs-a]. This is the most ambitious scaling of SoS thinking so far.
+
+The 2024-2025 period also saw INCOSE's SoS working group consolidate its pattern language. The "SoS architecting patterns" work from earlier years now has a more concrete application: every SoS problem gets the same first three questions (who owns it, who funds it, who can change it), and the answer determines which patterns apply.
 
 ## What to read first
 

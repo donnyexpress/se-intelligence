@@ -1,7 +1,7 @@
 ---
 topic_key: eng-domains
 level: 7
-last_curated: 2026-08-06
+last_curated: 2026-08-15
 maturity: established
 ---
 
@@ -69,6 +69,17 @@ Active threads in 2024–2025:
 - **DieselGate as a case study.** The canonical case of an engineering specialty failure that systems engineering did not catch [dieselgate-smoke-and-mirrors-aftel-2025].
 - **GenAI as a specialty.** The SE Maturity framework for GenAI in SE work [se-maturity-genai-madachy-2025], and the prompt-engineering safety guidance [safeguarding-genai-prompt-engineering-giang-2025].
 - **Federated learning for data-residency-constrained ML.** A technique for ML where the data cannot move [federated-learning-villanueva-2025].
+
+## What's new in 2024-2025
+
+The 2024-2025 Symposia showed engineering specialties moving in three converging directions:
+
+- **MBSE as the substrate for specialty engineering.** A 2024 paper proposed extending SysML to reliability engineering as an OMG standard [conf-is2024-p557-omg-standard-to-extend-sysml-to-reliability-engine] — RAM attributes become first-class in the model, not derived. Similarly, the 2025 multi-level FMEA paper extends classical FMEA through multi-level MBSE architectures [conf-is2025-fmea-multilevel]. The pattern: every specialty discipline is being absorbed into the MBSE model, with the model as the source of truth.
+- **AI/ML in safety-critical systems.** A 2025 paper on digital engineering methodology for design and validation of safety-critical software for AI-based algorithms [conf-is2025-p087-a-digital-engineering-methodology-for-design-explo] is a notable attempt to bring AI/ML systems into the traditional safety engineering discipline — which historically assumed deterministic, well-understood failure modes. New safety patterns are needed for non-deterministic, data-driven components.
+- **Cybersecurity quantification via MBSE.** A 2024 paper proposed an MBSE-based method to quantify cyber threats to microelectronics [conf-is2024-p469-developing-a-model-based-systems-engineering-tool-] — bringing security from "checklist" to "modeled, measured property". This complements the STPA-SEC work from earlier years.
+- **AI-enhanced autonomous safety.** A 2024 paper on AI-enhanced autonomous formation flying with mission-driven safety patterns [conf-is2024-pres380-ai-enhanced-autonomous-formation-flying-definition] pushes the safety discipline into the AI/ML + autonomy domain — the canonical example of where classical safety methods (designed for deterministic components) are insufficient.
+
+The 2024-2025 period is best understood as "every specialty discipline gets re-platformed onto MBSE + AI/ML" — RAM, FMEA, safety, security, autonomy, all moving to model-based + AI-aware.
 
 ## What to read first
 

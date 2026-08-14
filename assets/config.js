@@ -62,6 +62,8 @@ const CONFIG = {
   // ---- v1.4: Disruptive papers (manually curated callout on home) ----
   // Each entry is { title, href, why } — shown in the trending dashboard's
   // sidebar. These are the "this changed the conversation" picks.
+  // v1.16: refreshed to include the 2024-2025 AI-MBSE / digital twin shift
+  // alongside the long-running classics.
   disruptivePapers: [
     {
       title: 'STPA — Systems-Theoretic Process Analysis (Leveson)',
@@ -69,9 +71,9 @@ const CONFIG = {
       why: 'Why: reframes accidents as control failures, not component failures. Adopted in defense, automotive, medical.',
     },
     {
-      title: 'Accelerate — DORA metrics (Forsgren, Humble, Kim)',
-      href: '/source/specialty-software-dora-accelerate-2018',
-      why: 'Why: gives software engineering the empirical measurement framework that other SE disciplines have had for decades.',
+      title: 'AI-augmented MBSE — JAXA LLM-SysML graph query (IS 2025)',
+      href: '/source/conf-is2025-jaxa-llm-mbse',
+      why: 'Why: first working pattern for making MBSE models queryable to non-modellers via LLMs. The 2024-2025 inflection point: 50+ IS papers show LLMs moving from speculation to working practice in system definition.',
     },
     {
       title: 'Team Topologies — Skelton & Pais',
