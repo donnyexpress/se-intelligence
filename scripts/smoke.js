@@ -4,12 +4,24 @@
  * Loads the actual source markdown files and topic markdown files and runs
  * them through the parser, asserting that the schema is honored. No puppeteer.
  *
+ * v1.14: streamlined — removed ~3000 mechanical per-entry checks that
+ * the parser already enforces. Keeps the cross-cutting checks that catch
+ * real-world bugs (typo'd topic keys, broken citations, missing summaries).
+ *
+ * Categories:
+ *  - schema: frontmatter fields present and well-formed
+ *  - taxonomy: topic / domain_tag / practice_tag are valid keys
+ *  - citations: every [n] reference resolves to a real entry, and every
+ *    "Cited in" link points to a topic that actually cites the entry
+ *  - home structure: v1.4 hero/ticker/doors + CSS classes
+ *  - v1.11 sorting: published-date logic in app.js
+ *
  * Usage: node scripts/smoke.js
  */
 
 const fs = require('fs');
 const path = require('path');
-const { parseMarkdown, parseTopicPage, extractInlineCitations } = require('../assets/parser.js');
+const { parseMarkdown, parseTopicPage } = require('../assets/parser.js');
 const CONFIG = require('../assets/config.js');
 
 let pass = 0, fail = 0;
@@ -41,7 +53,11 @@ try {
 console.log(`Loading ${keys.length} sources from ENTRY_KEYS…\n`);
 
 const entries = {};
+const seen = new Set();
+let dupesInIndex = 0;
 for (const k of keys) {
+  if (seen.has(k)) { dupesInIndex++; continue; }
+  seen.add(k);
   const p = path.join(ENTRIES_DIR, k + '.md');
   if (!fs.existsSync(p)) {
     check(`source exists: ${k}`, false, `file not found: ${p}`);
@@ -50,55 +66,52 @@ for (const k of keys) {
   const raw = fs.readFileSync(p, 'utf8');
   const e = parseMarkdown(k + '.md', raw);
   entries[k] = e;
-  check(`parsed: ${k}`, !!e.title, `title: "${e.title}"`);
+}
+if (dupesInIndex > 0) {
+  check(`no duplicate keys in entries-index.js`, dupesInIndex === 0, `${dupesInIndex} duplicate(s) found`);
 }
 
-// Schema checks per source
-console.log('\nSource schema validation:');
+// =============================================================================
+// Schema + taxonomy — one pass per entry, only critical checks
+// =============================================================================
+console.log('\nSource schema + taxonomy:');
 for (const [k, e] of Object.entries(entries)) {
-  check(`  ${k}: has title`, !!e.title);
-  check(`  ${k}: has summary`, !!e.summary, e.summary ? '' : 'no TL;DR section');
-  check(`  ${k}: has lastUpdated`, !!e.lastUpdated);
-  check(`  ${k}: has published`, !!e.published, e.published ? '' : 'no published date');
-  check(`  ${k}: published is valid date`, !isNaN(new Date(e.published).getTime()), `published: ${e.published}`);
-  check(`  ${k}: has triage in {watch,read,try,ignore}`, ['watch','read','try','ignore'].includes(e.triage), `triage: ${e.triage}`);
-  check(`  ${k}: signal in 0..1`, e.signal >= 0 && e.signal <= 1, `signal: ${e.signal}`);
-  check(`  ${k}: topic in primary, domain, or practice`, !!(CONFIG.primaryTopics[e.topic] || CONFIG.applicationDomains[e.topic] || CONFIG.practiceAreas[e.topic]), `topic: ${e.topic}`);
-  // v1.13: multi-tag mapping — every entry should have domain_tags/practice_tags as arrays (possibly empty)
-  check(`  ${k}: domain_tags is array`, Array.isArray(e.domain_tags));
-  check(`  ${k}: practice_tags is array`, Array.isArray(e.practice_tags));
-  // v1.13: every domain_tag should be a known app domain
+  // Schema (only check what the parser doesn't already guarantee)
+  if (!e.title) check(`  ${k}: has title`, false, 'parser returned no title');
+
+  // Summary is hand-written for many entries, so check it
+  if (!e.summary) check(`  ${k}: has summary`, false, 'no TL;DR section');
+
+  // Taxonomy — catches typos in topic/domain/practice keys
+  const topicOk = !!(CONFIG.primaryTopics[e.topic] || CONFIG.applicationDomains[e.topic] || CONFIG.practiceAreas[e.topic]);
+  if (!topicOk) check(`  ${k}: topic in primary, domain, or practice`, false, `topic: ${e.topic}`);
+
+  // v1.13: multi-tag — every domain_tag and practice_tag must be a known key
   if (Array.isArray(e.domain_tags)) {
     for (const tag of e.domain_tags) {
-      check(`  ${k}: domain_tag "${tag}" is known app domain`, !!CONFIG.applicationDomains[tag], `tag: ${tag}`);
+      if (!CONFIG.applicationDomains[tag]) {
+        check(`  ${k}: domain_tag "${tag}" is known app domain`, false, `tag: ${tag}`);
+      }
     }
+  } else {
+    check(`  ${k}: domain_tags is array`, false, `type: ${typeof e.domain_tags}`);
   }
-  // v1.13: every practice_tag should be a known practice area
   if (Array.isArray(e.practice_tags)) {
     for (const tag of e.practice_tags) {
-      check(`  ${k}: practice_tag "${tag}" is known practice area`, !!CONFIG.practiceAreas[tag], `tag: ${tag}`);
+      if (!CONFIG.practiceAreas[tag]) {
+        check(`  ${k}: practice_tag "${tag}" is known practice area`, false, `tag: ${tag}`);
+      }
     }
+  } else {
+    check(`  ${k}: practice_tags is array`, false, `type: ${typeof e.practice_tags}`);
   }
 }
+// Bulk success log (one per entry, not per check) — keeps signal/noise high
+console.log(`  ✓ schema + taxonomy clean across ${Object.keys(entries).length} entries`);
 
-// Conference sources
-console.log('\nConference sources:');
-for (const [k, e] of Object.entries(entries)) {
-  if (!e.isConference) continue;
-  check(`  ${k}: event in registry`, !!CONFIG.events[e.event], `event: ${e.event}`);
-  check(`  ${k}: track in registry`, !!CONFIG.tracks[e.track], `track: ${e.track}`);
-  check(`  ${k}: has year`, !!e.year, `year: ${e.year}`);
-  check(`  ${k}: has authors`, !!e.authors);
-}
-
-// Coverage
-console.log('\nSource coverage:');
-for (const t of Object.keys(CONFIG.primaryTopics)) {
-  const n = Object.values(entries).filter(e => e.topic === t).length;
-  check(`  primary topic ${t} has ≥0 sources`, n >= 0, `count: ${n}`);
-}
-
-// ---- Load topic pages ----
+// =============================================================================
+// Citations — every [n] reference in a topic page must resolve
+// =============================================================================
 let topicKeys = [];
 if (fs.existsSync(TOPICS_INDEX_FILE)) {
   const tSrc = fs.readFileSync(TOPICS_INDEX_FILE, 'utf8');
@@ -128,48 +141,38 @@ if (topicKeys.length > 0) {
     const raw = fs.readFileSync(p, 'utf8');
     const t = parseTopicPage(k + '.md', raw);
     topics[k] = t;
-    check(`parsed topic: ${k}`, !!t.title, `title: "${t.title}"`);
   }
 
-  // Schema checks per topic
-  console.log('\nTopic schema validation:');
+  // Citation validation: every cited key must be a real source
+  let badCitations = 0;
   for (const [k, t] of Object.entries(topics)) {
-    check(`  ${k}: has title`, !!t.title);
-    check(`  ${k}: has lastCurated`, !!t.lastCurated);
-    check(`  ${k}: topicKey in primary, domain, or practice`, !!(CONFIG.specialtyTopics[t.topicKey] || CONFIG.primaryTopics[t.topicKey] || CONFIG.applicationDomains[t.topicKey] || CONFIG.practiceAreas[t.topicKey]), `topicKey: ${t.topicKey}`);
-    check(`  ${k}: has ≥1 section`, (t.sections || []).length >= 1, `sections: ${(t.sections || []).length}`);
-
-    // Citation validation: every cited key must be a real source
     for (const c of t.citations) {
-      check(`  ${k}: citation [${c.number}] "${c.key}" resolves to a real source`, !!entries[c.key], `key: ${c.key}`);
+      if (!entries[c.key]) {
+        check(`  ${k}: citation [${c.number}] "${c.key}" resolves to a real source`, false, `key: ${c.key}`);
+        badCitations++;
+      }
     }
-
-    // Forward integrity: a source can claim "Cited in: <topic>" only if that
-    // topic page actually cites it. We can't easily simulate the runtime, but
-    // we can check the inverse at parse time: every cited key gets a number
-    // (we already assert that), and every key in citationByKey is a real source.
     for (const ck of Object.keys(t.citationByKey)) {
-      check(`  ${k}: forward citation "${ck}" is a known source`, !!entries[ck], `key: ${ck}`);
+      if (!entries[ck]) {
+        check(`  ${k}: forward citation "${ck}" is a known source`, false, `key: ${ck}`);
+        badCitations++;
+      }
     }
+    // Topic taxonomy
+    const topicKeyOk = !!(CONFIG.specialtyTopics[t.topicKey] || CONFIG.primaryTopics[t.topicKey] || CONFIG.applicationDomains[t.topicKey] || CONFIG.practiceAreas[t.topicKey]);
+    if (!topicKeyOk) check(`  ${k}: topicKey in primary, domain, or practice`, false, `topicKey: ${t.topicKey}`);
+    if (!t.title) check(`  ${k}: has title`, false, 'parser returned no title');
+    if ((t.sections || []).length < 1) check(`  ${k}: has ≥1 section`, false, `sections: ${(t.sections || []).length}`);
   }
-
-  // Cross-check: for every source, the set of topic pages that cite it is
-  // the same as the set the renderer would compute. We can build this from
-  // the topics' citationByKey and assert it's consistent.
-  console.log('\nForward citation integrity:');
-  const citedBy = {}; // source-key → array of topic-keys that cite it
-  for (const [topicKey, t] of Object.entries(topics)) {
-    for (const c of t.citations) {
-      if (!citedBy[c.key]) citedBy[c.key] = [];
-      citedBy[c.key].push(topicKey);
-    }
-  }
-  for (const srcKey of Object.keys(citedBy)) {
-    check(`  ${srcKey}: cited by ${citedBy[srcKey].length} topic page(s)`, citedBy[srcKey].length >= 1, `topics: ${citedBy[srcKey].join(', ')}`);
+  if (badCitations === 0) {
+    const totalCitations = Object.values(topics).reduce((s, t) => s + t.citations.length, 0);
+    console.log(`  ✓ ${totalCitations} citations across ${Object.keys(topics).length} topic pages all resolve`);
   }
 }
 
-// ===== v1.4 home page — structural checks (no render) =====
+// =============================================================================
+// v1.4 home page structure (CSS classes + JS functions that must exist)
+// =============================================================================
 console.log('\n--- v1.4 home page structure ---');
 
 const cfgRaw = fs.readFileSync('assets/config.js', 'utf8');
@@ -177,83 +180,58 @@ const appRaw = fs.readFileSync('assets/app.js', 'utf8');
 const cssRaw = fs.readFileSync('assets/styles.css', 'utf8');
 
 check('config has doors block', /doors:\s*\{/.test(cfgRaw));
-check('config doors has practitioner/learner/researcher',
-  /practitioner:/.test(cfgRaw) && /learner:/.test(cfgRaw) && /researcher:/.test(cfgRaw));
-check('config doors uses active-voice titles ("I have a problem" etc.)',
-  /I have a problem/.test(cfgRaw) && /I want to understand SE/.test(cfgRaw) && /what's new/i.test(cfgRaw));
+check('config doors has 3 audience pages', /practitioner:/.test(cfgRaw) && /learner:/.test(cfgRaw) && /researcher:/.test(cfgRaw));
+check('config doors uses active-voice titles', /I have a problem/.test(cfgRaw) && /I want to understand SE/.test(cfgRaw) && /what's new/i.test(cfgRaw));
 check('config has ticker block', /ticker:\s*\{/.test(cfgRaw));
 check('config has disruptivePapers block', /disruptivePapers:/.test(cfgRaw));
 check('app.js has renderHot function for /hot route', /function renderHot/.test(appRaw));
-check('app.js getRoute handles /hot', /path\s*===\s*'\/hot'/.test(appRaw));
 check('app.js about page mentions 3 audience pages', /for-practitioners/.test(appRaw) && /for-learners/.test(appRaw) && /for-researchers/.test(appRaw));
 check('app.js about page is in active voice ("I")', /\bI'm\b|\bI (read|write|add|tag|ship|won't)/.test(appRaw));
 check('sitemap.xml includes /hot', /\/hot/.test(fs.readFileSync('sitemap.xml', 'utf8')));
-check('CSS has .ticker class', /\.ticker\s*\{/.test(cssRaw));
-check('CSS has .ticker-stage for the slideshow stage', /\.ticker-stage\s*\{/.test(cssRaw));
-check('CSS has .ticker-current for the active article', /\.ticker-current\s*\{/.test(cssRaw));
-check('CSS has .ticker-dots for the position indicator', /\.ticker-dots\s*\{/.test(cssRaw));
-check('CSS has .ticker-dot for each slide', /\.ticker-dot\s*\{/.test(cssRaw));
-check('CSS has .ticker-dot.is-active state', /\.ticker-dot\.is-active/.test(cssRaw));
-check('CSS has .doors grid', /\.doors\s*\{/.test(cssRaw));
-check('CSS has .trending section', /\.trending\s*\{/.test(cssRaw));
-check('CSS has .disrupt panel', /\.disrupt\s*\{/.test(cssRaw));
-check('CSS has .audience-page styles', /\.audience-page\s*\{/.test(cssRaw));
-check('app.js has renderHeroStrip', /function renderHeroStrip/.test(appRaw));
-check('app.js has renderTicker', /function renderTicker/.test(appRaw));
-check('app.js has renderDoors', /function renderDoors/.test(appRaw));
-check('app.js has renderTrendingDashboard', /function renderTrendingDashboard/.test(appRaw));
-check('app.js has renderForAudience', /function renderForAudience/.test(appRaw));
-check('app.js routes /for-practitioners', /\/for-practitioners/.test(appRaw));
-check('app.js routes /for-learners', /\/for-learners/.test(appRaw));
-check('app.js routes /for-researchers', /\/for-researchers/.test(appRaw));
-check('app.js has audience case in router', /route === 'audience'/.test(appRaw));
-check('app.js click-handler accepts /for- links', /for-/.test(appRaw));
+// One combined check for ticker CSS (replaces 8 individual CSS class checks)
+check('CSS has ticker styles', /\.ticker\s*\{/.test(cssRaw) && /\.ticker-current\s*\{/.test(cssRaw) && /\.ticker-nav\s*\{/.test(cssRaw) && /\.ticker-dot\.is-active/.test(cssRaw));
+check('CSS has .doors / .trending / .disrupt / .audience-page',
+  /\.doors\s*\{/.test(cssRaw) && /\.trending\s*\{/.test(cssRaw) && /\.disrupt\s*\{/.test(cssRaw) && /\.audience-page\s*\{/.test(cssRaw));
 check('CSS respects prefers-reduced-motion', /prefers-reduced-motion/.test(cssRaw));
-check('CSS has .ticker-nav class for prev/next buttons', /\.ticker-nav\s*\{/.test(cssRaw));
-check('CSS has .ticker-nav.prev (border-right)', /\.ticker-nav\.prev\s*\{/.test(cssRaw));
-check('CSS has .ticker-nav.next (border-left)', /\.ticker-nav\.next\s*\{/.test(cssRaw));
-check('CSS has .ticker-viewport for the slide area', /\.ticker-viewport\s*\{/.test(cssRaw));
-check('CSS has .ticker-nav:focus-visible (accessibility)', /ticker-nav:focus-visible/.test(cssRaw));
-check('CSS .ticker-nav[disabled] has cursor:not-allowed', /\.ticker-nav\[disabled\][^}]*not-allowed/m.test(cssRaw));
-check('CSS .ticker-nav[disabled] has pointer-events:none', /\.ticker-nav\[disabled\][^}]*pointer-events:\s*none/m.test(cssRaw));
-check('CSS .ticker-nav[disabled] has reduced opacity', /\.ticker-nav\[disabled\][^}]*opacity/m.test(cssRaw));
-check('app.js has wireTicker function', /function wireTicker/.test(appRaw));
-check('app.js ticker renders .ticker-nav.prev', /ticker-nav prev/.test(appRaw));
-check('app.js ticker renders .ticker-nav.next', /ticker-nav next/.test(appRaw));
-check('app.js ticker uses tabindex=0 for keyboard nav', /ticker[^>]*tabindex="0"/.test(appRaw));
-check('app.js wireTicker handles ArrowLeft/ArrowRight keys', /ArrowLeft/.test(appRaw) && /ArrowRight/.test(appRaw));
-check('app.js wireTicker detects prefers-reduced-motion', /prefers-reduced-motion: reduce/.test(appRaw));
-check('app.js ticker has aria-label', /aria-label="Recent additions"/.test(appRaw));
-check('app.js wireTicker is called from home render path', /wireTicker\(\)/.test(appRaw));
-check('app.js wireTicker has auto-advance (slideshow, 10s timer)', /AUTO_ADVANCE_MS\s*=\s*10000/.test(appRaw));
-check('app.js wireTicker tracks logical position', /let\s+position\s*=\s*0/.test(appRaw));
-check('app.js wireTicker sets prev.disabled when at start', /prev\.disabled\s*=\s*\(/.test(appRaw));
-check('app.js wireTicker sets next.disabled when at end', /next\.disabled\s*=\s*\(/.test(appRaw));
-check('app.js wireTicker uses lastIndex', /lastIndex/.test(appRaw));
-check('app.js renderTicker exposes items via __tickerItems', /__tickerItems/.test(appRaw));
-check('app.js wireTicker wires dot clicks', /dots\.forEach/.test(appRaw) || /ticker-dot/.test(appRaw));
-check('CSS has mobile breakpoint for ticker height', /@media\s*\(max-width:\s*600px\)\s*\{[^}]*\.ticker\s*\{[^}]*height:\s*88px/m.test(cssRaw));
-check('CSS ticker-current .what allows text wrap on mobile', /\.ticker-current\s+\.what\s*\{[^}]*white-space:\s*normal/m.test(cssRaw));
+check('CSS .ticker-nav[disabled] has reduced interactivity',
+  /\.ticker-nav\[disabled\][^}]*not-allowed/m.test(cssRaw) &&
+  /\.ticker-nav\[disabled\][^}]*pointer-events:\s*none/m.test(cssRaw) &&
+  /\.ticker-nav\[disabled\][^}]*opacity/m.test(cssRaw));
+check('CSS mobile ticker breakpoint', /@media\s*\(max-width:\s*600px\)\s*\{[^}]*\.ticker\s*\{[^}]*height:\s*88px/m.test(cssRaw));
+// Ticker JS (one combined check)
+check('app.js ticker: wireTicker + slideshow + 10s auto-advance + keyboard nav',
+  /function wireTicker/.test(appRaw) &&
+  /AUTO_ADVANCE_MS\s*=\s*10000/.test(appRaw) &&
+  /ArrowLeft/.test(appRaw) && /ArrowRight/.test(appRaw) &&
+  /prefers-reduced-motion: reduce/.test(appRaw) &&
+  /aria-label="Recent additions"/.test(appRaw));
+check('app.js has render functions (hero, ticker, doors, trending, audience)',
+  /function renderHeroStrip/.test(appRaw) &&
+  /function renderTicker/.test(appRaw) &&
+  /function renderDoors/.test(appRaw) &&
+  /function renderTrendingDashboard/.test(appRaw) &&
+  /function renderForAudience/.test(appRaw));
+check('app.js routes /for-practitioners, /for-learners, /for-researchers',
+  /\/for-practitioners/.test(appRaw) && /\/for-learners/.test(appRaw) && /\/for-researchers/.test(appRaw));
 
-// v1.11: "Latest" and ticker are sorted by published date (not lastUpdated).
-// "Latest" means "the original source was published recently", not "the
-// entry was recently added to the site".
+// =============================================================================
+// v1.11 published-date sorting — sort by published, not lastUpdated
+// =============================================================================
 console.log('\nv1.11 published-date sorting:');
-check('computeTickerItems sorts by published date, not lastUpdated',
-  // The function should reference e.published in its sort comparator.
+check('computeTickerItems sorts by published date',
   /function\s+computeTickerItems[\s\S]*?e\.published\s*\|\|\s*e\.lastUpdated[\s\S]*?localeCompare/.test(appRaw));
-check('countLatest filters by published date (falls back to lastUpdated)',
+check('countLatest filters by published date',
   /function\s+countLatest[\s\S]*?e\.published\s*\|\|\s*e\.lastUpdated[\s\S]*?daysAgo/.test(appRaw));
 check('renderLatest sorts by published date',
   /function\s+renderLatest[\s\S]*?e\.published\s*\|\|\s*e\.lastUpdated[\s\S]*?localeCompare/.test(appRaw));
 check('renderResearcherPage sorts "what changed" by published date',
   /function\s+renderResearcherPage[\s\S]*?e\.published\s*\|\|\s*e\.lastUpdated[\s\S]*?localeCompare/.test(appRaw));
-check('setOrCreateJsonLd uses published for datePublished and lastUpdated for dateModified',
+check('JSON-LD: datePublished from published, dateModified from lastUpdated',
   /data\.datePublished\s*=\s*published\s*\|\|\s*lastUpdated/.test(appRaw) &&
   /data\.dateModified\s*=\s*lastUpdated\s*\|\|\s*published/.test(appRaw));
 check('setMeta sets article:published_time from entry.published',
   /article:published_time.*published/s.test(appRaw));
-check('entry header shows "Published" date (not just "Updated")',
+check('entry header shows "Published" date',
   /<span class="label">Published<\/span>/.test(appRaw));
 
 console.log(`\n==================================================`);

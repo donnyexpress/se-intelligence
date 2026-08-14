@@ -229,9 +229,8 @@ const ENTRY_KEYS = [
   'manufacturing-rami-40-iec-pas-63088',
   'finance-cfa-complex-systems-2025',
   'incid-google-sre-postmortem',
-  // v1.12: 97 IS2024 papers from the public Book of Abstracts
+  // v1.12: IS2024 papers + presentations from the public Book of Abstracts
   // (July 2-6 2024, Dublin)
-  'conf-is2024-mbse-patterns-practice',
   'conf-is2024-p009-a-proposal-for-model-based-systems-engineering-met',
   'conf-is2024-p020-a-systems-perspective-on-the-public-perception-of-',
   'conf-is2024-p023-integrating-iot-technology-with-a-systems-engineer',
