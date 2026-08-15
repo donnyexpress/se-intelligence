@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Pre-commit hook: auto-update topic page bodies from new entries.
+#
+# Behavior:
+#   - Detects if any new entries/*.md files have been added in this commit
+#   - If yes, runs scripts/update_topic_bodies.py to update topic pages
+#   - The new topic page changes are staged automatically
+#   - The user reviews the diff in the commit message
+#
+# To skip this hook for a particular commit:
+#   git commit --no-verify
+#
+# To install:
+#   ln -sf ../../.githooks/pre-commit .git/hooks/pre-commit
+# Or run scripts/install-hooks.sh
+
+set -e
+
+# Check if any new entry files are being committed
+NEW_ENTRIES=$(git diff --cached --name-only --diff-filter=A | grep -E '^entries/.*\.md$' || true)
+
+if [ -z "$NEW_ENTRIES" ]; then
+    # No new entries — nothing to do
+    exit 0
+fi
+
+# Check if the update script exists
+SCRIPT_DIR="$(git rev-parse --show-toplevel)/scripts/update_topic_bodies.py"
+if [ ! -f "$SCRIPT_DIR" ]; then
+    echo "WARN: scripts/update_topic_bodies.py not found; skipping auto-update"
+    exit 0
+fi
+
+echo "==> Auto-update topic pages from new entries..."
+echo "    New entries detected: $(echo "$NEW_ENTRIES" | wc -l)"
+
+# Run the update (non-diff mode, so it actually writes)
+python3 "$SCRIPT_DIR" --max-per-section=5
+
+# Stage any topic changes the script made
+git add topics/
+
+# Show a summary
+CHANGED=$(git diff --cached --name-only | grep -E '^topics/' || true)
+if [ -n "$CHANGED" ]; then
+    echo "==> Updated topic pages:"
+    echo "$CHANGED" | sed 's/^/    /'
+fi
