@@ -89,6 +89,16 @@ If you only read three things on System Definition, read:
 2. The Magic Grid framework, adapted for SysML v2 [conf-is2025-sysmlv2-magicgrid]
 3. The INCOSE SE Handbook v5, ch. 4 — technical processes for architecture and verification [lifecycle-iso-iec-15288-2023]
 
+## What's new in 2026 (Wiley *Systems Engineering* 29(4))
+
+The flagship INCOSE-affiliated journal *Systems Engineering* (Wiley) published three notable System Definition papers in Vol 29 No 4 (July 2026) — peer-reviewed counterparts to the IS 2024-2025 conference work in this topic:
+
+- **SysML v2 from a production methodology — ESA.** Duroy et al. (ESA) present the first peer-reviewed case study of the ESA MBSE Methodology ported to SysML v2 [journal-wiley-se-29-4-duroy-sysmlv2-esa-mbse-methodology]. Unlike the IS 2024-2025 conference papers (which were mostly prototypes and tooling demos), this is a production methodology in transition. Notable: the SysML v1 vs v2 differences around "definitions and usages" — i.e. v2's first-class support for re-using definitions multiple times in different contexts — and around Functions are flagged as substantive enough to require methodology-level decisions, not just notation-level changes.
+- **Digital twins — cross-industry synthesis.** Wooley, Dimson & Bitencourt's umbrella review synthesizes 79 peer-reviewed systematic literature reviews on digital twins across industries [journal-wiley-se-29-4-wooley-digital-twins-umbrella-review]. Key takeaway: the DT concept is still fragmented across industries, with no shared definition. The review proposes a unified framing centered on "data flow" rather than "3D replica" — closer to the SE view than the marketing view.
+- **Product line modeling with confidentiality.** Bourdellès, El Hachem & Sadou extend MBSE product line engineering to handle requirements confidentiality and variability [journal-wiley-se-29-4-bourdelles-product-line-confidentiality]. The pattern: a confidentiality model runs alongside the variability model, so different stakeholders see different views of the same product line. This is a real enterprise pattern for OEMs managing product variants across customer segments with different IP exposure.
+
+The 2026 journal signal: System Definition research is moving from "MBSE works" (2024-2025 conference demos) to "MBSE at production scale" (2026 journal case studies + reviews). The peer-reviewed shift is to formal methods, governance, and cross-industry synthesis.
+
 ## References
 
 1. MBSE patterns — what 5 years of industry adoption tells us (2025)
@@ -98,3 +108,6 @@ If you only read three things on System Definition, read:
 5. Multi-level FMEA driven by architecture (IS 2025)
 6. MBDE for mechatronic/robotic systems (IS 2025)
 7. Safety and security co-design in system definition
+8. ESA MBSE Methodology ported to SysML v2 — peer-reviewed case study (Wiley SE 29(4), 2026)
+9. Digital twins across industries — umbrella review of 79 SLRs (Wiley SE 29(4), 2026)
+10. Product line modeling with confidentiality — MBSE extension (Wiley SE 29(4), 2026)

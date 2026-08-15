@@ -84,6 +84,15 @@ If you only read three things on systems of systems, read:
 2. Implementing Mission Engineering with UAF — a worked example of directed SoS [mission-engineering-uaf-gagliardi-2024]
 3. The INCOSE IW 2024 Resilient Systems track — current state of the discipline [conf-iw2024-resilient-systems]
 
+## What's new in 2026 (Wiley *Systems Engineering* 29(4))
+
+Two notable SoS papers in the July 2026 journal:
+
+- **Capability complexity via Enterprise Architecture.** Bakhshi & Efatmaneshnik (UniSA) propose a structured, quantitative methodology for assessing the holistic complexity of a system-of-systems using the Zachman Architecture Framework [journal-wiley-se-29-4-bakhshi-capability-complexity-eaf]. The pattern: use ZAF's 6×6 view matrix as the structure, weight each cell by its information content, then aggregate to a single complexity score. Notable: this gives SoS architects a defense-style "capability complexity" metric in a form that operational analysts and policymakers can use.
+- **AI-driven labor transitions in autonomous systems.** Kaplan, Szajnfarber & Helveston (GWU) frame the rise of robotaxis as an SoS problem — a taxi work system transitioning to a robotaxi system — and identify three archetypal patterns of role change: distributing, consolidating, and scaffolding [journal-wiley-se-29-4-kaplan-robotaxis-labor-transitions]. The takeaway: AI doesn't simply substitute labor; it rebundles tasks and roles. Useful for SE practitioners thinking about the *human* side of automation rollouts.
+
+The 2026 SoS journal signal: SoS is becoming a measurement discipline (complexity metrics, transition patterns) and moving beyond the architectural pattern work of 2024-2025.
+
 ## References
 
 1. Systems of Systems architecting patterns — INCOSE SoS WG
@@ -91,3 +100,5 @@ If you only read three things on systems of systems, read:
 3. Resilient Systems of Systems — IW 2024 (Torrance)
 4. A Framework for SE in Early-Stage R&D — INCOSE LA, 2024
 5. IW 2025 (Seville) — INCOSE Working Group outcomes
+6. Capability complexity via Enterprise Architecture (Zachman) — peer-reviewed methodology (Wiley SE 29(4), 2026)
+7. AI-driven labor transitions — robotaxis as an SoS transition (Wiley SE 29(4), 2026)

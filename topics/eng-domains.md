@@ -89,6 +89,16 @@ If you only read three things on engineering specialty, read:
 2. The DieselGate case study — what happens when engineering specialty is bypassed [dieselgate-smoke-and-mirrors-aftel-2025]
 3. The GenAI-as-specialty framework — how to bring GenAI into the SE workflow with discipline [se-maturity-genai-madachy-2025]
 
+## What's new in 2026 (Wiley *Systems Engineering* 29(4))
+
+The July 2026 *Systems Engineering* journal published three notable engineering specialty papers that complement the IS 2024-2025 conference work:
+
+- **Cluster-based system readiness levels.** Fu, Mazzuchi & Sarkani extend the classical System Readiness Level (SRL) framework with mathematical properties for cluster-level interfaces [journal-wiley-se-29-4-fu-cluster-readiness-levels]. The original SRL calc (integrating TRL × IRL) is a single-system number; this paper gives a rigorous way to compute readiness at the *interface* level, which matters when you have many subsystems with different integration paths. Notable: they use a graph-theoretic formulation that makes readiness a measurable property of the architecture, not just an aggregated scalar.
+- **Safety-driven dynamic procedures for UAS.** Chaudemar et al. (ISAE-SUPAERO) formalize the procedure-design requirement from EASA's SORA framework into an executable safety model [journal-wiley-se-29-4-chaudemar-safety-dynamic-procedure-uas]. The pattern: procedure generation becomes a model-based activity, not a documentation activity. Each procedure is a state machine with safety guards; the model can be exercised to find procedure-level failure modes.
+- **Pedagogy for Smart Transportation Systems.** Obiako et al. apply Agent-Based Modeling as a teaching tool for complex, sociotechnical, AI-based systems [journal-wiley-se-29-4-obiako-smts-agent-based-pedagogy]. The pedagogical claim: ABMs let students explore the *emergent* behavior of these systems — not just the components — which is the dominant learning need for the next generation of SE practitioners.
+
+The 2026 journal signal: engineering specialty research is moving from "tooling for specialists" (2024-2025 IS papers) to "formal foundations for specialty disciplines" (2026 journal). Readiness becomes math, procedures become models, pedagogy becomes simulation.
+
 ## References
 
 1. INCOSE Systems Engineering Handbook v5 + ISO/IEC 15288:2023 (2023)
@@ -97,5 +107,8 @@ If you only read three things on engineering specialty, read:
 4. Multi-level FMEA driven by architecture (IS 2025)
 5. DieselGate — Smoke and Mirrors, INCOSE San Diego, 2025
 6. SE Maturity and Cost Modeling Framework for GenAI — INCOSE San Diego, 2025
+7. Cluster-based SRL with mathematical interface properties (Wiley SE 29(4), 2026)
+8. Safety-driven dynamic procedure modeling for UAS (Wiley SE 29(4), 2026)
+9. ABM-based pedagogy for Smart Transportation Systems (Wiley SE 29(4), 2026)
 7. Safeguarding Sensitive Data: Prompt Engineering for GenAI — INCOSE Enchantment, 2025
 8. Federated Learning — Villanueva, INCOSE San Diego, 2025

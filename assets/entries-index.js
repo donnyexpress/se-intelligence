@@ -212,6 +212,20 @@ const ENTRY_KEYS = [
   'conf-is2025-pres395-enhancing-the-future-of-decision-making-incose-dad',
   'conf-is2025-pres399-transforming-decision-making-with-ai-and-the-dadm-',
   'conf-is2025-pres405-a-state-of-the-system-analysis-of-the-worlds-energ',
+  // Wiley journal — Systems Engineering Vol 29 No 4 (July 2026) issue
+  // Peer-reviewed papers from the flagship INCOSE-affiliated journal.
+  // Higher signal than IS conference proceedings (peer review > abstract review).
+  'journal-wiley-se-29-4-bakhshi-capability-complexity-eaf',
+  'journal-wiley-se-29-4-chaudemar-safety-dynamic-procedure-uas',
+  'journal-wiley-se-29-4-georgsen-phas-attention-uncertainty',
+  'journal-wiley-se-29-4-fu-cluster-readiness-levels',
+  'journal-wiley-se-29-4-kaplan-robotaxis-labor-transitions',
+  'journal-wiley-se-29-4-bourdelles-product-line-confidentiality',
+  'journal-wiley-se-29-4-jung-stride-smart-haccp-korean-food',
+  'journal-wiley-se-29-4-duroy-sysmlv2-esa-mbse-methodology',
+  'journal-wiley-se-29-4-obiako-smts-agent-based-pedagogy',
+  'journal-wiley-se-29-4-xu-salado-set-based-verification-planning',
+  'journal-wiley-se-29-4-wooley-digital-twins-umbrella-review',
   // Conference proceedings — IW 2025 (Seville) outcomes
   'conf-iw2025-seville-summary',
   // Conference proceedings — IS 2024 / 2023 (legacy seed)
