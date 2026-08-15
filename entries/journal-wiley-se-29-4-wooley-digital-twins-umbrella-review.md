@@ -15,6 +15,7 @@ published: 2026-02-17
 doi: 10.1002/sys.70049
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70049
 source_label: "Wiley Systems Engineering 29(4) — Wooley et al. 2026"
+related: [journal-wiley-se-29-4-duroy-sysmlv2-esa-mbse-methodology, conf-is2025-p283-authoritative-broker-of-truth-abot-synchronizing-m, system-def-mbse-patterns-2025]
 ---
 
 # Digital Twins Across Domains: A Cross-Industry Umbrella Review of Systematic Literature Reviews

@@ -15,6 +15,7 @@ published: 2026-02-04
 doi: 10.1002/sys.70043
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70043
 source_label: "Wiley Systems Engineering 29(4) — Kaplan et al. 2026"
+related: [sos-sos-architecting-patterns, journal-wiley-se-29-4-bakhshi-capability-complexity-eaf]
 ---
 
 # A Systems Perspective on AI-Driven Labor Transitions: Insights From the Rise of Robotaxis

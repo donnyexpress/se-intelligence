@@ -7,7 +7,7 @@ maturity: maturing
 
 # Systems of Systems
 
-Systems of systems (SoS) is the discipline of engineering when the system crosses organizational boundaries, when no single party controls all the parts, and when the parts are themselves complex systems. SoS is where the classical systems engineering assumptions — single owner, single budget, single architecture — break down. This article covers the basics, the patterns that work, the research frontiers, and the best practices that are still being discovered.
+Systems of systems (SoS) is the discipline of engineering when the system crosses organizational boundaries, when no single party controls all the parts, and when the parts are themselves complex systems. SoS is where the classical systems engineering assumptions — single owner, single budget, single architecture — break down. This article covers the basics, the patterns that work, and the best practices that are still being discovered. The 2024-2026 evidence base includes 75+ INCOSE conference papers and 2 peer-reviewed journal articles (Wiley SE 29(4)).
 
 Every claim is cited to a real source — click the bracketed numbers to jump to the references list at the bottom.
 
@@ -32,66 +32,49 @@ The hardest part of SoS engineering is *governance*. Without a single owner, who
 
 ## Patterns that work
 
-Five patterns recur in SoS practice:
+Six patterns recur in SoS practice:
 
-1. **Capability-driven design.** SoS work starts from the capability, not the constituent system. The capability is decomposed into services, the services are mapped to constituent systems, and the integration points are defined [mission-engineering-uaf-gagliardi-2024].
+1. **Capability-driven design.** SoS work starts from the capability, not the constituent system. The capability is decomposed into services, the services are mapped to constituent systems, and the integration points are defined [mission-engineering-uaf-gagliardi-2024]. The 2026 peer-reviewed update: capability complexity can be *quantified* using the Zachman Architecture Framework — use ZAF's 6×6 view matrix as the structure, weight each cell by its information content, then aggregate to a single complexity score [journal-wiley-se-29-4-bakhshi-capability-complexity-eaf]. This gives SoS architects a defense-style "capability complexity" metric in a form that operational analysts and policymakers can use.
 2. **Federation for governance.** Constituent systems retain their independence but agree to a federation that defines the shared interfaces, the shared data, and the shared governance. Federation works when the constituents have aligned interests.
-3. **Incentive design.** Without single ownership, the constituents must be incentivized to participate. The incentives are usually a mix of mission alignment, financial return, and risk sharing.
+3. **Incentive design.** Without single ownership, the constituents must be incentivized to participate. The incentives are usually a mix of mission alignment, financial return, and risk sharing. The 2026 peer-reviewed update: when AI is introduced into the SoS, the incentives *change* — AI doesn't simply substitute labor; it rebundles tasks and roles. Plan for distributing/consolidating/scaffolding patterns [journal-wiley-se-29-4-kaplan-robotaxis-labor-transitions].
 4. **Cross-organizational SE.** SE work in an SoS requires representatives from each constituent system, with authority to commit the constituent's resources. The cross-organizational SE team is the integration mechanism.
-5. **Standards as the lingua franca.** When the constituents have different internal practices, the integration is via shared standards. UAF is one such standard for mission engineering [mission-engineering-uaf-gagliardi-2024].
+5. **Standards as the lingua franca.** When the constituents have different internal practices, the integration is via shared standards. UAF is one such standard for mission engineering [mission-engineering-uaf-gagliardi-2024]. UAF is now being applied to whole-enterprise transformation, not just defense missions [conf-is2025-p164-enterprise-transformation-planning-with-uaf].
+6. **SoS risk assessment.** A risk assessment method specifically for SoS operations, where no single entity owns the system [conf-is2024-p403-risk-assessment-method-for-systems-of-systems-oper] — addresses the classical risk-management gap when no single party can enumerate the SoS's risks.
 
 The INCOSE SoS Working Group has been publishing these patterns since 2015 [sos-sos-architecting-patterns].
 
 ## Best practices
 
-- **Start with the capability, not the constituent.** The capability is what the SoS exists to deliver. The constituent is an implementation choice.
+- **Start with the capability, not the constituent.** The capability is what the SoS exists to deliver. The constituent is an implementation choice. Quantify the capability complexity before you commit to a constituent decomposition [journal-wiley-se-29-4-bakhshi-capability-complexity-eaf].
 - **Governance first.** Without governance, the SoS will fragment. Establish the governance before the integration.
-- **Incentives are part of the architecture.** If the incentives don't support the SoS, the constituents will optimize for their own purposes, and the SoS will fail.
+- **Incentives are part of the architecture.** If the incentives don't support the SoS, the constituents will optimize for their own purposes, and the SoS will fail. When AI is part of the SoS, plan for the rebundling — distributing, consolidating, scaffolding — not just the labor substitution [journal-wiley-se-29-4-kaplan-robotaxis-labor-transitions].
 - **Standards are not optional.** In an SoS, the standards are the only common ground. Without standards, the integration is ad hoc and fragile.
 - **Plan for evolution.** SoS is a long-term commitment. The constituents will change, the capabilities will change, the standards will change. The SoS must be designed to evolve.
+- **Frame domain problems as SoS early.** The 2024-2025 work has framed healthcare delivery [conf-is2024-p490-a-new-horizon-for-healthcare-delivery-a-system-of-, conf-is2025-p120-enhancing-healthcare-delivery-through-systems-of-s], wind-power integration [conf-is2024-p020-a-systems-perspective-on-the-public-perception-of-], urban air mobility [conf-is2024-p107-evaluating-the-eco-efficiency-of-urban-air-mobilit], offshore wind-to-hydrogen [conf-is2024-pres202-seeing-the-bigger-picture-with-the-unified-archite], and the UN SDGs [conf-is2024-p367-contemporary-systems-engineering-for-the-un-sdgs-a] as SoS problems. Once you frame a domain as an SoS, the next question is always "how do we govern it without ownership?" — and that question has the same answer across domains.
 
 ## Research frontiers
 
-Active threads in 2024–2025:
+The 2024-2026 evidence base shows SoS moving from architectural pattern work to measurement and transition:
+
+- **SoS is becoming a measurement discipline.** Bakhshi & Efatmaneshnik [journal-wiley-se-29-4-bakhshi-capability-complexity-eaf] give SoS architects a quantitative complexity metric via Zachman. Combined with the risk assessment method for SoS operations [conf-is2024-p403-risk-assessment-method-for-systems-of-systems-oper] and the SoS-specific operational risk patterns, SoS is now in the same place single-system SE was 20 years ago: a discipline with metrics, not just patterns.
+- **SoS for sustainability transitions is now a coherent thread.** Several papers applied SoS framing to climate and energy transitions — treating national sustainability efforts as SoS problems where no single entity can drive the transition. The Norway wind-power SoS case study [conf-is2024-p020-a-systems-perspective-on-the-public-perception-of-] is a concrete example — the grid, the regulators, the communities, the developers, and the energy users are all independent systems that need to coordinate without a single owner. Urban air mobility [conf-is2024-p107-evaluating-the-eco-efficiency-of-urban-air-mobilit] and offshore wind-to-hydrogen [conf-is2024-pres202-seeing-the-bigger-picture-with-the-unified-archite] extend this into the energy transition.
+- **Healthcare SoS as a multi-layer governance problem.** A 2025 paper proposed a multi-layer governance framework for healthcare SoS, building on the 2024 healthcare-as-SoS work [conf-is2024-p490-a-new-horizon-for-healthcare-delivery-a-system-of-, conf-is2025-p120-enhancing-healthcare-delivery-through-systems-of-s]. The progression: from "this is an SoS" (2024) to "here is how to govern it" (2025).
+- **UN SDGs as an SoS problem.** A systematic review of how systems engineering can address the UN Sustainable Development Goals — treating the 17 SDGs as a coupled SoS where progress on one affects others [conf-is2024-p367-contemporary-systems-engineering-for-the-un-sdgs-a]. The most ambitious scaling of SoS thinking so far.
+- **AI-driven labor transitions as SoS transitions.** Kaplan, Szajnfarber & Helveston [journal-wiley-se-29-4-kaplan-robotaxis-labor-transitions] frame the rise of robotaxis as an SoS problem — a taxi work system transitioning to a robotaxi system — and identify three archetypal patterns of role change: distributing, consolidating, and scaffolding. The takeaway: AI doesn't simply substitute labor; it rebundles tasks and roles. Useful for SE practitioners thinking about the human side of automation rollouts.
+
+Other 2024-2025 work:
 
 - **Mission Engineering with UAF.** A worked example of UAF in practice, with the cross-viewpoint consistency pattern that generalizes beyond defense [mission-engineering-uaf-gagliardi-2024].
-- **SoS architecting patterns.** The INCOSE SoS working group has been publishing patterns; the most recent work emphasizes the capability-driven approach [sos-sos-architecting-patterns].
-- **Resilient systems of systems.** INCOSE IW 2024 dedicated a track to resilient SoS, with patterns for recovery in cross-organizational systems [conf-iw2024-resilient-systems].
 - **SoS for R&D.** The SE-ESR&D framework for managing R&D as an SoS, where the constituents are research projects with their own purposes [se-esrd-framework-hodges-2024].
-- **RWE and SoS governance.** Patterns for SoS governance that do not require a single owner.
-
-The 2024 Symposium added several useful SoS case studies:
-
-- **SoS for public services: healthcare as a collaborative SoS.** A paper framing the US healthcare delivery system as a collaborative SoS with a proposed hybrid governance model — concrete example of SoS thinking applied outside defense [conf-is2024-p490-a-new-horizon-for-healthcare-delivery-a-system-of-].
-- **Wind power in Norway as a SoS.** Uses stakeholder salience analysis and causal loop diagrams to understand public acceptance of wind power — a real-world application of systems thinking to socio-technical SoS [conf-is2024-p020-a-systems-perspective-on-the-public-perception-of-].
-- **Risk assessment for SoS operations.** A risk assessment method specifically for SoS operations, where no single entity owns the system [conf-is2024-p403-risk-assessment-method-for-systems-of-systems-oper].
-
-## What's new in 2024-2025
-
-The 2024-2025 Symposia pushed SoS thinking in two new directions:
-
-- **SoS for sustainability transitions.** Several papers applied SoS framing to climate and energy transitions, treating national sustainability efforts as SoS problems where no single entity can drive the transition. The Norway wind-power SoS case study [conf-is2024-p020-a-systems-perspective-on-the-public-perception-of-] is a concrete example — the grid, the regulators, the communities, the developers, and the energy users are all independent systems that need to coordinate without a single owner. Similar work on urban air mobility SoS [conf-is2024-p107-evaluating-the-eco-efficiency-of-urban-air-mobilit] and offshore wind-to-hydrogen SoS [conf-is2024-pres202-seeing-the-bigger-picture-with-the-unified-archite] extends this into the energy transition.
-- **Healthcare SoS as a multi-layer governance problem.** A 2025 paper proposed a multi-layer governance framework for healthcare SoS, building on the 2024 healthcare-as-SoS work. The progression: from "this is an SoS" (2024) to "here is how to govern it" (2025) [conf-is2025-p120-enhancing-healthcare-delivery-through-systems-of-s]. The pattern is generalizable — once you frame a domain as an SoS, the next question is always "how do we govern it without ownership?"
-- **UN SDGs as an SoS problem.** A systematic review of how systems engineering can address the UN Sustainable Development Goals — treating the 17 SDGs as a coupled SoS where progress on one affects others [conf-is2024-p367-contemporary-systems-engineering-for-the-un-sdgs-a]. This is the most ambitious scaling of SoS thinking so far.
-
-The 2024-2025 period also saw INCOSE's SoS working group consolidate its pattern language. The "SoS architecting patterns" work from earlier years now has a more concrete application: every SoS problem gets the same first three questions (who owns it, who funds it, who can change it), and the answer determines which patterns apply.
+- **Resilient systems of systems.** INCOSE IW 2024 dedicated a track to resilient SoS, with patterns for recovery in cross-organizational systems [conf-iw2024-resilient-systems].
 
 ## What to read first
 
 If you only read three things on systems of systems, read:
 
 1. The SoS architecting patterns synthesis — what works when no one owns the system [sos-sos-architecting-patterns]
-2. Implementing Mission Engineering with UAF — a worked example of directed SoS [mission-engineering-uaf-gagliardi-2024]
-3. The INCOSE IW 2024 Resilient Systems track — current state of the discipline [conf-iw2024-resilient-systems]
-
-## What's new in 2026 (Wiley *Systems Engineering* 29(4))
-
-Two notable SoS papers in the July 2026 journal:
-
-- **Capability complexity via Enterprise Architecture.** Bakhshi & Efatmaneshnik (UniSA) propose a structured, quantitative methodology for assessing the holistic complexity of a system-of-systems using the Zachman Architecture Framework [journal-wiley-se-29-4-bakhshi-capability-complexity-eaf]. The pattern: use ZAF's 6×6 view matrix as the structure, weight each cell by its information content, then aggregate to a single complexity score. Notable: this gives SoS architects a defense-style "capability complexity" metric in a form that operational analysts and policymakers can use.
-- **AI-driven labor transitions in autonomous systems.** Kaplan, Szajnfarber & Helveston (GWU) frame the rise of robotaxis as an SoS problem — a taxi work system transitioning to a robotaxi system — and identify three archetypal patterns of role change: distributing, consolidating, and scaffolding [journal-wiley-se-29-4-kaplan-robotaxis-labor-transitions]. The takeaway: AI doesn't simply substitute labor; it rebundles tasks and roles. Useful for SE practitioners thinking about the *human* side of automation rollouts.
-
-The 2026 SoS journal signal: SoS is becoming a measurement discipline (complexity metrics, transition patterns) and moving beyond the architectural pattern work of 2024-2025.
+2. Capability complexity via Enterprise Architecture — the first peer-reviewed SoS measurement method [journal-wiley-se-29-4-bakhshi-capability-complexity-eaf]
+3. Healthcare SoS as a multi-layer governance problem — concrete example of how to govern an SoS [conf-is2025-p120-enhancing-healthcare-delivery-through-systems-of-s]
 
 ## References
 
@@ -100,5 +83,13 @@ The 2026 SoS journal signal: SoS is becoming a measurement discipline (complexit
 3. Resilient Systems of Systems — IW 2024 (Torrance)
 4. A Framework for SE in Early-Stage R&D — INCOSE LA, 2024
 5. IW 2025 (Seville) — INCOSE Working Group outcomes
-6. Capability complexity via Enterprise Architecture (Zachman) — peer-reviewed methodology (Wiley SE 29(4), 2026)
-7. AI-driven labor transitions — robotaxis as an SoS transition (Wiley SE 29(4), 2026)
+6. Enterprise Transformation Planning with UAF (IS 2025)
+7. Healthcare as a collaborative SoS — IS 2024 paper
+8. Healthcare SoS multi-layer governance — IS 2025 paper
+9. Norway wind-power SoS — IS 2024 paper
+10. Urban air mobility SoS — IS 2024 paper
+11. Offshore wind-to-hydrogen SoS — IS 2024 paper
+12. UN SDGs as a coupled SoS — IS 2024 systematic review
+13. Risk assessment for SoS operations — IS 2024 paper
+14. Capability complexity via Enterprise Architecture (Zachman) — peer-reviewed methodology (Wiley SE 29(4), 2026)
+15. AI-driven labor transitions — robotaxis as an SoS transition (Wiley SE 29(4), 2026)

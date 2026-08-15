@@ -15,6 +15,7 @@ published: 2026-03-03
 doi: 10.1002/sys.70052
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70052
 source_label: "Wiley Systems Engineering 29(4) — Chaudemar et al. 2026"
+related: [journal-wiley-se-29-4-fu-cluster-readiness-levels, conf-is2025-fmea-multilevel, specialty-safety-stpa-leveson-2011]
 ---
 
 # Formal Approach to Safety-Driven Dynamic Procedure Modeling

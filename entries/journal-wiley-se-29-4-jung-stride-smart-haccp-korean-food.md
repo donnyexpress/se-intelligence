@@ -15,6 +15,7 @@ published: 2026-02-09
 doi: 10.1002/sys.70045
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70045
 source_label: "Wiley Systems Engineering 29(4) — Jung et al. 2026"
+related: [specialty-safety-stpa-leveson-2011, conf-is2024-p176-translating-the-stpa-sec-security-method-into-a-mo, conf-is2024-p079-long-term-trends-in-security-threats-and-an-ap-pro]
 ---
 
 # STRIDE-Based Threat Modeling for Smart Hazard Analysis and Critical Control Points in the Korean Food Industry

@@ -15,6 +15,7 @@ published: 2026-02-11
 doi: 10.1002/sys.70047
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70047
 source_label: "Wiley Systems Engineering 29(4) — Obiako et al. 2026"
+related: [conf-is2025-pavalkis-mbde-robotic-arm, ml-sys-inference-cost-curves-2026]
 ---
 
 # Systematic Learning and Pedagogy Through a Modular, Progressive-Based Simulation Modeling Framework for Complex Systems

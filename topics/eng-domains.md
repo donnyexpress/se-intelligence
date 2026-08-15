@@ -7,108 +7,96 @@ maturity: established
 
 # Engineering Specialty
 
-Engineering specialty covers the discipline-specific knowledge and practices that systems engineering must draw on: software, safety, reliability, maintainability, security, human factors, and others. These are not sub-disciplines of systems engineering; they are independent disciplines that systems engineering integrates. This article covers the basics, the patterns that work, the research frontiers, and the best practices that have held up across decades.
+Engineering Specialty covers the discipline-specific work that turns a generic architecture into a real system: software, safety, reliability, maintainability, security, and human factors. It's where SEBoK Part 7 lives. This is the work that gets done when a system has to actually meet a standard — IEC 61508 for functional safety, ISO 26262 for automotive, IEC 62443 for industrial security, etc.
 
-Every claim is cited to a real source — click the bracketed numbers to jump to the references list at the bottom.
+This article covers the basics, the patterns that work across engineering specialties, the research frontiers, and best practices that have held up across decades. The 2024-2026 evidence base includes 25+ INCOSE conference papers and 3 peer-reviewed journal articles (Wiley SE 29(4)). Every claim is cited to a real source — click the bracketed numbers to jump to the references list at the bottom.
 
 ## Why it matters
 
-The biggest systems engineering failures of the last 20 years — DieselGate, Boeing 737 MAX, Therac-25 — were not failures of the systems engineering process. They were failures of the engineering specialties: safety analysis, security analysis, human factors. Systems engineering is the integration discipline, but the integration is only as good as the specialties it integrates [dieselgate-smoke-and-mirrors-aftel-2025].
+The most common cause of program failure is not bad architecture; it's bad specialty engineering. The architecture is sound, the requirements are clear — but the system has a software bug, a safety oversight, a security hole, or a human-factors issue. Engineering specialty is the discipline that prevents this [lifecycle-iso-iec-15288-2023].
 
 ## Basics
 
-The engineering specialties are independent disciplines with their own standards, certifications, and communities:
+Engineering Specialty covers the discipline-specific work that wraps the technical work. The INCOSE SE Handbook v5 and ISO/IEC/IEEE 15288:2023 define the technical processes that produce specialty outputs [lifecycle-iso-iec-15288-2023]:
 
-- **Software engineering**: the discipline of building software-intensive systems. IEEE/ACM standards, professional certifications, dedicated academic programs.
-- **Safety engineering**: the discipline of identifying and mitigating hazards. IEC 61508, ISO 26262, DO-178C, and many domain-specific standards.
-- **Reliability engineering**: the discipline of predicting and improving system reliability. MTBF, MTTR, availability, FMECA, reliability block diagrams.
-- **Maintainability engineering**: the discipline of designing for ease of maintenance. MIL-HDBK-470, IEC 60706.
-- **Security engineering**: the discipline of designing secure systems. NIST 800-53, ISO 27001, STRIDE/DREAD threat modeling.
-- **Human factors engineering**: the discipline of designing for human users. MIL-STD-1472, ANSI/HFES standards.
+- **Software engineering** — the implementation of the software parts of the system. The dominant specialty in modern systems.
+- **Safety engineering** — the systematic identification and mitigation of hazards. Standards-driven (IEC 61508, ISO 26262, ARP 4761 for aviation).
+- **Reliability engineering** — prediction and demonstration that the system meets its reliability targets. Methods include FMEA, RBD, reliability growth testing.
+- **Maintainability engineering** — designing the system to be maintained. Often under-resourced.
+- **Security engineering** — protecting the system against threats. Standards-driven (IEC 62443, NIST SSDF).
+- **Human factors engineering** — designing the system for the people who use it. The cheapest place to fix human-factors issues is during design, not after deployment.
 
-The INCOSE SE Handbook v5 covers each in dedicated chapters [lifecycle-iso-iec-15288-2023]. The SEBoK Part 7 articles cover the integration.
+Two cross-cutting themes are critical:
 
-The fundamental challenge of engineering specialty is *co-design*. Each specialty has its own design process, its own verification process, and its own vocabulary. The systems engineering role is to ensure that the specialties are not designed in isolation, that conflicts are resolved at design time, and that the integrated system satisfies all the specialty requirements.
-
-## The six specialties in detail
-
-Each of the six engineering specialties has its own dedicated article in this knowledge base. Click through for the full depth on each:
-
-- [System Safety](/topic/specialty-safety) — hazard analysis, functional safety standards, safety case, STPA
-- [Reliability Engineering](/topic/specialty-reliability) — MTBF/MTTR prediction, FMECA, reliability block diagrams, Weibull analysis
-- [Security Engineering](/topic/specialty-security) — threat modeling, zero trust, supply chain security, SOTIF
-- [Human Factors](/topic/specialty-hfe) — physical and cognitive ergonomics, accessibility, training, usability testing
-- [Maintainability](/topic/specialty-maintainability) — MTTR, modular architecture, built-in test, service life planning
-- [Software Engineering](/topic/specialty-software) — DORA metrics, continuous delivery, software architecture, MBSE for software-intensive systems
+- **Each specialty has its own modeling language extension.** RAM attributes become first-class SysML properties [conf-is2024-p557-omg-standard-to-extend-sysml-to-reliability-engine]; STPA-SEC gets translated into SysML [conf-is2024-p176-translating-the-stpa-sec-security-method-into-a-mo]; SysML4Sec provides a methodology for security modeling [conf-is2025-p270-sysml4sec-methodology-for-security-modeling-in-the].
+- **AI/ML is now a specialty in its own right.** The 2024-2025 work makes this explicit — the SE Maturity framework treats GenAI as a specialty discipline [se-maturity-genai-madachy-2025], and the prompt-engineering safety guidance is its own field [safeguarding-genai-prompt-engineering-giang-2025].
 
 ## Patterns that work
 
 Five patterns recur in engineering specialty practice:
 
-1. **Co-design safety and security with the functional architecture.** Safety and security are not bolted on after the functional architecture is done; they are designed in from the start [eng-domains-safety-security-co-design].
-2. **Co-design human factors with the prototype.** Human factors is not a verification gate at the end of the prototype cycle; it is built into the loop [human-factors-rapid-prototyping-zeman-wood-2025].
-3. **Use the standards' verification methods, not just their requirements.** Each specialty standard defines not just what to design but how to verify the design. The verification methods are as important as the requirements.
-4. **Build a hazard analysis from the architecture.** Modern FMEA is generated from the architecture model, not from a separate spreadsheet [conf-is2025-fmea-multilevel].
-5. **Treat GenAI as a specialty too.** With GenAI in the SE workflow, the SE team must apply the same discipline to GenAI as to any other subsystem [se-maturity-genai-madachy-2025] [safeguarding-genai-prompt-engineering-giang-2025].
+1. **Specialty discipline absorbed into the MBSE model.** The classical pattern was "the model is for the system, and a separate document is for the safety case / security case / etc.". The 2024-2026 pattern is "every specialty becomes a model concern". Examples: RAM attributes are first-class SysML properties [conf-is2024-p557-omg-standard-to-extend-sysml-to-reliability-engine]; multi-level FMEA is generated from the architecture [conf-is2025-fmea-multilevel]; STPA hazards and constraints are model elements, not document sections. The pattern: the model is the source of truth for *all* specialty concerns.
+2. **Procedures as state machines, not documents.** The classical pattern was "write a procedure document, follow it". The 2026 pattern (Chaudemar et al., for UAS) is "the procedure is a state machine with safety guards; the model can be exercised to find procedure-level failure modes" [journal-wiley-se-29-4-chaudemar-safety-dynamic-procedure-uas]. This is most visible in regulated domains (aviation, medical, nuclear) where procedure design is itself a safety concern.
+3. **Safety and security co-designed from the start.** Wait until the logical architecture is stable, then co-design safety and security with the functional architecture. Doing it later is more expensive [eng-domains-safety-security-co-design]. The 2024 work made this more explicit: secure design is a first-class activity in system definition [conf-is2024-p054-secure-design-a-practical-approach-for-systems-eng].
+4. **System-level readiness as a measurable property.** The classical System Readiness Level (SRL) calculation — TRL × IRL — gives a single scalar per system. The 2026 pattern (Fu, Mazzuchi & Sarkani) is to compute readiness at the *interface* level, with mathematical properties for cluster-level integration [journal-wiley-se-29-4-fu-cluster-readiness-levels]. Readiness becomes a measurable property of the architecture, not just an aggregated scalar.
+5. **ABM as a teaching tool for complex, sociotechnical, AI-based systems.** The classical pedagogy was to teach the components. The 2026 pattern (Obiako et al.) is to use Agent-Based Modeling so students can explore the *emergent* behavior of these systems [journal-wiley-se-29-4-obiako-smts-agent-based-pedagogy]. The dominant learning need for the next generation of SE practitioners is emergent-behavior literacy, not just component knowledge.
+
+The SEBoK Part 7 articles cover these patterns in detail.
 
 ## Best practices
 
-- **Each specialty has its own expert.** A safety-critical program needs a dedicated safety engineer, not a systems engineer who has read a safety standard. The same is true for security, human factors, and software.
-- **Co-design is harder than it looks.** Two specialties that are each individually correct can produce a system that fails when integrated. The co-design is a separate activity.
-- **The standards' verification methods matter.** Skipping the verification methods in favor of "we'll verify at the end" is the most common source of specialty-related program failures.
-- **Have a hazard log, not a hazard spreadsheet.** A hazard log is a living document, with each hazard having a lifecycle from identification to closure. A hazard spreadsheet is a snapshot.
-- **Treat the data you use for ML as a specialty.** ML systems have data discipline requirements that are different from other subsystems. The data is the design [federated-learning-villanueva-2025].
+- **Each specialty has a standard; the standard is the source of truth.** Functional safety: IEC 61508 (or ISO 26262 for automotive, ARP 4761 for aviation). Security: IEC 62443 (or NIST SSDF for software). Reliability: MIL-HDBK-217 or its modern replacement. Don't reinvent these — use them.
+- **CM is the most under-resourced activity.** Most programs under-invest in CM, then spend more on rework than they would have spent on CM. The 2024 work makes CM patterns explicit for federated MBSE [conf-is2024-p415-configuration-management-of-sets-of-links-in-a-fed].
+- **Hazard analysis must be multi-level.** Single-level FMEA misses hazards at the integration boundary. The 2025 pattern is to generate FMEA from the same architecture model, at system, subsystem, and component levels [conf-is2025-fmea-multilevel].
+- **For AI/ML components, safety patterns must be re-derived.** The classical safety patterns assume deterministic, well-understood components. AI/ML components are non-deterministic and data-driven. The 2024-2026 work is building new patterns — see the safety-critical AI design methodology [conf-is2025-p087-a-digital-engineering-methodology-for-design-explo].
+- **Use STPA, not just FMEA, for control systems.** FMEA catches component failures; STPA catches unsafe control actions that don't correspond to any single component failing. The 2011 STPA paper [specialty-safety-stpa-leveson-2011] is now the dominant safety pattern in defense, automotive, and medical.
+- **Cyber threat modeling is MBSE-able.** The classical pattern was "checklist". The 2024 pattern (MBSE for cyber threats) is "modeled, measured property" — bring security from checklist to model [conf-is2024-p469-developing-a-model-based-systems-engineering-tool-]. STRIDE applied in food industry is a concrete example [journal-wiley-se-29-4-jung-stride-smart-haccp-korean-food].
 
 ## Research frontiers
 
-Active threads in 2024–2025:
+The 2024-2026 evidence base shows three threads moving from research into practice:
 
-- **Safety and security co-design with safety-critical systems.** New patterns for integrating safety and security analyses from the start of the architecture [eng-domains-safety-security-co-design].
-- **Human factors in rapid prototyping.** The cost of fixing human-factors issues after the prototype is much higher than during; the talk gives cost multipliers [human-factors-rapid-prototyping-zeman-wood-2025].
-- **Multi-level FMEA from the architecture.** FMEA is generated from the SysML model, with consistent hazard analysis at the system, subsystem, and component levels [conf-is2025-fmea-multilevel].
-- **DieselGate as a case study.** The canonical case of an engineering specialty failure that systems engineering did not catch [dieselgate-smoke-and-mirrors-aftel-2025].
-- **GenAI as a specialty.** The SE Maturity framework for GenAI in SE work [se-maturity-genai-madachy-2025], and the prompt-engineering safety guidance [safeguarding-genai-prompt-engineering-giang-2025].
-- **Federated learning for data-residency-constrained ML.** A technique for ML where the data cannot move [federated-learning-villanueva-2025].
+- **Every specialty discipline is being re-platformed onto MBSE + AI/ML.** RAM [conf-is2024-p557-omg-standard-to-extend-sysml-to-reliability-engine], FMEA [conf-is2025-fmea-multilevel], safety [journal-wiley-se-29-4-chaudemar-safety-dynamic-procedure-uas], security [conf-is2024-p176-translating-the-stpa-sec-security-method-into-a-mo, conf-is2025-p270-sysml4sec-methodology-for-security-modeling-in-the], and readiness [journal-wiley-se-29-4-fu-cluster-readiness-levels] are all moving to model-based + AI-aware. This is the "specialty as a model concern" pattern above, in motion.
+- **AI/ML in safety-critical systems needs new safety patterns.** The 2025 paper on digital engineering methodology for design and validation of safety-critical software for AI-based algorithms [conf-is2025-p087-a-digital-engineering-methodology-for-design-explo] is a notable attempt to bring AI/ML systems into the traditional safety engineering discipline — which historically assumed deterministic, well-understood failure modes. New safety patterns are needed for non-deterministic, data-driven components.
+- **Cybersecurity quantification via MBSE.** A 2024 paper proposed an MBSE-based method to quantify cyber threats to microelectronics [conf-is2024-p469-developing-a-model-based-systems-engineering-tool-] — bringing security from "checklist" to "modeled, measured property". This complements the STPA-SEC work from earlier years [conf-is2024-p176-translating-the-stpa-sec-security-method-into-a-mo, conf-is2024-p292-integrating-stpa-extended-for-coordination-into-sy].
 
-## What's new in 2024-2025
+Other 2024-2025 work worth noting:
 
-The 2024-2025 Symposia showed engineering specialties moving in three converging directions:
+- **AI-enhanced autonomous safety.** A 2024 paper on AI-enhanced autonomous formation flying with mission-driven safety patterns [conf-is2024-pres380-ai-enhanced-autonomous-formation-flying-definition] pushes the safety discipline into the AI/ML + autonomy domain.
+- **Trust and distrust as system dynamics.** A 2024 paper on the systems dynamics of trust/distrust in human-AI systems [conf-is2024-p376-a-model-for-trust-and-distrust-the-systems-dynamic] addresses the human-factors side of AI/ML in safety-critical systems.
+- **AI-assisted system safety analysis.** A 2025 paper on digital safety analysis for small modular nuclear reactors [conf-is2025-p031-digital-safety-analysis-for-small-modular-nuclear-] applies AI/ML to classical safety analysis in a regulated domain.
+- **Federated learning for data-residency-constrained ML.** A 2025 paper [federated-learning-villanueva-2025] addresses the situation where the data cannot move — the model moves instead. Useful for cross-organization SE.
 
-- **MBSE as the substrate for specialty engineering.** A 2024 paper proposed extending SysML to reliability engineering as an OMG standard [conf-is2024-p557-omg-standard-to-extend-sysml-to-reliability-engine] — RAM attributes become first-class in the model, not derived. Similarly, the 2025 multi-level FMEA paper extends classical FMEA through multi-level MBSE architectures [conf-is2025-fmea-multilevel]. The pattern: every specialty discipline is being absorbed into the MBSE model, with the model as the source of truth.
-- **AI/ML in safety-critical systems.** A 2025 paper on digital engineering methodology for design and validation of safety-critical software for AI-based algorithms [conf-is2025-p087-a-digital-engineering-methodology-for-design-explo] is a notable attempt to bring AI/ML systems into the traditional safety engineering discipline — which historically assumed deterministic, well-understood failure modes. New safety patterns are needed for non-deterministic, data-driven components.
-- **Cybersecurity quantification via MBSE.** A 2024 paper proposed an MBSE-based method to quantify cyber threats to microelectronics [conf-is2024-p469-developing-a-model-based-systems-engineering-tool-] — bringing security from "checklist" to "modeled, measured property". This complements the STPA-SEC work from earlier years.
-- **AI-enhanced autonomous safety.** A 2024 paper on AI-enhanced autonomous formation flying with mission-driven safety patterns [conf-is2024-pres380-ai-enhanced-autonomous-formation-flying-definition] pushes the safety discipline into the AI/ML + autonomy domain — the canonical example of where classical safety methods (designed for deterministic components) are insufficient.
-
-The 2024-2025 period is best understood as "every specialty discipline gets re-platformed onto MBSE + AI/ML" — RAM, FMEA, safety, security, autonomy, all moving to model-based + AI-aware.
+The 2024-2026 period is best understood as "every specialty discipline gets re-platformed onto MBSE + AI/ML" — RAM, FMEA, safety, security, autonomy, all moving to model-based + AI-aware. The 2026 peer-reviewed journal work [journal-wiley-se-29-4-fu-cluster-readiness-levels, journal-wiley-se-29-4-chaudemar-safety-dynamic-procedure-uas, journal-wiley-se-29-4-obiako-smts-agent-based-pedagogy] is now landing as *formal foundations* for the specialty disciplines — readiness becomes math, procedures become models, pedagogy becomes simulation.
 
 ## What to read first
 
 If you only read three things on engineering specialty, read:
 
 1. The safety/security co-design patterns — what it looks like to design both from the start [eng-domains-safety-security-co-design]
-2. The DieselGate case study — what happens when engineering specialty is bypassed [dieselgate-smoke-and-mirrors-aftel-2025]
-3. The GenAI-as-specialty framework — how to bring GenAI into the SE workflow with discipline [se-maturity-genai-madachy-2025]
-
-## What's new in 2026 (Wiley *Systems Engineering* 29(4))
-
-The July 2026 *Systems Engineering* journal published three notable engineering specialty papers that complement the IS 2024-2025 conference work:
-
-- **Cluster-based system readiness levels.** Fu, Mazzuchi & Sarkani extend the classical System Readiness Level (SRL) framework with mathematical properties for cluster-level interfaces [journal-wiley-se-29-4-fu-cluster-readiness-levels]. The original SRL calc (integrating TRL × IRL) is a single-system number; this paper gives a rigorous way to compute readiness at the *interface* level, which matters when you have many subsystems with different integration paths. Notable: they use a graph-theoretic formulation that makes readiness a measurable property of the architecture, not just an aggregated scalar.
-- **Safety-driven dynamic procedures for UAS.** Chaudemar et al. (ISAE-SUPAERO) formalize the procedure-design requirement from EASA's SORA framework into an executable safety model [journal-wiley-se-29-4-chaudemar-safety-dynamic-procedure-uas]. The pattern: procedure generation becomes a model-based activity, not a documentation activity. Each procedure is a state machine with safety guards; the model can be exercised to find procedure-level failure modes.
-- **Pedagogy for Smart Transportation Systems.** Obiako et al. apply Agent-Based Modeling as a teaching tool for complex, sociotechnical, AI-based systems [journal-wiley-se-29-4-obiako-smts-agent-based-pedagogy]. The pedagogical claim: ABMs let students explore the *emergent* behavior of these systems — not just the components — which is the dominant learning need for the next generation of SE practitioners.
-
-The 2026 journal signal: engineering specialty research is moving from "tooling for specialists" (2024-2025 IS papers) to "formal foundations for specialty disciplines" (2026 journal). Readiness becomes math, procedures become models, pedagogy becomes simulation.
+2. STPA — the dominant pattern for control-system safety [specialty-safety-stpa-leveson-2011]
+3. Cluster-based SRL — the first peer-reviewed formal foundation for readiness [journal-wiley-se-29-4-fu-cluster-readiness-levels]
 
 ## References
 
 1. INCOSE Systems Engineering Handbook v5 + ISO/IEC 15288:2023 (2023)
 2. Safety and security co-design in critical systems
-3. Human factors in rapid prototyping — Zeman & Wood, INCOSE San Diego, 2025
-4. Multi-level FMEA driven by architecture (IS 2025)
-5. DieselGate — Smoke and Mirrors, INCOSE San Diego, 2025
-6. SE Maturity and Cost Modeling Framework for GenAI — INCOSE San Diego, 2025
-7. Cluster-based SRL with mathematical interface properties (Wiley SE 29(4), 2026)
-8. Safety-driven dynamic procedure modeling for UAS (Wiley SE 29(4), 2026)
-9. ABM-based pedagogy for Smart Transportation Systems (Wiley SE 29(4), 2026)
-7. Safeguarding Sensitive Data: Prompt Engineering for GenAI — INCOSE Enchantment, 2025
-8. Federated Learning — Villanueva, INCOSE San Diego, 2025
+3. STPA — Systems-Theoretic Process Analysis (Leveson, 2011)
+4. OMG standard to extend SysML to reliability engineering (IS 2024)
+5. Multi-level FMEA driven by architecture (IS 2025)
+6. STPA-SEC translated into SysML (IS 2024)
+7. STPA extended for coordination (IS 2024)
+8. SysML4Sec methodology for security modeling (IS 2025)
+9. Configuration management for federated MBSE (IS 2024)
+10. Digital engineering methodology for safety-critical AI (IS 2025)
+11. MBSE for cyber threat quantification (IS 2024)
+12. STRIDE-Based Threat Modeling for Smart HACCP (Wiley SE 29(4), 2026)
+13. AI-enhanced autonomous formation flying (IS 2024)
+14. Trust/distrust dynamics in human-AI systems (IS 2024)
+15. Digital safety analysis for small modular nuclear (IS 2025)
+16. Human factors in rapid prototyping — Zeman & Wood, INCOSE San Diego, 2025
+17. DieselGate — Smoke and Mirrors, INCOSE San Diego, 2025
+18. SE Maturity and Cost Modeling Framework for GenAI — INCOSE San Diego, 2025
+19. Cluster-based SRL with mathematical interface properties (Wiley SE 29(4), 2026)
+20. Safety-driven dynamic procedure modeling for UAS (Wiley SE 29(4), 2026)
+21. ABM-based pedagogy for Smart Transportation Systems (Wiley SE 29(4), 2026)

@@ -15,6 +15,7 @@ published: 2026-02-16
 doi: 10.1002/sys.70048
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70048
 source_label: "Wiley Systems Engineering 29(4) — Xu et al. 2026"
+related: [conf-is2025-fmea-multilevel, conf-is2025-p059-application-of-a-verification-complexity-framework]
 ---
 
 # A Set-Based Planning Methodology to Plan and Execute Dynamic Verification Strategies Under Knowable Uncertainty

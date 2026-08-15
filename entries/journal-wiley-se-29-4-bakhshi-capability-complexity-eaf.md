@@ -15,6 +15,7 @@ published: 2026-02-02
 doi: 10.1002/sys.70039
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70039
 source_label: "Wiley Systems Engineering 29(4) — Bakhshi et al. 2026"
+related: [sos-sos-architecting-patterns, journal-wiley-se-29-4-kaplan-robotaxis-labor-transitions, mission-engineering-uaf-gagliardi-2024]
 ---
 
 # Assessing Capability Complexity Using Enterprise Architecture Framework

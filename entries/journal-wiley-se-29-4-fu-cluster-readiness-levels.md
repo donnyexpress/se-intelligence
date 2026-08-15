@@ -15,6 +15,7 @@ published: 2026-02-01
 doi: 10.1002/sys.70042
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70042
 source_label: "Wiley Systems Engineering 29(4) — Fu et al. 2026"
+related: [conf-is2024-p557-omg-standard-to-extend-sysml-to-reliability-engine, specialty-reliability-fmea-rbd-milhdbk-217, journal-wiley-se-29-4-chaudemar-safety-dynamic-procedure-uas]
 ---
 
 # Cluster-Based System Readiness Levels: Mathematical Interface Properties

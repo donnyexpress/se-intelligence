@@ -67,7 +67,26 @@ function parseMarkdown(filename, raw) {
         // key: value  OR  key:\n  - item\n  - item
         const mm = line.match(/^([a-z_]+):\s*(.*?)\s*$/i);
         if (mm) {
-          frontmatter[mm[1].toLowerCase()] = mm[2];
+          const key = mm[1].toLowerCase();
+          let val = mm[2].trim();
+          // JSON-format array: `key: ["a", "b"]` → keep as string, parse later via parseJsonArray
+          // Simple-format array: `key: [a, b, c]` → split into array
+          if (val.startsWith('[') && val.endsWith(']')) {
+            if (val.includes('"') || val.includes("'")) {
+              // JSON-format: keep as string, parse later
+              frontmatter[key] = val;
+            } else {
+              // Simple-format: split on comma
+              const inner = val.slice(1, -1).trim();
+              if (inner === '') {
+                frontmatter[key] = [];
+              } else {
+                frontmatter[key] = inner.split(',').map(s => s.trim()).filter(Boolean);
+              }
+            }
+          } else {
+            frontmatter[key] = val;
+          }
         }
       }
       // Parse block-style `links:` list
@@ -114,7 +133,9 @@ function parseMarkdown(filename, raw) {
     summary: '',
     source: '',
     monday: '',
-    related: [],
+    related: Array.isArray(frontmatter.related)
+      ? frontmatter.related
+      : (parseJsonArray(frontmatter.related) || []),
     notes: '',
     linksList: frontmatter.links_list || [],
     // Canonical "read the full thing" link. For conf entries, falls back to

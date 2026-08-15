@@ -15,6 +15,7 @@ published: 2026-02-06
 doi: 10.1002/sys.70044
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70044
 source_label: "Wiley Systems Engineering 29(4) — Bourdellès et al. 2026"
+related: [journal-wiley-se-29-4-duroy-sysmlv2-esa-mbse-methodology, conf-is2024-p099-enabling-digital-engineering-with-federated-plm-ex, conf-is2024-p054-secure-design-a-practical-approach-for-systems-eng]
 ---
 
 # Product Line Modeling Process to Manage Requirements Confidentiality and Variability

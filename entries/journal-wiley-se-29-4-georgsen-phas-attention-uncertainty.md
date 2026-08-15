@@ -15,6 +15,7 @@ published: 2026-01-28
 doi: 10.1002/sys.70041
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70041
 source_label: "Wiley Systems Engineering 29(4) — Georgsen et al. 2026"
+related: [sys-fund-ackoff-systems-thinking, conf-is2025-p053-applying-systems-thinking-and-soft-systems-methodo]
 ---
 
 # Navigating Uncertainty: Guiding Attention in Purposeful Human Activity Systems

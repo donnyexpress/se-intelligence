@@ -15,6 +15,7 @@ published: 2026-02-10
 doi: 10.1002/sys.70046
 source_url: https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70046
 source_label: "Wiley Systems Engineering 29(4) — Duroy et al. 2026"
+related: [conf-is2025-sysmlv2-magicgrid, journal-wiley-se-29-4-bourdelles-product-line-confidentiality, system-def-mbse-patterns-2025]
 ---
 
 # Paving the Way for SysML v2: An ESA MBSE Methodology Implementation Review
