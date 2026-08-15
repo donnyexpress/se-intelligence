@@ -48,19 +48,13 @@ The INCOSE SE Handbook v5 treats all five as foundational [lifecycle-iso-iec-152
 
 ## Research frontiers
 
-The 2024-2026 evidence base shows three threads moving from research into practice:
+Three 2024-2026 threads are now in practice, not just research:
 
-- **Bifurcation analysis for resilience is now a method.** A 2024 paper [conf-is2024-p548-a-framework-to-use-bifurcation-analysis-for-insigh] brings bifurcation analysis (from dynamical systems theory) into engineering resilience questions. This is a notable cross-pollination: classical systems theory (bifurcations) meets modern resilience research. Resilience is no longer a metaphor; it's a measurable property of the system dynamics.
-- **Trust and distrust as system dynamics.** A 2024 paper [conf-is2024-p376-a-model-for-trust-and-distrust-the-systems-dynamic] maps how trust/distrust evolves in human-AI systems via causal loop diagrams. As AI systems enter the loop, trust dynamics become a first-class SE concern, not just a sociotechnical one.
-- **Soft systems methodology is in active use in defense.** A 2025 paper [conf-is2025-p053-applying-systems-thinking-and-soft-systems-methodo] applied Soft Systems Methodology (SSM) to the defense industry — using Checkland's 7-stage SSM to handle the "messy" problems that don't fit a hard-systems analysis. The defense industry is the canonical example of where hard-system SE alone is insufficient.
+- **Bifurcation analysis for resilience is now a method.** A 2024 paper [conf-is2024-p548-a-framework-to-use-bifurcation-analysis-for-insigh] brings bifurcation analysis (from dynamical systems theory) into engineering resilience. Cross-pollination: classical systems theory meets modern resilience research. Resilience is no longer a metaphor; it's a measurable property of the system dynamics.
+- **Trust and distrust as system dynamics.** A 2024 paper [conf-is2024-p376-a-model-for-trust-and-distrust-the-systems-dynamic] maps how trust/distrust evolves in human-AI systems via causal loop diagrams. As AI enters the loop, trust dynamics become a first-class SE concern, not just a sociotechnical one.
+- **Soft systems methodology is in active use in defense.** A 2025 paper [conf-is2025-p053-applying-systems-thinking-and-soft-systems-methodo] applied Checkland's 7-stage SSM to the defense industry — handling the "messy" problems that don't fit a hard-systems analysis.
 
-Other 2024-2025 work:
-
-- **Systems engineering for R&D.** A new framework from the INCOSE LA chapter that adapts systems thinking to early-stage R&D portfolios [se-esrd-framework-hodges-2024].
-- **Mission Engineering for SoS.** Treating missions as systems of systems, with UAF as the dominant open standard [mission-engineering-uaf-gagliardi-2024].
-- **PHAS for engineering teams.** A 2026 paper [journal-wiley-se-29-4-georgsen-phas-attention-uncertainty] extends the systems thinking canon to engineering teams themselves — when the "system" is the team, the model needs to handle attention, communication, and purpose explicitly.
-
-These are extensions of the classical systems thinking canon (Ackoff, Checkland, Beer), but applied to problems that didn't exist when the canon was written — AI in the loop, formal bifurcation analysis, resilience as a designed property, engineering teams as systems. The core SEBoK Part 1 framework still holds; what's new is the front.
+These are extensions of the classical systems thinking canon (Ackoff, Checkland, Beer), but applied to problems that didn't exist when the canon was written — AI in the loop, formal bifurcation analysis, resilience as a designed property. The core SEBoK Part 1 framework still holds; what's new is the front.
 
 ## What to read first
 

@@ -51,16 +51,13 @@ Five patterns recur in security engineering practice:
 
 ## Research frontiers
 
-The 2024-2026 evidence base shows security engineering moving from checklist to model-based:
+Security engineering is moving from checklist to model-based:
 
-- **MBSE-driven threat modeling is now working practice.** STPA-SEC in SysML [conf-is2024-p176-translating-the-stpa-sec-security-method-into-a-mo, conf-is2024-p292-integrating-stpa-extended-for-coordination-into-sy], SysML4Sec methodology [conf-is2025-p270-sysml4sec-methodology-for-security-modeling-in-the], and MBSE for cyber threat quantification [conf-is2024-p469-developing-a-model-based-systems-engineering-tool-] — the threat model is a SysML model, the analysis is queryable, the security case is regenerable. This is the 2024-2026 transformation: security is a model concern, not a document concern.
+- **MBSE-driven threat modeling is now working practice.** STPA-SEC in SysML [conf-is2024-p176-translating-the-stpa-sec-security-method-into-a-mo, conf-is2024-p292-integrating-stpa-extended-for-coordination-into-sy], SysML4Sec methodology [conf-is2025-p270-sysml4sec-methodology-for-security-modeling-in-the], and MBSE for cyber threat quantification [conf-is2024-p469-developing-a-model-based-systems-engineering-tool-]. The threat model is a SysML model, the analysis is queryable, the security case is regenerable. This is the 2024-2026 transformation: security is a model concern.
 - **Safety and security co-design.** New patterns for integrating safety and security analyses from the start of the architecture [eng-domains-safety-security-co-design]. STPA-SEC is the leading formal pattern.
-- **NIST Secure Software Development Framework (SSDF).** The US government baseline for software security practices after EO 14028 — the procurement language is now starting to ask for it [sec-nist-ssdf-800-218].
+- **NIST SSDF + supply chain security.** The US government baseline for software security practices after EO 14028 — procurement language is now asking for it [sec-nist-ssdf-800-218]. Pairs with SBOM, SLSA, signed provenance.
 - **GenAI security.** Prompt injection, model exfiltration, training data leakage — the new attack surfaces of GenAI in the SE workflow [safeguarding-genai-prompt-engineering-giang-2025].
-- **Federated learning for data-residency security.** A pattern for ML where the data cannot move [federated-learning-villanueva-2025].
-- **DieselGate as the canonical security failure.** What happens when security is designed to defeat inspection [dieselgate-smoke-and-mirrors-aftel-2025].
-- **Supply chain security.** SBOM, SLSA, signed provenance. The field is moving fast.
-- **STRIDE in food industry (2026 Wiley).** Jung et al. [journal-wiley-se-29-4-jung-stride-smart-haccp-korean-food] applied STRIDE to Smart HACCP — a concrete cross-industry case study showing that threat modeling patterns generalize. The peer-reviewed signal: STRIDE works in food safety, just as it works in ICS, IoT, and software.
+- **STRIDE in food industry (2026 Wiley).** Jung et al. [journal-wiley-se-29-4-jung-stride-smart-haccp-korean-food] applied STRIDE to Smart HACCP — a cross-industry case study showing that threat modeling patterns generalize. STRIDE works in food safety, just as it works in ICS, IoT, and software.
 
 ## What to read first
 

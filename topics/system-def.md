@@ -54,18 +54,11 @@ The INCOSE Systems Engineering Handbook v5 covers all of these in detail, and is
 
 ## Research frontiers
 
-The 2024–2026 evidence base shows three threads moving from research into practice:
+Three 2024-2026 threads are now in practice, not just research:
 
-- **LLM-augmented MBSE is now working practice in non-safety-critical domains.** Three concrete patterns have emerged: (1) LLM as natural-language to SysML translator [conf-is2024-p562-ai-systems-modeling-enhancer-ai-sme-initial-invest], (2) LLM as a graph-query interface over SysML v2 models (JAXA team's Neo4j + LLM pattern) [conf-is2025-jaxa-llm-mbse], and (3) LLM-driven requirements traceability at industrial scale [conf-is2024-p098-llm-based-approach-to-automatically-establish-trac]. The peer-reviewed caveat [journal-wiley-se-29-4-duroy-sysmlv2-esa-mbse-methodology] is that even with LLM assistance, the model must be reviewed by a human systems engineer before any safety-critical decision.
-- **Digital twins are now established as a cross-industry pattern, with 79 SLRs synthesized.** Wooley, Dimson & Bitencourt's umbrella review of 79 peer-reviewed systematic literature reviews [journal-wiley-se-29-4-wooley-digital-twins-umbrella-review] finds that the DT concept is still fragmented across industries, with no shared definition. The review proposes a unified framing centered on *data flow* rather than the marketing "3D replica" view — which aligns with the SE view of the system as a model, not a picture. The MBSE plateau now extends from "design model" to "operational runtime".
-- **SysML v2 is the new baseline, not "coming soon".** Multiple 2024-2025 papers reported on real-world adoption [conf-is2025-sysmlv2-magicgrid], and ESA's 2026 case study [journal-wiley-se-29-4-duroy-sysmlv2-esa-mbse-methodology] is the first peer-reviewed production methodology in v2. The methodology-level decisions (definition reuse, Functions) are not notation issues.
-
-Other 2024-2025 work worth noting:
-
-- **MBSE for Model-Based Design Engineering (MBDE) in robotics.** The patterns work for mechatronic systems but need adaptation for real-time control loops [conf-is2025-pavalkis-mbde-robotic-arm].
-- **ARCADIA / Capella in maritime system definition.** Real case study for wind-assisted bulk carrier vessel design [conf-is2024-p260-application-of-the-arcadia-method-on-a-bulk-carrie] — a concrete example of MBSE in non-traditional defense domains.
-- **V-Model modernization for digital engineering.** The "Arch Model" refreshes the classical V-Model for integrated digital engineering, addressing the misperceptions that have reduced the V-Model's efficacy in practice [conf-is2024-p370-a-classical-modernization-of-the-v-model].
-- **Product line modeling with confidentiality.** A confidentiality model runs alongside the variability model, so different stakeholders see different views of the same product line [journal-wiley-se-29-4-bourdelles-product-line-confidentiality] — a real enterprise pattern for OEMs managing product variants across customer segments with different IP exposure.
+- **LLM-augmented MBSE works in non-safety-critical domains.** Three patterns: (1) LLM as natural-language → SysML translator [conf-is2024-p562-ai-systems-modeling-enhancer-ai-sme-initial-invest], (2) LLM as a graph-query interface over SysML v2 (JAXA's Neo4j + LLM) [conf-is2025-jaxa-llm-mbse], (3) LLM-driven requirements traceability at industrial scale [conf-is2024-p098-llm-based-approach-to-automatically-establish-trac]. Peer-reviewed caveat: even with LLM assistance, the model must be human-reviewed before any safety-critical decision [journal-wiley-se-29-4-duroy-sysmlv2-esa-mbse-methodology].
+- **Digital twins are an established cross-industry pattern.** Wooley, Dimson & Bitencourt's umbrella review of 79 SLRs [journal-wiley-se-29-4-wooley-digital-twins-umbrella-review] finds the DT concept is still fragmented; the unifying framing is *data flow*, not the marketing "3D replica" view. The MBSE plateau now extends from "design model" to "operational runtime".
+- **SysML v2 is the new baseline.** Multiple 2024-2025 papers report real adoption [conf-is2025-sysmlv2-magicgrid]; ESA's 2026 case study [journal-wiley-se-29-4-duroy-sysmlv2-esa-mbse-methodology] is the first peer-reviewed production methodology in v2 — and the methodology-level decisions (definition reuse, Functions) are not notation issues.
 
 ## What to read first
 

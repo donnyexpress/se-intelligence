@@ -53,17 +53,16 @@ The SEBoK Part 8 articles cover these patterns in detail.
 
 ## Research frontiers
 
-The 2024-2026 evidence base shows SE management becoming more "operational" and "platform-like":
+SE management is becoming more "operational" and "platform-like":
 
-- **SE maturity for GenAI-augmented SE work.** A working-draft framework for assessing the maturity of an SE process and choosing which GenAI capabilities are safe to introduce at each level [se-maturity-genai-madachy-2025].
-- **MCDA for SE trade-offs.** Multi-criteria decision analysis applied to SE trade-off problems [management-decision-analysis-mcda].
-- **Decision patterns in the age of GenAI.** With LLMs in the SE workflow, the decision process itself changes — and new decision patterns are needed.
-- **R&D portfolio management.** A framework for managing SE work in R&D portfolios, where the goal is discovering what to build [se-esrd-framework-hodges-2024].
-- **Mission Engineering management.** Mission-level management patterns for defense and aerospace [mission-engineering-uaf-gagliardi-2024].
-- **Enterprise transformation as an SE problem.** A 2025 paper on Enterprise Transformation Planning with UAF [conf-is2025-p164-enterprise-transformation-planning-with-uaf] is a notable scaling: the UAF framework, originally for mission engineering, is now being applied to whole-enterprise transformation.
-- **Competency assessment in the MBSE era.** The 2024 INCOSE Competency Assessment Guide paper [conf-is2024-p037-incose-systems-engineering-competency-assessment-g] extends the 37-competency framework with a SysML model that represents the architecture of the assessment itself. The "competency framework is a model" approach opens the door to digital competency tracking, where an SE's competency profile is a queryable artifact, not a static document.
-- **LLM-augmented MBSE for data initialization.** A 2025 paper from COMAC on using LLMs to initialize Product-Based SE (PBSE) data [conf-is2025-p052-pbse-data-initialization-framework-and-practive-by] addresses a real pain point: the initial MBSE model population is a heavy, manual task, and LLMs can dramatically reduce the time-to-first-useful-model. This is one of the most concrete productivity gains in the management layer.
-- **Learning through MBSE sandbox.** A 2024 presentation on learning system security through MBSE sandbox environments [conf-is2024-pres546-learning-system-security-playing-in-an-mbse-sandbo] reframes training and competency development as an SE management concern — the curriculum is a model, and the sandbox is the development environment.
+- **SE maturity for GenAI-augmented SE work.** Working-draft framework for assessing SE process maturity and choosing which GenAI capabilities are safe at each level [se-maturity-genai-madachy-2025].
+- **MCDA for SE trade-offs.** Multi-criteria decision analysis for SE trade-off problems [management-decision-analysis-mcda].
+- **Decision patterns in the age of GenAI.** With LLMs in the SE workflow, the decision process itself changes — new decision patterns are needed.
+- **R&D portfolio management.** Framework for managing SE work in R&D portfolios [se-esrd-framework-hodges-2024].
+- **Enterprise transformation as an SE problem.** A 2025 paper on Enterprise Transformation Planning with UAF [conf-is2025-p164-enterprise-transformation-planning-with-uaf] is a notable scaling: UAF, originally for mission engineering, is now applied to whole-enterprise transformation.
+- **Competency assessment in the MBSE era.** The 2024 INCOSE Competency Assessment Guide [conf-is2024-p037-incose-systems-engineering-competency-assessment-g] extends the 37-competency framework with a SysML model. The "competency framework is a model" approach opens the door to digital competency tracking.
+- **LLM-augmented MBSE for data initialization.** A 2025 paper from COMAC [conf-is2025-p052-pbse-data-initialization-framework-and-practive-by] addresses a real pain point: the initial MBSE model population is heavy, and LLMs can dramatically reduce time-to-first-useful-model. One of the most concrete productivity gains in the management layer.
+- **Learning through MBSE sandbox.** A 2024 presentation on learning system security through MBSE sandbox environments [conf-is2024-pres546-learning-system-security-playing-in-an-mbse-sandbo] reframes training and competency development as an SE management concern.
 
 ## What to read first
 

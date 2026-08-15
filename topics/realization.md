@@ -55,24 +55,15 @@ The V&V patterns in the INCOSE SE Handbook v5 and the SEBoK Part 5 articles cove
 
 ## Research frontiers
 
-The 2024-2026 evidence base shows three threads moving from research into practice:
+Three 2024-2026 threads are now in practice, not just research:
 
-- **Set-based verification is the 2026 formalization.** Xu & Salado [journal-wiley-se-29-4-xu-salado-set-based-verification-planning] is the peer-reviewed formalization of dynamic verification planning under knowable uncertainty. The pattern: instead of fixing the verification plan at program start, treat it as a *set* of candidate activities, and introduce additional verifications as uncertainties are resolved mid-program. This addresses the most common realization failure: a fixed verification plan that didn't account for surprises.
-- **Agile + SE integration is getting real.** A 2024 analysis of SAFe through Stafford Beer's Viable System Model [conf-is2024-p463-synergizing-structure-and-agility-a-comprehensive-] grounds SAFe in classical systems theory. The INCOSE-PMI Alliance continued to develop cross-references between program management and SE practices [conf-is2024-pres069-the-latest-on-the-incose-pmi-alliance-and-integrat]. The integration of project management frameworks with SE is a stable trend.
-- **Generative AI as a cost/schedule multiplier.** A 2025 paper proposed a maturity and cost model for SE with GenAI [conf-is2025-pres148-a-maturity-and-cost-model-for-systems-engineering-] — explicitly modeling where AI tools reduce effort and where they don't help (still requires human-in-the-loop for safety-critical decisions). The realistic framing: AI augments, doesn't replace.
+- **Set-based verification is the 2026 formalization.** Xu & Salado [journal-wiley-se-29-4-xu-salado-set-based-verification-planning] formalizes dynamic verification planning under knowable uncertainty. The pattern: instead of fixing the verification plan at program start, treat it as a *set* of candidate activities, and introduce additional verifications as uncertainties are resolved mid-program. Addresses the most common realization failure.
+- **Agile + SE integration is getting real.** SAFe grounded in Stafford Beer's Viable System Model [conf-is2024-p463-synergizing-structure-and-agility-a-comprehensive-]. INCOSE-PMI Alliance cross-references [conf-is2024-pres069-the-latest-on-the-incose-pmi-alliance-and-integrat]. Stable trend.
+- **Generative AI as a cost/schedule multiplier.** A 2025 paper proposed a maturity and cost model for SE with GenAI [conf-is2025-pres148-a-maturity-and-cost-model-for-systems-engineering-] — explicitly modeling where AI helps and where it doesn't (still human-in-the-loop for safety-critical decisions). Realistic framing: AI augments, doesn't replace.
 
-Other 2024-2025 work:
+Other 2024-2025 work worth a skim: MBDE for mechatronic [conf-is2025-pavalkis-mbde-robotic-arm], design reviews with MBSE [conf-is2025-dassault-mb-design-reviews], R&M as enterprise decisions [conf-is2025-p098-enterprise-architecting-to-advance-reliability-and], real-to-real analogy with film production [conf-is2024-p276-real-to-real-deriving-software-development-practic], Airbus traceability vision [conf-is2024-p148-traceability-a-vision-for-now-and-tomorrow], COSYSMO + MBSE convergence [conf-is2024-p180-the-convergence-of-cosysmo-parametric-cost-estimat].
 
-- **MBSE for realization.** Model-based integration planning, with the architecture as the source of truth [system-def-mbse-patterns-2025].
-- **Multi-level FMEA from the architecture.** Automated FMEA at system, subsystem, and component levels, generated from the same SysML model [conf-is2025-fmea-multilevel].
-- **Model-Based Design Engineering (MBDE) for mechatronic systems.** The MBSE patterns work for mechatronic systems but need adaptation for real-time control loops [conf-is2025-pavalkis-mbde-robotic-arm].
-- **Design reviews with MBSE support.** Modern design review tools that pull from the model rather than from documents [conf-is2025-dassault-mb-design-reviews].
-- **R&M as enterprise decisions.** Fleet maintenance is a system-of-systems decision across the enterprise [conf-is2025-p098-enterprise-architecting-to-advance-reliability-and], not a single-system question.
-- **Real-to-real analogy: software development from film production.** Borrowed practices from film production (time-boxed iterations, scene blocking, asset reuse) mapped to SE realization work [conf-is2024-p276-real-to-real-deriving-software-development-practic]. Useful for teams under hard time and budget pressure.
-- **Traceability across the realization lifecycle.** A vision paper from Airbus on how traceability needs to evolve to support model-based and digital engineering [conf-is2024-p148-traceability-a-vision-for-now-and-tomorrow].
-- **COSYSMO + MBSE convergence.** A practical paper on converging parametric cost estimation with model-based systems engineering so the cost model is derived from the system model, not maintained separately [conf-is2024-p180-the-convergence-of-cosysmo-parametric-cost-estimat].
-
-The 2024-2026 period is best understood as "realization is starting to be the *operational* phase, not just the *build* phase". The digital twin + digital thread work [journal-wiley-se-29-4-wooley-digital-twins-umbrella-review] suggests the system model becomes a live runtime artifact during sustainment, blurring the realization/operational boundary.
+The 2024-2026 period is best understood as "realization is starting to be the *operational* phase, not just the *build* phase". The digital twin + digital thread work [journal-wiley-se-29-4-wooley-digital-twins-umbrella-review] suggests the system model becomes a live runtime artifact during sustainment.
 
 ## What to read first
 
